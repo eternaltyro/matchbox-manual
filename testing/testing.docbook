@@ -77,9 +77,10 @@
       machine but have it manage windows on another display (such as a
       handheld). On the remote machine, make sure there is no window manager
       already running and then give access for the X Server from the development
-      machine (e.g. with xhost +&lt;dev machine ip&gt; or by using Xnest with
-      -ac argument). On the development machine set the DISPLAY env variable to
-      the remote machines IP and then launch Matchbox.
+      machine (e.g. with <command>xhost +<replaceable>dev machine
+      IP</replaceable></command> or by using Xnest with -ac argument). On the
+      development machine set the <envar>DISPLAY</envar> environment variable to
+      the remote machine's IP and then launch Matchbox.
     </para>
     <para>
       Matchbox can be run under Valgrind on x86 platforms to debug memory
@@ -87,9 +88,9 @@
     </para>
     <para>
       It is recommended, though not essential, that the Matchbox build is
-      configured with the '--enable-debug' switch. The resulting binaries will
-      spew verbose messages to standard out which contain information that's
-      useful for fixing any failed tests.
+      configured with the <userinput>--enable-debug</userinput> switch. The
+      resulting binaries will spew verbose messages to standard out which
+      contain information that's useful for fixing any failed tests.
     </para>
   </section>
 
@@ -198,6 +199,55 @@
   </section>
 
 
+  <section id="sec-unit-tests">
+    <title>Unit Tests</title>
+    <para>
+      There are unit test for libmatchbox in
+      <filename>libmatchbox/tests/</filename>.  These are written using the
+      <application>Check</application> unit testing framework (<ulink
+        url="http://check.sf.net/"/>), and currently test the
+      <filename>.desktop</filename> file parser and the pixmap library.
+    </para>
+    <para>
+      To execute the tests, simply run <command>make check</command> in
+      <filename>libmatchbox</filename>.
+    </para>
+    <screen>
+$ <userinput>make check</userinput>
+...
+Running suite(s): DotDesktop
+100%: Checks: 5, Failures: 0, Errors: 0
+PASS: dot-desktop
+Running suite(s): MbPixbuf
+100%: Checks: 13, Failures: 0, Errors: 0
+PASS: pixbuf
+==================
+All 2 tests passed
+==================
+</screen>
+    <para>
+      As can be seen, two test suites were executed (DotDesktop and MbPixbuf),
+      and these both passed.
+    </para>
+    <note>
+      <para>
+        At the time of writing there is a bug in MbPixbuf which results in a
+        single test failing with the message <quote>Composite image
+        incorrect</quote>.
+      </para>
+    </note>
+    <para>
+      To extend the test suite, create a new C program which uses the
+      <application>Check</application> library and provides a
+      <function>main</function> entry point, then add it to
+      <varname>check_PROGRAMS</varname> in
+      <filename>libmatchbox/tests/Makefile.am</filename>.  Once the
+      <filename>Makefile</filename> has been remade, running <filename>make
+      check</filename> will execute the new tests.
+    </para>
+  </section>
+
+
   <section>
     <title>Reporting a Failed Test</title>
     <para>
@@ -241,19 +291,6 @@
     <para>
       More information on using Gcov is available at <ulink
         url="http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html">http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html</ulink>
-    </para>
-  </section>
-
-
-  <section id="sec-unit-tests">
-    <title>Unit Tests</title>
-    <para>
-      There are unit test for libmatchbox in
-      <filename>libmatchbox/tests/</filename>.  To execute these simply run
-      <command>make check</command>.  The tests are written using the
-      <application>Check</application> unit testing framework (<ulink
-        url="http://check.sf.net/"/>), and currently test the
-      <filename>.desktop</filename> file parser and the pixmap library.
     </para>
   </section>
 
