@@ -236,7 +236,9 @@ All 2 tests passed
       <para>
         At the time of writing there is a bug in MbPixbuf which results in a
         single test failing with the message <quote>Composite image
-        incorrect</quote>.
+        incorrect</quote>.  Also, unless you have support for the
+        <literal>fr_FR</literal> locale, the DotDesktop test
+        <literal>dotdesktop_l10n_present</literal> will fail.
       </para>
     </note>
     <para>
