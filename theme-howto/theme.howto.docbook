@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <article>
 <artheader>
-<title>Designing Matchbox Themes HOWTO. Version 0.5</title>
+<title>Designing Matchbox Themes HOWTO. Version 0.6</title>
 <author><firstname>Matthew</firstname>
 <surname>Allum</surname>
 <email>matthew@openedhand.com</email>
@@ -761,6 +761,19 @@ background - there is NO label tag.
 You now have a completed theme file. The full file can be found <ulink url="example/">here</ulink>.
 </para>
 
+<para> 
+
+It should be noted that the matchbox theme parser is built for speed
+and small size and is therefore not very verbose in reporting any
+theme misconfigurations. For example; a missing or mispelt required
+frame parameter ( such as height ) will simply default to 0 with no
+user visible warning. The theme will still run but the defined frame
+will likely be invisible as it will have a height of Zero ! One should
+therefore take extra care in defining themes and in the presence of
+unexpected decoration behaviour double check theme.xml definitions.
+
+</para>
+
 </section>
 
 
@@ -1028,19 +1041,13 @@ features are likely to change between matchbox releases.
 If this is set the button will get activated on press, rather than release.
 </para>
 
-<para> 
-
-<emphasis>subname</empasis> is another label type which will be
-populated with the text from the window property _MB_WIN_SUB_NAME.
-
-</para>
-
 </section>
 <section>
 <title>Faq</title>
 <para>
 Please send questions to <ulink url="mailto://mallum@openedhand.com">mallum@openedhand.com</ulink>.
 </para>
+
 <section><title>How do I create 'shaped' windows ?</title>
 <para>
 Add an options='shaped' attribute to the windows types frame definition. Any parts of the defined frame that has a completely transparent alpha channel will be transparent. See the blondie theme for an example. 

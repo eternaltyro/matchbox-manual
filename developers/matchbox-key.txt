@@ -177,9 +177,9 @@ _NET_WM_WINDOW_TYPE_DIALOG
 _NET_WM_WINDOW_TYPE_SPLASH
 _NET_WM_WINDOW_TYPE_DESKTOP
 
-_NET_WM_STATE                - Used to toggle full-screen state. 
+_NET_WM_STATE                
 _NET_WM_STATE_ABOVE          - Supported only for dialog windows.  
-_NET_WM_STATE_MODAL          /
+_NET_WM_STATE_MODAL          /      
 _NET_WM_STATE_FULLSCREEN       ( Note: matchbox currently has little
 			               support for EWMH states )
 
