@@ -124,6 +124,10 @@ failure. If installed, <ulink url="http://www.imagemagick.org/">Image
 Magick's</ulink> 'display' program will be used to visually present
 failed screenshots.
 
+</para>
+<para>
+To work correctly this test also requires matchbox-desktop to be installed.
+
 <para>
 
 This test will only function correctly with a 240x320 or 640x480 
@@ -136,22 +140,6 @@ sized display.
 
 Its highly recommended you avoid any system interaction
 while this test is running as this can lead to false results.
-
-</para>
-
-</section>
-<section><title>test-pings.sh</title>
-<para>
-
-Tests Matchbox's default handling of a hung app.
-Launches an app, 'hangs' it and checks 30 seconds later to see if the
-process still exists.
-
-</para>
-<para>
-
-By defualt the app tested is 'gtk-demo'. This is included in the GTK2
-source distobution and is in the 'gtk2-examples' package on Debian.
 
 </para>
 
@@ -249,11 +237,11 @@ Within the test package exists 'gcov-wrapper.sh'. This script will run all or an
 </para>
 
 <para>
-Usage is like;
+Usage is;
 
 <programlisting> 
 
-usage: ./gcov-wrapper.sh <matchbox wm src path> <libmatchbox src path> [test]
+usage: ./gcov-wrapper.sh &lt;matchbox wm src path&gt; &lt;libmatchbox src path&gt; [test]
  
       'test' defaults to testrun.sh
        Set GCOV_FLAGS to any required gcov swicthes
@@ -271,7 +259,7 @@ accumerlating.
 </para>
 
 <para>
-More information on using Gcov is available at url="http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html">http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html</ulink>
+More information on using Gcov is available at <ulink url="http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html">http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html</ulink>
 </para>
 
 </section>
@@ -362,7 +350,7 @@ Included with Matchbox in tests/, pass '-help' to get usage info.
 </para>
 
 </section>
-<section><title>mbcontrol</title>
+<section><title>matchbox-remote</title>
 <para>
 
 Simple remote control of Matchbox, such as changing the theme. 
@@ -388,7 +376,6 @@ server extension ( > 4.2 ) which can used to monitor client resource
 usage and detect server side pixmap leaks.
 
 </para>
-</section>
 </section>
 </article>
 
