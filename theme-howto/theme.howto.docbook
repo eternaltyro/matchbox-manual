@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <article>
 <artheader>
-<title>Designing Matchbox Themes HOWTO. Version 0.4</title>
+<title>Designing Matchbox Themes HOWTO. Version 0.5</title>
 <author><firstname>Matthew</firstname>
 <surname>Allum</surname>
 <email>matthew@openedhand.com</email>
@@ -26,6 +26,9 @@ Matchbox must be compiled *without* the --enable-standalone for themeing.
 Its assumed the reader is familiar with using xml or xml-like mark up languages 
 such as html. 
 </para>
+<para>
+This document is relevant for matchbox 0.9 release. 
+</para>
 </section>
 <section><title>Getting started</title>
 <para>
@@ -46,6 +49,9 @@ matchbox -theme [theme_name]
 <para>
 Alternatively you can also use 'matchbox-remote -t [theme_name]' to switch themes 
 on the fly whilst matchbox is executing.  
+</para>
+<para>
+If enabled enabled both GConf and XSettings can also be used to change the matchbox theme.
 </para>
 <para>
 If matchbox fails to parse a theme file, it will switch to its default theme 
@@ -206,12 +212,20 @@ The window types are;
    <para>
      Can also optionally have a dialog-north frame. This is used for border-only dialogs.  
    </para>
+   <para>
+
+   You can also optionally specify 'message' alternate window
+   decorations. These are dialogs with The WM_HINTS 'urgency' bit
+   set. They are defined just like dialogs with there frame id set to
+   'message', 'message-south', 'message-east' etc.
+
+   </para>
 </listitem>
 
 </varlistentry>
 
 <varlistentry>
-<term>Toolbar window frames</term>
+<term>Toolbar/Input window frames</term>
 <listitem>
    <para>
      Defines the decorations for toolbar windows - such as xkbd
@@ -221,6 +235,12 @@ The window types are;
    <para>
      Has 2 states maximized and minimized, both are defined separately.</para>
 </listitem>
+<listitem>
+   <para>
+<emphasis>Note</<emphasis>, an matchbox window manager built with 'alternate input manager windows' does not provide any themeing for these windows. The windows are decoration free.	
+   </para>
+</listitem>
+
 </varlistentry>
 
 <varlistentry>
@@ -430,7 +450,7 @@ Buttons are painted above any layers. Valid button actions include;
 <term>custom</term>
 <listitem>
   <para>
-  A misc platform specific button. 
+  A misc 'platform' specific button. 
   </para>
 </listitem>
 
@@ -457,7 +477,8 @@ Buttons are painted above any layers. Valid button actions include;
 <term>minimise</term>
 <listitem>
   <para>
-  used by a maximized toolbar window frame type
+  used by a maximized toolbar window frame type.
+  Also works for app windows in matchbox 0.9
   </para>
 </listitem>
 </varlistentry>
@@ -784,7 +805,7 @@ PanelBgTrans
 </term>
 <listitem>
    <para>
-   Sets the transparency of matchbox-panel. Ranges from 0-255, 0 being totally transparent.
+   Sets the transparency of matchbox-panel. Ranges from 0-255, 0 being totally transparent. This option is UNSUPPORTED, use at your own risk. 
    </para>
 </listitem>
 </varlistentry>
@@ -795,7 +816,7 @@ PanelBgPixmap
 </term>
 <listitem>
    <para>
-   Sets a titled background image for mbdock. Set to the full path of a supported image file. 
+   Sets a titled background image for matchbox-panel. Set to the full path of a supported image file. 
    </para>
 </listitem>
 </varlistentry>
@@ -995,6 +1016,27 @@ signal-81-100.png
 </section>
 </section>
 <section>
+<title>Experimental Features</title>
+<para>
+
+Themeing containing a number of 'experimental' features, these
+features are likely to change between matchbox releases.
+
+</para>
+<para>
+<emphasis>buttons</<emphasis> can have 'pressonly' in there options attribute.
+If this is set the button will get activated on press, rather than release.
+</para>
+
+<para> 
+
+<emphasis>subname</empasis> is another label type which will be
+populated with the text from the window property _MB_WIN_SUB_NAME.
+
+</para>
+
+</section>
+<section>
 <title>Faq</title>
 <para>
 Please send questions to <ulink url="mailto://mallum@openedhand.com">mallum@openedhand.com</ulink>.
@@ -1092,7 +1134,7 @@ Use a 'panel' tag in the the main frame definition. eg;
 
 </programlisting>
 
-Note, mbdock must be run with '--titlebar' for it to reparent in this
+Note, matchbox-panel must be run with '--titlebar' for it to reparent in this
 defined area.
 
 </para>
@@ -1100,10 +1142,15 @@ defined area.
 </section>
 <section><title>Where can I find more infomation ?</title>
 <para>
-See the various themes included with the matchbox distrubution ( in data/themes ) and the matchbox-themes package. 
+See the various themes included with the matchbox distrubution ( in data/themes ) and the matchbox-themes-extras package. 
 
 'Blondie' is a fairly advanced 'heavy' theme that uses many themeing properties. Bluebox is a lighter XPM based theme. Borillo is a relatively simple theme designed more for larger displays, using few (2) external images.
 </para>
+
+<para>
+Also the matchbox-tests package contains the 'mbtest' theme which uses many of the experimental features.
+</para>
+
 </section>
 
 </section>

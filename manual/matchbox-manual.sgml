@@ -11,7 +11,7 @@
     <title>Matchbox Project Manual</title>
     <copyright>
       <year>2004</year>
-      <holder>Matthew Allum</holder>
+      <holder>Matthew Allum, Openedhand LTD</holder>
     </copyright>
 
     <legalnotice>
@@ -38,7 +38,7 @@
     </legalnotice>
 
     <releaseinfo>
-       This is version 0.8 of The Matchbox manual.
+       This is version 0.9 of The Matchbox manual.
     </releaseinfo>
 
   </artheader>
@@ -106,7 +106,7 @@
 
    Matchbox window manager is included in the
    <filename>matchbox-window-manager</filename> package, which is part of the
-   Matchbox project. This document describes version 0.8 of 
+   Matchbox project. This document describes version 0.9 of 
    Matchbox window manager.
 
    </para>
@@ -236,7 +236,7 @@
 	          
 
             Enables an effect to make modal dialog windows 'super' modal. All
-            other windows are lowlighted out. 
+            other windows are lowlighted out. This option is <emphasis>EXPERIMENTAL</<emphasis>
 
            </para>
 
@@ -266,7 +266,7 @@
             <para>
 
             Decides the strategy the window manager uses to position and resize
-            dialogs. 
+            dialogs. By default, dialogs will be restrained to fit on the display not covering any panels or input/toolbar windows.
 	    </para>
 
 	    <para>
@@ -276,8 +276,7 @@
 
 	    <para>
 
-	    <emphasis>const</emphasis>, will restrain oversized 
-            dialog windows to the available screen space. The is the default.
+	    <emphasis>static</emphasis>, the user cannot change dialog position or stacking order.
 
 	    </para>
 	    <para>	    
@@ -344,6 +343,21 @@
          </para>
       </listitem> 
      </varlistentry>
+
+	<varlistentry>
+          <term><userinput>-force-dialogs &lt;comma seperated name list&gt;</userinput></term>
+	  <listitem>
+            <para>
+	    Specify a comma seperated list of window titles, whose windows when matched are <emphasis>forced</<emphasis> to be treated as dialogs rather than application windows. 
+            </para>
+	    <para>
+	    The corresponding X Resource key is
+	    <emphasis>matchbox.forcedialogs</emphasis> .  
+
+	    </para>
+      </listitem> 
+     </varlistentry>
+
 
 	<varlistentry>
           <term><userinput>-help</userinput></term>

@@ -1,4 +1,4 @@
-Matchbox Communication Details v0.6.1           - Matthew Allum 2003 
+Matchbox Communication Details v0.7            - Matthew Allum 2004 
 =====
 
 This document acts as a key and provides details to the mechanisms
@@ -29,6 +29,9 @@ very top being the root window. A root window will cover the 'back' of
 an entire display, with all other windows being its decendants. As the
 root window is always present, it provides a useful location to
 'broadcast' set properties and sent messages to any interested client.
+
+This document is relevant to the 0.9 matchbox release. Anything marked
+'EXPERIMENTAL' is subject to change between matchbox releases.
 
 
 Recommended Background Reading
@@ -111,7 +114,7 @@ supports the following;
 _NET_WORKAREA              - Defines workarea dimentions, 
 _NET_ACTIVE_WINDOW         - Specifys current active window XID, 
 _NET_CLIENT_LIST_STACKING  - Lists the stacking order of managed clients, 
-_NET_CLIENT_LIST           - Lists all managed clients, 
+_NET_CLIENT_LIST           - Lists all managed clients in age order. 
 _NET_SUPPORTING_WM_CHECK   - Specifys window manager has EWMH support,
 _NET_SUPPORTED             - Lists window manager EWMH supported features, 
 _NET_NUMBER_OF_DESKTOPS    - Number of desktops ( 1 in matchbox's case ),
@@ -166,15 +169,20 @@ by standard xlib functions.
 Matchbox also supports the following EWMH properties on clients;
 
 _NET_WM_WINDOW_TYPE          - Set to one of the below to indicate
-_NET_WM_WINDOW_TYPE_TOOLBAR    how matchbox should manage the window.
+                               how matchbox should manage the window.
+_NET_WM_WINDOW_TYPE_TOOLBAR  \
+_NET_WM_WINDOW_TYPE_INPUT    / Both treated the same ( as input window - xkbd )
 _NET_WM_WINDOW_TYPE_DOCK
 _NET_WM_WINDOW_TYPE_DIALOG
 _NET_WM_WINDOW_TYPE_SPLASH
 _NET_WM_WINDOW_TYPE_DESKTOP
 
 _NET_WM_STATE                - Used to toggle full-screen state. 
+_NET_WM_STATE_ABOVE          - Supported only for dialog windows.  
+_NET_WM_STATE_MODAL          /
 _NET_WM_STATE_FULLSCREEN       ( Note: matchbox currently has little
 			               support for EWMH states )
+
 
 _NET_WM_NAME                 - Specify window title as UTF8 data.
 _NET_WM_ICON                 - Specify the window icon with rgba data.
@@ -183,7 +191,11 @@ See http://www.freedesktop.org/standards/wm-spec/1.3/html/x231.html
 for more detailed information.
 
 _NET_WM_PID                  - Used for hung application detection
-_NET_WM_PING                 -/
+_NET_WM_PING                 /
+
+Clients supporting the above will have the 'ping protocol' initiated on them 
+when a window is requestd to close via matchbox. This feature can be disabled 
+at compile time. 
 
 See http://www.freedesktop.org/standards/wm-spec/1.3/html/x351.html
 For infomation.
@@ -215,8 +227,10 @@ When an 'extended' button is pressed, the Window Manager will send a client
 message with its data set as the appropriate atom to the interested
 client.
 
-_MB_WM_WINDOW_TYPE_MESSAGE
-_MB_WM_WINDOW_TYPE_MESSAGE_TIMEOUT
+_
+
+_MB_WM_WINDOW_TYPE_MESSAGE          ( EXPERIMENTAL )
+_MB_WM_WINDOW_TYPE_MESSAGE_TIMEOUT  ( EXPERIMENTAL )
 
 If matchbox is built with the --enable-message-wins option, matchbox
 will offer support for the _NET_WM_WINDOW_TYPE, '_MB_WM_WINDOW_TYPE_MESSAGE'.
@@ -231,6 +245,14 @@ displayed at any time. The optional _MB_WM_WINDOW_TYPE_MESSAGE_TIMEOUT
 seconds it should stay visable. If this property is not set or set to
 0, the window will stay active indefinitely until it closes itself.
 
+*NOTE* *NOTE* *NOTE*
+
+The above is depreciated in 0.9 full release. For an dialog to now get
+message window style decorations ( if defined in theme ), the window
+should set the ICCCM 'urgency' in WM_HINTS. The queueing mechanism is
+now depricated, if required its recommended it be handled outside of
+the WM.
+
 _MB_WM_STATE_DOCK_TITLEBAR
 
 A matchbox only specific _NET_WM_STATE. Intended to be used by panels
@@ -240,6 +262,11 @@ current theme definition )
 Also you may set '_MB_DOCK_TITLEBAR_SHOW_ON_DESKTOP' in the panels
 state property to not hide an embedded title panel when the desktop is
 visible.
+
+_MB_WIN_SUB_NAME ( EXPERIMENTAL )
+
+Sets a another window name which may be shown dependant on theme
+configuration.
 
 
 [5] Client / Window Manger X message Communication.
@@ -263,6 +290,12 @@ for more information.
 
 Matchbox only message types;
 
+_MB_GRAB_TRANSFER ( EXPERIMENTAL )
+
+Signals the current client that mb has released a button grab on the
+press state so the application can handle release. Intended to be used
+with _NET_WM_CONTEXT_CUSTOM. Theme configuration sets up this behaviour. 
+
 _MB_COMMAND                  
 
 Sent to the root window to request matchbox perform a specific
@@ -280,6 +313,7 @@ following values to perform an associated action;
 
 _NET_WM_CONTEXT_HELP
 _NET_WM_CONTEXT_ACCEPT
+_NET_WM_CONTEXT_CUSTOM
 
 Sent to a window when a help / accept button has been pressed. 
 
@@ -326,8 +360,8 @@ They are;
 /MATCHBOX/CURSOR	- Attempt to hide X Cursor.
 
 It is planned to hopefully soon drop XSettings support in favour 
-of gconf/D-BUS.
-
+of gconf/D-BUS. GConf can currently be used to specify the theme 
+and keyboard shortcuts, changeable on the fly. 
 
 References / Standards.
 =======
