@@ -247,7 +247,7 @@ seconds it should stay visable. If this property is not set or set to
 
 *NOTE* *NOTE* *NOTE*
 
-The above is depreciated in 0.9 full release. For an dialog to now get
+The above is depreciated in > 0.9 releases. For an dialog to now get
 message window style decorations ( if defined in theme ), the window
 should set the ICCCM 'urgency' in WM_HINTS. The queueing mechanism is
 now depricated, if required its recommended it be handled outside of
@@ -268,6 +268,7 @@ _MB_WIN_SUB_NAME ( EXPERIMENTAL )
 Sets a another window name which may be shown dependant on theme
 configuration.
 
+*** This is Depriciated and no longer supported > 0.9 ***
 
 [5] Client / Window Manger X message Communication.
 ======
@@ -344,6 +345,8 @@ MB Extensions to spec;
    'SYSTEM_TRAY_ID' ( set to an integer ) and if set will look for 
    a system tray manager with this id. 
 
+ - panel supports _NET_SYSTEM_TRAY_ORIENTATION.
+
 Misc - XSettings
 ======
 
@@ -362,6 +365,11 @@ They are;
 It is planned to hopefully soon drop XSettings support in favour 
 of gconf/D-BUS. GConf can currently be used to specify the theme 
 and keyboard shortcuts, changeable on the fly. 
+
+Misc - GConf
+======
+
+See schemas/ dir in m-w-m source for info on supported key/values. 
 
 References / Standards.
 =======
