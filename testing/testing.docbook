@@ -240,6 +240,12 @@ All 2 tests passed
       </para>
     </note>
     <para>
+      The tests can also be run with <application>gcov</application> coverage
+      reports.  If libmatchbox is built with <literal>--enable-gcov</literal>,
+      then executing <filename>tests/gcov.sh</filename> will run all of the unit
+      tests and then display coverage information.
+    </para>
+    <para>
       To extend the test suite, create a new C program which uses the
       <application>Check</application> library and provides a
       <function>main</function> entry point, then add it to
