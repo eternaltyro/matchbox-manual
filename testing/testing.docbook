@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <article>
 <artheader>
-<title>Matchbox Testing HOWTO. (V 0.1)</title>
+<title>Matchbox Testing HOWTO. (V 0.2)</title>
 <author><firstname>Matthew</firstname>
 <surname>Allum</surname>
 <email>matthew@openedhand.com</email>
@@ -34,6 +34,29 @@ to run Matchbox in a testing enviroment, how to use the test scripts
 included in the distribution and what to do if tests fail.
 
 </para>
+</section>
+
+<section><title>Building the matchbox test package</title>
+
+<para>
+The matchbox-test package uses autotools and is built and installed with the usual;
+
+</para>
+<para>
+<programlisting>                                                           
+% ./configure
+% make
+% sudo make install
+</programlisting>
+</para>
+
+<para>
+
+This will build the various binary test utilitys and install a special
+'mbtest' theme.
+
+</para>
+
 </section>
 
 <section><title>Running Matchbox for testing.</title>
@@ -73,10 +96,9 @@ debug memory allocations and management.
 <para>
 
 Its recommended, though not essential, that the Matchbox build is
-configured with the '--enable-debug' switch. Apart from compiling with
--g switch ( for gdb ) , the resulting binaries will spew verbose
-messages to stdout which contain information that's useful for fixing any
-failed tests.
+configured with the '--enable-debug' switch. The resulting binaries
+will spew verbose messages to stdout which contain information that's
+useful for fixing any failed tests.
 
 </para>
 
@@ -104,9 +126,8 @@ failed screenshots.
 
 <para>
 
-The  currently assumes a
-240x320 Xnest window and the blondie theme, it will refuse to run if
-this not set up.
+This test will only function correctly with a 240x320 or 640x480 
+sized display.
 
 </para>
 
@@ -129,7 +150,8 @@ process still exists.
 </para>
 <para>
 
-By defualt the app tested is 'gtk-demo'. This is included in the GTK2 source distobution and is in the 'gtk2-examples' package on Debian. 
+By defualt the app tested is 'gtk-demo'. This is included in the GTK2
+source distobution and is in the 'gtk2-examples' package on Debian.
 
 </para>
 
@@ -153,6 +175,16 @@ then 'tests' it via sendkey.
 
 </para>
 </section>
+<section><title>libmb-test</title>
+
+<para>
+
+This is a binary based test for libmb. Currently it only basically tests font rendering and clipping functionality.
+
+</para>
+</section>
+
+
 </section>
 <section><title>Running All Tests</title>
 
@@ -303,8 +335,8 @@ xprop, xclientlist, xwd
 <para>
 
 Also see <ulink
-url="http://www.xfree86.org/~mvojkovi/restest.c">http://www.xfree86.org/~mvojkovi/restest.c</ulink>
-for an example of X-Resource extension usage.  'XRes' is a new XFree86
+url="http://www.xfree86.org/~mvojkovi/restest.c">http://www.xfree86.org/~mvojkovi/restest.c</ulink> and <ulink url="http://www.freedesktop.org/Software/xrestop">http://www.freedesktop.org/Software/xrestop</ulink>
+for examples of X-Resource extension usage.  'XRes' is a new XFree86
 server extension ( > 4.2 ) which can used to monitor client resource
 usage and detect server side pixmap leaks.
 
