@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <article>
 <artheader>
-<title>Matchbox Testing HOWTO. (V 0.2)</title>
+<title>Matchbox Testing HOWTO. (V 0.3)</title>
 <author><firstname>Matthew</firstname>
 <surname>Allum</surname>
 <email>matthew@openedhand.com</email>
@@ -229,6 +229,53 @@ url="http://bugs.openedhand.com/index.cgi/Matchbox/index">bugs.openedhand.com</u
 
 </para>
 </section>
+
+<section><title>Code Coverage</title>
+
+<para>
+
+Both the matchbox-window-manager and libmatchbox packages have support
+for the GNU Code coverage tool <ulink
+url="http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html">Gcov</ulink>. To
+enable, at build time configure the packages with the
+<userinput>--enable-gcov</userinput> option. The built binaries will then produce gcov statistics, which can further be processed by running gcov on source files.
+
+</para>
+
+<para>
+
+Within the test package exists 'gcov-wrapper.sh'. This script will run all or any of the tests and report the percentage of code per sourcefile the test run covered. 
+
+</para>
+
+<para>
+Usage is like;
+
+<programlisting> 
+
+usage: ./gcov-wrapper.sh <matchbox wm src path> <libmatchbox src path> [test]
+ 
+      'test' defaults to testrun.sh
+       Set GCOV_FLAGS to any required gcov swicthes
+
+ </programlisting>
+
+</para>
+
+<para>
+
+It is advised you make clean and then remake matchbox-window-manager
+and libmatchbox before each gcov-wrapper.sh run to avoid statistics
+accumerlating.
+
+</para>
+
+<para>
+More information on using Gcov is available at url="http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html">http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html</ulink>
+</para>
+
+</section>
+
 <section><title>Appendix A - Tools</title>
 <section><title>Valgrind</title>
 <para>

@@ -1,3 +1,5 @@
+Matchbox Internals Documentation - v0.1 - mallum@o-hand.com 
+===========================================================
 
 Introduction
 ====
@@ -126,6 +128,11 @@ ewmh_handle_root_message() which handles standard EWMH ones.
 Wm.c also has various functions for 'global' operations on clients
 such as resizing/repositioning all clients. Numerous points throughout
 the codebase will use this.
+
+Note a diagram reprenting visually what has been discussed in this
+overview is available via;
+
+http://matchbox.handhelds.org/documentation/developers/internals/internals.png
 
 File Structure
 ====
@@ -279,20 +286,24 @@ XX_client_move_resize (Client *c);
 Safely moves and resizes a client ( to positions set by
 client_configure ) or other.
 
+
 void 
 XX_client_get_coverage (Client *c, int *x, int *y, int *w, int *h);
 
 returns the display area covered by the client and its decoration frame.
+
 
 void 
 XX_client_hide (Client *c);
 
 Hides ( unmaps ) a client. 
 
+
 void 
 XX_client_show (Client *c);
 
 Shows ( maps ) a client.
+
 
 void 
 XX_client_destroy (Client *c);
@@ -405,3 +416,18 @@ Some optimizations matchbox uses;
    that due to its style of restrictive window management it avoids much 
    of the code needed by a desktop window manager.
 
+
+Further reading
+====
+
+Matchbox WM source
+http://cvs.handhelds.org/cgi-bin/viewcvs.cgi/apps/matchbox/matchbox-window-manager/src/
+
+Matchbox Developer documentation.
+http://matchbox.handhelds.org/developer.shtml
+
+Matchbox X Communication specifics ( ie freedesktop.org standards support )
+http://matchbox.handhelds.org/documentation/developers/matchbox-key.txt
+
+libMatchbox API documentation. 
+http://matchbox.handhelds.org/documentation/developers/api/
