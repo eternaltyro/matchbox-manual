@@ -8,7 +8,7 @@
 <article id="index"> <!-- please do not change the id -->
 
   <artheader>
-    <title>Matchbox Project</title>
+    <title>Matchbox Project Manual</title>
     <copyright>
       <year>2004</year>
       <holder>Matthew Allum</holder>
@@ -64,11 +64,6 @@
 
     </para>
 
-    <para>
-    
-    XXX compile time features
-
-    </para>
 
  </section>
  <section id="wm">
@@ -1251,13 +1246,93 @@ The fill desktop entry spec can be found at <ulink url="http://www.freedesktop.o
  </section>
 
  <section id="building">
-  <title>Appendix I: Compiling Matchbox</title>
+  <title>Appendix I: Building Matchbox from source.</title>
   <para>
-
+  Firstly its recommended if your not used to building software from
+  source, you should check your distrobution for pre built binary
+  matchbox packages.
   </para>
- 
+  <para>
+  All Matchbox packages use GNU autotools and are configured and build
+  by the usual;
+  </para>
+  <para>
+  <programlisting>                                                           
+% ./configure
+% make
+% sudo make install
+</programlisting>
+  </para>
+  <para>                                                                     
+   You can see the various compile time options for enabling extra
+   features and dependencies by running. 
+</para>
+<para>
+  <programlisting>
+% ./configure --help
+  </programlisting>                                                            </para>
+<para>                     
+<ulink type="http"
+        url="http://matchbox.handhelds.org/whatis.shtml">What is matchbox</ulink> gives more infomation on each optional dependency.
+                                                                                  </para>
+
+<section><title>Inter Dependencies</title>
+<para>
+Virtually all packages are dependant on libmatchbox. You should build
+and install libmatchbox first. All font and image  operations
+are provided to other matchbx packages via libmatchbox. Therefore the
+configure options you choose here ( such as Pango, JPEG support ) will
+affect dependant packages.
+</para>
+<para>                                                                                
+Matchbox-window-manager can be built <emphasis>without</emphasis> libmatchbox using the
+--enable-standalone options. It is highly recommeded you only do this
+is you intend to run <emphasis>only</emphasis> the window manager with no bells and
+whistles such as themeing. This build option is intended mainly for
+platforms where resources are very low or you want a quick and
+depencie free window manager for testing on a new platform
+</para>
+<para>
+If you decide to install the matchbox-panel or matchbox-desktop
+packages you should install the matchbox-common package first. It
+contains icons and launcher configuration data shared by both the
+desktop and the panel menu launcher.
+</para>
+<para>                                                                                
+If you encounter problems building, please report to the <ulink type="http" url="http://matchbox.handhelds.org/mailinglist.shtml">mailing list</ulink>
+for help.
+</para>
+
+</section> <section><title>Automated building</title> 
+<para> 
+
+An
+automated build script is available to ease the build process.  This
+will build a fully featured matchbox enviroment including the window
+manager, desktop, panel and panel applications.
+</para>
+<para>                                                                                
+Downlaod <ulink type="http" url="http://matchbox.handhelds.org/sources/utils/matchbox-autobuild.sh">matchbox-autobuild.sh</ulink> script. Open in your favourite text editor, edit the
+varibles at the top of the top and then run.
+</para>                                                                                
+</section>
+<section><title>Building from CVS</title>
+<para>                                                                                
+If you plan on building from CVS, then before you build;
+</para>
+<para>
+<itemizedList>
+    <listitem><para>autoconf --version must report 2.5 or later</para></listitem>
+    <listitem><para>  automake --version must report 1.7.x</para></listitem>
+    <listitem><para>  libtool --version must report 1.5 (available from <ulink type="http" url="http://ftp.club.cc.cmu.edu/\pub/gnu/libtool/libtool-1.5.tar.gz">http://ftp.club.cc.cmu.edu/\pub/gnu/libtool/libtool-1.5.tar.gz</ulink> if your distribution doesn't have it)
+</para></listitem>
+    <listitem><para>pkg-config --version must report 0.9.0 or later</para></listitem>                                                                         </itemizedList>         
+</para>
+<para>
+If you plan on submitting patches please diff them against CVS.
+</para>
 
  </section>
-
+ </section>
 </article>
     

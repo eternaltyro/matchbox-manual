@@ -1008,7 +1008,7 @@ Use the top level 'appicon' tag. eg;
 </programlisting>
 
 </para>
-
+</section>
 <section><title>How do I set the lowlight color ?</title>
 <para>
 
@@ -1025,6 +1025,7 @@ to take effect.
 
 </para>
 
+</section>
 <section><title>How do I set window shadows ?</title>
 <para>
 
@@ -1085,6 +1086,7 @@ defined area.
 
 </para>
 
+</section>
 <section><title>Where can I find more infomation ?</title>
 <para>
 See the various themes included with the matchbox distrubution ( in data/themes ) and the matchbox-themes package. 
