@@ -2,40 +2,48 @@
 Introduction
 ====
 
-This document decribes and dicusses the internal source structure of
+This document describes and discusses the internal source structure of
 the Matchbox Window Manager, a unique X11 window manager with a
 restrictive PDA style of window management.
 
 Matchbox aims to be small, fast, light and flexible with both compile
-and run time features so it can be tailored to fit different embedded
+and run time features so its UI tailored to fit different embedded
 type platforms.
 
 Matchbox has been developed over the past 3 years and much has been
-learnt from its development. ( FIX: is this needed , improve )
+learnt from its development.
+
+Here I present a fairly comprehensive overiew of the source codes inner
+working in the hope of guideing any potential contributers.
 
 
 Coding style
 ====
 
 Matchbox is written in C with the source approximating to GNU style
-coding standards. All functions prefixed with the source file name
-they live in, for example wm_new() lives in wm.c .
+coding standards. 
+
+All functions prefixed with the source file name they live in, for
+example wm_new() lives in wm.c. Each .c file has an associated header
+file listing any shared functionality.
+
+'Global' structures, enums and defines are in structs.h. 
 
 
 Overview
 ====
 
-The window manager starting point is in main.c . Inially, a new Wm
-'object', used throughout to store various enviroment and global state
+The window manager starting point is in main.c . Initially, a new Wm
+'object', used throughout to store various environment and global state
 data, is created via wm_new(). 
 
-This wm_new() function initally loads any user configuration data (
-via wm_load_config() ) initially from command line paramers and/or
-XResources. Various Wm X11 enviroment parameters are then initialised
-( such as display size ) before initialising the various 'subsystems'
-- EWMH, key shortcuts, various compile time features etc, Finally a
-new Wm object is returned which of course is then used extensably
-throughout the programs lifecycle.
+This wm_new() function initially loads any user configuration data (
+via wm_load_config() ) from command line parameters and/or
+XResources. Various Wm X11 environment parameters are then initialized
+( such as display size, window manager event setup ) before
+initializing the various 'subsystems' - EWMH, key shortcuts, various
+compile time features etc. Finally a new Wm object is returned which
+is then used extensably throughout the programs life cycle.
 
 Any pre-existing windows are then processed ( wm_init_existing() ) and
 the program then enters its main loop ( wm_event_loop() ).
@@ -47,53 +55,55 @@ attempting to resize will cause a 'configure request' event to get
 sent to the window manager, which can then decide how this is honored
 or handled.
 
-When a new client window appears, Matchbox recieves a map notify event
-with the new window ID. Assuming this ID is unknown to matchbox a new
+When a new client window appears, Matchbox receives a map notify event
+with the new window ID. Assuming this ID is unknown to matchbox, a new
 'Client' object will be created by wm_make_new_client(). This function
 will examine various window properties and based on these decide the
-'type' of Client object to be initialised. Types include Application,
-Dialog and panel windows, with each needing to be handled slightly
+'type' of Client object to be initialized. Types include Application,
+Dialog and panel windows, with each needing to be managed slightly
 differently.
 
-To achieve this a psudeo object oprientated C style is used where each
+To achieve this a psudeo object orientated C style is used where each
 client type has its own class which inherits from a base client
-class. Pointers to functions within the Client stuct provide this
+class. Pointers to functions within the Client struct help provide this
 functionality.
 
 All created client objects are stored in a circular doublely linked
-list, there are various pointers in the toplevel Wm object that
+list, there are various pointers in the top level Wm object that
 reference clients in this list.
 
 Once a client is created various core methods are called in sequence
-to initalise and finall paint it;
+to initialize and finally realize the then docorated framed client;
 
  - Properties relevant to the window manager are communicated ( set ) on 
    the client. See ewmh_set_allowed_actions() .
 
- - The configure() method is called to calculate suitable client geometry.
+ - The clients configure() method is called to calculate suitable
+   client geometry.
 
- - The client window is then reparented. It becomes a child window of
-   a matchbox frame window. It is the frame window decorations are
+ - The client window is then re-parented. It becomes a child window of
+   a matchbox frame window. It is the frame window that decorations are
    painted on to.
 
- - The client window is resized and positioned to fit the matchbox management 
-   style ( from the previously created geometry ).
+ - The client window and frame are resized and positioned to fit the
+   matchbox management style ( from the previously created geometry ).
 
- - The client show() method is called which will ultimated realize the 
-   client. Its very likely this method will also cause the window decorations
-   to get painted. Painting will cool into themeengine code.
+ - The client show() method is called which will ultimately realize
+   the client. Its very likely an initial call of this method with
+   render the frame decorations. Rendering will call into theme engine
+   code.
 
  - Finally global root window properties are updated.  
 
 During the lifetime of a client it will generate other events ( such
-as resizing ) which will ultimatly get mapped into the client objects
-methods.
+as resizing ) which will ultimately get mapped into the client objects
+methods and managed.
 
-The other source of events is user interaction. This could be from key
-shortcut or window decoration button pressed.
+The other source of events is user interaction. This could be from a key
+shortcut press or window decoration button press.
 
 Key presses are handled by wm_handle_keypress(), which looks to see if
-an action has been defined for the recieved key press ( defined in
+an action has been defined for the received key press ( defined in
 keys.c ). If this is true the action is carried out by calling
 relevant 'global' functions in wm.c and client_common.c .
 
@@ -105,7 +115,7 @@ client_common.c contains code to deal with button management. Window
 decoration buttons are simple objects created by
 client_button_new(). Each client object has a list referencing its
 button objects. client_button_do_ops() helps a client manage it
-buttons. ( FIXME: needs more )
+buttons and provide visual states. 
 
 A final source of events is X messages, for example a request to show
 the desktop from an external application will send a X message to the
@@ -113,6 +123,9 @@ root window. These are handled by wm_handle_client_message() which
 handles matchbox specific messages before calling
 ewmh_handle_root_message() which handles standard EWMH ones.
 
+Wm.c also has various functions for 'global' operations on clients
+such as resizing/repositioning all clients. Numerous points throughout
+the codebase will use this.
 
 File Structure
 ====
@@ -126,13 +139,13 @@ wm.c
 
 The window manager 'core'. Contains the event loop and event handlers
 and various functions for dealing with global state, such as
-restacking and resizing all clients.
+re-stacking and resizing all clients.
 
 
 base_client.c     
 
 base client 'class', all other clients source files ( or types ) are
-derived from this optionally overiding various methods.
+derived from this optionally overriding various methods.
 
     
 dockbar_client.c  
@@ -180,7 +193,7 @@ Provides functions for freedesktop.org extended window manager hint protocols.
 composite-engine.c 
 
 composite engine , can be compiled out. See below for a further
-explination of its workings.
+explanation of its workings.
 
 
 keys.c             
@@ -191,7 +204,7 @@ Provides key shortcut handling ( can be compiled out )
 xml.c              
 
 Simple xml parser used by mbtheme.c ( can be compiled out for
-standalone or expat used instead )
+stand-alone or expat used instead )
 
 
 list.c             
@@ -210,13 +223,13 @@ handling.
 mbtheme.c            
 
 Provides the complex libmatchbox pixbuf based theme engine.  See below
-for a further explination.
+for a further explanation.
 
 
 mbtheme-standalone.c 
 
-Provides a alternative smaller and simpler X primatives based 
-theme engine. This is used by standalone builds.
+Provides a alternative smaller and simpler X primitives based 
+theme engine. This is used by stand-alone builds.
 
      
 main.c               
@@ -244,7 +257,7 @@ Calculates client size and position variables.
 void 
 XX_client_reparent (Client *c);
 
-Is responsable for reparenting the client window to the decoration
+Is responsable for re-parenting the client window to the decoration
 frame window.
 
 
@@ -297,20 +310,20 @@ primitives and no configuration files ( mbtheme-standalone.c ) and an
 advanced implementation which uses libMatchbox pixbufs for painting
 and advanced xml based configuration files. Both engines export a very
 similar api which can be used by the core of the window manager to
-paint created window decorations. I shall explain the operation of the
+render defined window decorations. I shall explain the operation of the
 advanced engine, but the actual structure also applys to the basic (
 standalone ) implementation.
 
 The theme engine is initially created with mbtheme_init(), this will
-create and initialise an engine specific theme structure. A suitable
+create and initialize an engine specific theme structure. A suitable
 theme.xml file will then be located and parsed. The parsing ( see
-parse_*_tag )populates more of the mbtheme structure with lists of
+parse_*_tag ) populates more of the mbtheme structure with lists of
 theme resources ( such as fonts, or loaded image data ) and layout
-data for each window type decorations.
+data for each window type decoration.
 
 A window that needs its decorations painting will call
 theme_frame_paint(), specifying the frame type to be painted and its
-dimentions relative to the decoration window frame. The frame type is
+dimensions relative to the decoration window frame. The frame type is
 basically the window type extended with an actual edge ( eg
 FRAME_MAIN_NORTH for the title area, FRAME_MAIN_EAST for the right
 edge ). The function the builds up the required decoration from the
@@ -318,17 +331,17 @@ lists of layout and resource data before rendering to the clients
 backing pixmap. The function will also create any masks needed for
 window shaping.
 
-Seperate function is provided for the painting of buttons (
+Separate function is provided for the painting of buttons (
 theme_frame_button_paint() ) and the window select menu (
 theme_frame_menu_paint() ). Both these and theme_frame_paint() share
 various utility calls for painting ( _theme_paint_core(),
 _theme_paint_gradient() etc )
 
 The theme engine also provides various calls for client to code to get
-specified decoration dimentions ( theme_frame_menu_get_dimentions(),
+specified decoration dimensions ( theme_frame_menu_get_dimentions(),
 theme_frame_defined_width_get(), theme_frame_defined_height_get() )
 
-When the theme is changed mbtheme_switch() will be called. This
+When the theme is changed, mbtheme_switch() will be called. This
 function will free all current defined theme resources and in effect
 re theme_init() itself with the new theme before repainting window
 decorations.
@@ -340,38 +353,38 @@ Compositing
 Matchbox window manager optionally provides compile time support for
 the new X Composite extension ( with associated Damage and Fixes
 extensions ). With this active matchbox manages not just window
-positions etc but alsohow the window contents are renedered to the
+positions etc but also how the window contents are rendered to the
 display - this allows for effects like shadowing and translucency.
 
 The compositing api is at the time of writing considered quite
 experimental and therefor unstable. Because of this the composite code
-is kept quite un intrusively self contained in composite-engine.c.
+is kept quite un-intrusively self contained in composite-engine.c.
 The composite functions to a degree map onto client object methods. 
 
 The composite engine initiates itself via comp_engine_init(). This
-function checks for avaiable extensions, sets up the server for
+function checks for available extensions, sets up the server for
 composite style rendering ( via XCompositeRedirectSubwindows() ) and
-initialises composite related Wm resources.
+initializes composite related Wm resources.
 
-Back buffers of all window type contents ( this includes overide
+Back buffers of all window type contents ( this includes override
 redirect windows, of which matchbox now has to track, see
 wm_handle_map_notify() ) are now stored in client structures via 32bit
 render pictures for visible clients ( see comp_engine_client_show(),
-comp_engine_client_hide(), comp_engine_client_init() ). Accumalated
-Damage events provide infomation on what areas of the display needs to
-be updated. This infomation is used with the client back buffers and
+comp_engine_client_hide(), comp_engine_client_init() ). Accumulated
+Damage events provide information on what areas of the display needs to
+be updated. This information is used with the client back buffers and
 Xfixes regions to efficiently update the display ( see
 comp_engine_render() ). It also adds effects such as shadowing and
 basic translucency.
 
 
-Optimisations
+Optimizations
 ====
 
-Some optimaisations matchbox uses;
+Some optimizations matchbox uses;
 
  - The theme engine caches a 'base' matchbox pixbuf representation of
-   main application window type decoarations. This means a new main
+   main application window type declarations. This means a new main
    window needs just text painting rather than its entire decoration
    layers being built up. This cache will be cleared if the
    application window size changes or the theme changes.
@@ -379,12 +392,16 @@ Some optimaisations matchbox uses;
    The cache is also used to enable button window pixbuf compositing. 
 
  - Decoration painting is done via XSetWindowBackground with a theme
-   engine created pixmap, that is immediatly free after the paint.
+   engine created pixmap, that is immediately free after the paint.
    Painting to the window background lets the server handle exposes
    and results in simpler smaller code with a 'smoother' appearance.
 
  - Compositing only back buffers visible windows - ie the top of the 
    stack to save memory. Pictures not visible are freed. 
-   Composite guassian shadows are pregenerated and cut into tiles on
+   Composite Gaussian shadows are pregenerated and cut into tiles on
    start up. The shadows are then built up from the tiles
  
+ - Matchbox's small binary size comes from careful coding and the fact
+   that due to its style of restrictive window management it avoids much 
+   of the code needed by a desktop window manager.
+
