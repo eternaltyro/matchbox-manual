@@ -1,95 +1,103 @@
 <?xml version="1.0"?>
-<article>
-  <artheader>
-    <title>Matchbox Testing HOWTO. (V 0.3)</title>
-    <author><firstname>Matthew</firstname>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<article id="matchbox-testing">
+  <articleinfo>
+    <title>Matchbox Testing HOWTO</title>
+    <author>
+      <firstname>Matthew</firstname>
       <surname>Allum</surname>
       <email>matthew@openedhand.com</email>
     </author>
     <copyright>
       <year>2003</year>
-      <holder>Openedhand Ltd</holder>
+      <year>2004</year>
+      <holder>OpenedHand Ltd</holder>
     </copyright>
-  </artheader>
-  
+    <revhistory>
+      <revision>
+        <revnumber>0.3</revnumber>
+        <date>2004-04-19</date>
+      </revision>
+    </revhistory>
+  </articleinfo>
+
+
   <section>
     <title>Introduction</title>
     <para>
       Testing is important. Matchbox is likely to be a key part of the system -
-      even a minor bug can cause serious user problems. The async nature of X11,
-      interdependencies of code mechanisms and the complexities of window
-      management all can lead to the introduction of bugs when even minor code
-      is added or modified. Therefore thorough testing is important to avoid
-      such problems.
+      even a minor bug can cause serious user problems. The asynchronous nature
+      of X11, interdependencies of code mechanisms and the complexities of
+      window management all can lead to the introduction of bugs when even minor
+      code is added or modified. Therefore thorough testing is important to
+      avoid such problems.
     </para>
     <para>
       The best way to test Matchbox is 'in the wild' from real user usage and
       feedback, however this is not always practical - it's extremely useful to
-      perform a stardard set of tests after changes to the source code and
-      before making a release. This document discusses; how to run Matchbox in a
-      testing enviroment, how to use the test scripts included in the
+      perform a standard set of tests after changes to the source code and
+      before making a release. This document discusses: how to run Matchbox in a
+      testing environment, how to use the test scripts included in the
       distribution and what to do if tests fail.
     </para>
   </section>
 
+
   <section>
-    <title>Building the matchbox test package</title>
+    <title>Building the Matchbox Test Package</title>
     
     <para>
       The matchbox-test package uses autotools and is built and installed with
       the usual;
     </para>
+    <programlisting>% ./configure
+% make
+% sudo make install</programlisting>
     <para>
-      <programlisting>                                                           
-        % ./configure
-        % make
-        % sudo make install
-      </programlisting>
-    </para>
-    <para>
-      This will build the various binary test utilitys and install a special
+      This will build the various binary test utilities and install a special
       'mbtest' theme.
     </para>
   </section>
 
+
   <section>
-    <title>Running Matchbox for testing.</title>
+    <title>Running Matchbox for Testing</title>
     <para>
       Xnest basically provides a X server in an X window - it being both an X
       Server and an X Client at the same time. This makes it useful for both
       testing Matchbox on a desktop machine and 'emulating' PDA sized
-      displays. The procedure for running Matchbox in an Xnest follows;
+      displays. The procedure for running Matchbox in an Xnest follows:
     </para>
-    <programlisting>
-      % Xnest :1 -ac -geometry 240x320
-      % export DISPLAY=:1
-      % matchbox 
-    </programlisting>
+    <programlisting>% Xnest :1 -ac -geometry 240x320
+% export DISPLAY=:1
+% matchbox </programlisting>
     <para>
       A similar technique can be used to run Matchbox locally on a development
-      machine but have it manage windows on another display ( such as a handheld
-      ). On the remote machine, make sure there is no window manager already
-      running and then give access for the X Server from the development machine
-      ( e.g. with xhost +&lt;dev machine ip&gt; or by using Xnest with -ac
-      argument ). On the development machine set the DISPLAY env variable to the
-      remote machines IP and then launch Matchbox.
+      machine but have it manage windows on another display (such as a
+      handheld). On the remote machine, make sure there is no window manager
+      already running and then give access for the X Server from the development
+      machine (e.g. with xhost +&lt;dev machine ip&gt; or by using Xnest with
+      -ac argument). On the development machine set the DISPLAY env variable to
+      the remote machines IP and then launch Matchbox.
     </para>
     <para>
       Matchbox can be run under Valgrind on x86 platforms to debug memory
       allocations and management.
     </para>
     <para>
-      Its recommended, though not essential, that the Matchbox build is
+      It is recommended, though not essential, that the Matchbox build is
       configured with the '--enable-debug' switch. The resulting binaries will
-      spew verbose messages to stdout which contain information that's useful
-      for fixing any failed tests.
+      spew verbose messages to standard out which contain information that's
+      useful for fixing any failed tests.
     </para>
   </section>
+
 
   <section>
     <title>The Tests</title>
     <para>
-      All tests are in the Matchbox distro's tests/ directory. You should
+      All tests are in the Matchbox distribution's tests/ directory. You should
       run tests from within that directory.
     </para>
     
@@ -106,7 +114,7 @@
       <para>
         Creates some various window types and then replays some Xnee data (
         test-interaction.xnee ) automating common window operations on these
-        created windows. A Screenshot is then taken at completion and compared
+        created windows. A screenshot is then taken at completion and compared
         with a reference one ( test-interaction.xwd ) to indicate success or
         failure. If installed, <ulink url="http://www.imagemagick.org/">Image
           Magick's</ulink> 'display' program will be used to visually present
@@ -146,7 +154,8 @@
       <title>libmb-test</title>
       <para>
         This is a binary based test for libmb. Currently it only basically tests
-        font rendering and clipping functionality.
+        font rendering and clipping functionality.  For more libmatchbox tests,
+        see the <link linkend="sec-unit-tests">section on unit tests</link>.
       </para>
     </section>
   </section>
@@ -154,8 +163,9 @@
   <section>
     <title>Running All Tests</title>
     <para>
-      The 'testrun.sh' script aims to run all tests automated in a standardised
-      enviroment before producing a report summary.  It performs the following;
+      The <filename>testrun.sh</filename> script aims to run all tests automated
+      in a standardised environment before producing a report summary.  It
+      performs the following:
     </para>
     <orderedlist>
       <listitem>
@@ -175,25 +185,28 @@
       </listitem>
     </orderedlist>
     <para> 
-      The script reads parameters set in test.conf and runs all listed
-      tests. You can specify particular tests to run and and specify an
-      alternate config file to use. Run testrun.sh with '-h' to see how to set
-      this.
+      The script reads parameters set in <filename>test.conf</filename> and runs
+      all listed tests. You can specify particular tests to run and and specify
+      an alternate configuration file to use. Run testrun.sh with '-h' to see
+      how to set this.
     </para>
     <para>
-      To add a new test to be run, just name the new script test-XXXX.sh ( where
-      XXXX is anything you like ) and add to tests directory.
+      To add a new test to be run, just name the new script
+      <filename>test-XXXX.sh</filename> (where <literal>XXXX</literal> is
+      anything you like) and add to <filename>tests</filename> directory.
     </para>
   </section>
 
+
   <section>
-    <title>Reporting a failed Test</title>
+    <title>Reporting a Failed Test</title>
     <para>
       Please report failed tests to <ulink
         url="http://bugs.openedhand.com/index.cgi/Matchbox/index">bugs.openedhand.com</ulink>,
-      giving as much infomation as possible.
+      giving as much information as possible.
     </para>
   </section>
+
 
   <section>
     <title>Code Coverage</title>
@@ -207,36 +220,50 @@
       source files.
     </para>
     <para>
-      Within the test package exists 'gcov-wrapper.sh'. This script will run all
-      or any of the tests and report the percentage of code per sourcefile the
-      test run covered.
+      Within the test package exists <filename>gcov-wrapper.sh</filename>. This
+      script will run all or any of the tests and report the percentage of code
+      per source file the test run covered.
     </para>
     <para>
       Usage is;
     </para>
     <programlisting> 
-        usage: ./gcov-wrapper.sh &lt;matchbox wm src path&gt; &lt;libmatchbox src path&gt; [test]
+        ./gcov-wrapper.sh &lt;matchbox wm src path&gt; &lt;libmatchbox src path&gt; [test]
         
         'test' defaults to testrun.sh
-        Set GCOV_FLAGS to any required gcov swicthes
+        Set GCOV_FLAGS to any required gcov switches
     </programlisting>
     <para>
       It is advised you make clean and then remake matchbox-window-manager and
-      libmatchbox before each gcov-wrapper.sh run to avoid statistics
-      accumulating.
+      libmatchbox before each <filename>gcov-wrapper.sh</filename> run to avoid
+      statistics accumulating.
     </para>
     <para>
       More information on using Gcov is available at <ulink
         url="http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html">http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html</ulink>
     </para>
   </section>
-  
-  <section>
-    <title>Appendix A - Tools</title>
+
+
+  <section id="sec-unit-tests">
+    <title>Unit Tests</title>
+    <para>
+      There are unit test for libmatchbox in
+      <filename>libmatchbox/tests/</filename>.  To execute these simply run
+      <command>make check</command>.  The tests are written using the
+      <application>Check</application> unit testing framework (<ulink
+        url="http://check.sf.net/"/>), and currently test the
+      <filename>.desktop</filename> file parser and the pixmap library.
+    </para>
+  </section>
+
+
+  <appendix>
+    <title>Tools</title>
     <section><title>Valgrind</title>
       <para>
-        An open-source memory debugger for x86-GNU/Linux.  <ulink
-        url="http://developer.kde.org/~sewardj/">http://developer.kde.org/~sewardj/</ulink>
+        An open-source memory debugger for x86-GNU/Linux, available from <ulink
+        url="http://valgrind.kde.org/"/>.
       </para>
       <para>
         By default the tests run Valgrind with the following arguments.
@@ -250,10 +277,10 @@
       <title>Xnee</title>
       <para>
         Xnee allows the recording and replaying of X protocol data. 
-        <ulink url="http://www.gnu.org/software/xnee/">http://www.gnu.org/software/xnee/</ulink>
+        <ulink url="http://www.gnu.org/software/xnee/"/>
       </para>
       <para>
-        To record data for Xnee, Im currently using something like;
+        To record data for Xnee, I'm currently using something like;
         <programlisting>
           xnee -ae -o test-interaction.xnee -l -1
         </programlisting>
@@ -278,7 +305,7 @@
         other X clients.
       </para>
       <para>
-        Included in XFree86 distribution from <ulink url="http://www.xfree86.org">http://www.xfree86.org</ulink>. 
+        Included in XFree86 distribution from <ulink url="http://www.xfree86.org"/>
       </para>
     </section>
 
@@ -305,20 +332,22 @@
         with Matchbox in utils/.
       </para>
     </section>
-  </section>
+  </appendix>
 
-  <section>
-    <title>Appendix B - Useful X debugging tools</title>
+
+  <appendix>
+    <title>Useful X Debugging Tools</title>
     <para>
       Please refer the the man pages for useful tools such 
       xprop, xclientlist, xwd 
     </para>
     <para>
       Also see <ulink
-        url="http://www.xfree86.org/~mvojkovi/restest.c">http://www.xfree86.org/~mvojkovi/restest.c</ulink> and <ulink url="http://www.freedesktop.org/Software/xrestop">http://www.freedesktop.org/Software/xrestop</ulink>
+        url="http://www.xfree86.org/~mvojkovi/restest.c"/> and <ulink
+        url="http://www.freedesktop.org/Software/xrestop"/>
       for examples of X-Resource extension usage.  'XRes' is a new XFree86
-      server extension ( > 4.2 ) which can used to monitor client resource
+      server extension (> 4.2) which can used to monitor client resource
       usage and detect server side pixmap leaks.
     </para>
-  </section>
+  </appendix>
 </article>
