@@ -1,3 +1,8 @@
+2004-12-15  mallum,,,  <mallum@openedhand.com>
+
+	* manual/matchbox-manual.sgml:
+	Fix links. Add docs for new panel options
+
 2004-11-19  mallum,,,  <mallum@handhelds.org>
 
 	* developers/matchbox-key.txt:

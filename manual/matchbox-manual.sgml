@@ -685,6 +685,18 @@ A command line tool to externally control Matchbox.
       <entry>north|east|south|west</entry>
       <entry>Specify what edge on the display the panel should be located</entry>
     </row>
+
+    <row valign='top'>
+      <entry>--margins</entry>        
+      <entry><left/right>[, <top/bottom>] panel appley offsets in pixels</entry>
+      <entry>Specify panel margin around applets. Defaults to 2,2</entry>
+    </row>
+
+    <row valign='top'>
+      <entry>--padding</entry>        
+      <entry><int>  </entry>
+      <entry>Specify spacing between panel applets in pixels</entry>
+    </row>
     
     <row valign='top'>
     <entry>--titlebar</entry>        
@@ -1209,7 +1221,7 @@ The fill desktop entry spec can be found at <ulink url="http://www.freedesktop.o
    Matchbox was primarily written by Matthew Allum
    (<email>mallum@openedhand.com</email>). To find more information about
    Matchbox, please visit the <ulink
-   url="http://matchbox.handhelds.org" type="http">Matchbox Project Web
+   url="http://projects.o-hand.com/matchbox" type="http">Matchbox Project Web
    page</ulink>.  Please send all comments, suggestions, and bug
    reports to the <ulink url="http://bugs.openedhand.com" type="http">Matchbox
    bug tracking database</ulink>.
@@ -1286,7 +1298,7 @@ The fill desktop entry spec can be found at <ulink url="http://www.freedesktop.o
   </programlisting>                                                            </para>
 <para>                     
 <ulink type="http"
-        url="http://matchbox.handhelds.org/whatis.shtml">What is matchbox</ulink> gives more infomation on each optional dependency.
+        url="http://projects.o-hand.com/matchbox/whatis.shtml">What is matchbox</ulink> gives more infomation on each optional dependency.
                                                                                   </para>
 
 <section><title>Inter Dependencies</title>
@@ -1312,7 +1324,7 @@ contains icons and launcher configuration data shared by both the
 desktop and the panel menu launcher.
 </para>
 <para>                                                                                
-If you encounter problems building, please report to the <ulink type="http" url="http://matchbox.handhelds.org/mailinglist.shtml">mailing list</ulink>
+If you encounter problems building, please report to the <ulink type="http" url="http://projects.o-hand.com/matchbox/mailinglist.shtml">mailing list</ulink>
 for help.
 </para>
 
@@ -1325,7 +1337,7 @@ will build a fully featured matchbox enviroment including the window
 manager, desktop, panel and panel applications.
 </para>
 <para>                                                                                
-Downlaod <ulink type="http" url="http://matchbox.handhelds.org/sources/utils/matchbox-autobuild.sh">matchbox-autobuild.sh</ulink> script. Open in your favourite text editor, edit the
+Downlaod <ulink type="http" url="http://projects.o-hand.com/matchbox/sources/utils/matchbox-autobuild.sh">matchbox-autobuild.sh</ulink> script. Open in your favourite text editor, edit the
 varibles at the top of the top and then run.
 </para>                                                                                
 </section>
