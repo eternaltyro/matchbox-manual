@@ -1,8 +1,10 @@
-Matchbox Communication Details v0.6            - Matthew Allum 2003 
+Matchbox Communication Details v0.6.1           - Matthew Allum 2003 
 =====
 
 This document acts as a key and provides details to the mechanisms
-described in the associated diagram.
+described in the associated diagram. It describes details if the level
+of freedesktop.org standards integration as well as 'non standard'
+matchbox only extrensions.
 
 Much of the communication between X Server clients takes place via X
 Properties and X Client Messages. This document describes such
@@ -33,7 +35,7 @@ Recommended Background Reading
 =======
 
 Matchbox Documentation
-http://handhelds.org/~mallum/matchbox/manual/
+http://matchbox.handhelds.org/documentation.html
 
 X11 Introduction
 http://www.tigr.net/afterstep/X/xlib/introduction/overview.html
@@ -41,6 +43,8 @@ http://www.tigr.net/afterstep/X/xlib/introduction/overview.html
 X11 Properties introduction
 http://tronche.com/gui/x/xlib/window-information/properties-and-atoms.html
 
+Freedesktop.org Specs
+http://www.freedesktop.org
 
 
 [1] File Configuration.
@@ -57,7 +61,7 @@ Matchbox WM on startup reads;
 
  The visual look for reparented window frames are defined here.
 
-Matchbox Panel ( mbdock) reads / writes;
+Matchbox Panel reads / writes;
 
  o ~/.matchbox/mbdock.session.[.dock id] 
 
@@ -65,6 +69,8 @@ Matchbox Panel ( mbdock) reads / writes;
    parented panels apps command line and offset positions.  These
    entry's are added / removed when a panel app is added / destroyed.
    It is basically a simple sessioning mechanism.
+
+   You should *not* edit this file directly!
 
  o $prefix/share/matchbox/themes/<selected theme>/theme.desktop
 
@@ -230,6 +236,10 @@ _MB_WM_STATE_DOCK_TITLEBAR
 A matchbox only specific _NET_WM_STATE. Intended to be used by panels
 that would like to be reparented in the titlebar ( if supported by
 current theme definition )
+
+Also you may set '_MB_DOCK_TITLEBAR_SHOW_ON_DESKTOP' in the panels
+state property to not hide an embedded title panel when the desktop is
+visible.
 
 
 [5] Client / Window Manger X message Communication.
