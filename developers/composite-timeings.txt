@@ -26,27 +26,42 @@ trigger matchbox to lowlight the entire display ( method dependant on
 compile time options ) and then output a timing in microseconds to
 stdout.
 
+
 My Results
 ==========
 
+The Tests were performed on an Ipaq 5550, running familiar unstable
+and a freedesktop.org XServer built from CVS around mid December 2003.
 
+10 Samples of each were taken.
 
+XIMAGE LOWLIGHT TIMING: 228991 us
+XIMAGE LOWLIGHT TIMING: 234435 us
+XIMAGE LOWLIGHT TIMING: 234413 us
+XIMAGE LOWLIGHT TIMING: 226291 us
+XIMAGE LOWLIGHT TIMING: 226388 us
+XIMAGE LOWLIGHT TIMING: 225919 us
+XIMAGE LOWLIGHT TIMING: 225206 us
+XIMAGE LOWLIGHT TIMING: 234877 us
+XIMAGE LOWLIGHT TIMING: 235797 us
+XIMAGE LOWLIGHT TIMING: 224220 us
 
-
-
-
-
-
-
+COMPOSITE LOWLIGHT TIMING: 90359 us
+COMPOSITE LOWLIGHT TIMING: 90663 us
+COMPOSITE LOWLIGHT TIMING: 90010 us
+COMPOSITE LOWLIGHT TIMING: 91935 us
+COMPOSITE LOWLIGHT TIMING: 98831 us
+COMPOSITE LOWLIGHT TIMING: 89809 us
+COMPOSITE LOWLIGHT TIMING: 89574 us
+COMPOSITE LOWLIGHT TIMING: 91103 us
+COMPOSITE LOWLIGHT TIMING: 89673 us
+COMPOSITE LOWLIGHT TIMING: 89692 us
 
 
 Conclusions
 ===========
 
-
-
-
-
+Composite is just over 2x as fast as XImage method - what was expected. 
 
 
 
