@@ -1,0 +1,1098 @@
+<?xml version="1.0"?>
+<article>
+<artheader>
+<title>Designing Matchbox Themes HOWTO. Version 0.4</title>
+<author><firstname>Matthew</firstname>
+<surname>Allum</surname>
+<email>matthew@openedhand.com</email>
+</author>
+<copyright>
+      <year>2003</year>
+      <holder>Openedhand Ltd</holder>
+    </copyright>
+</artheader>
+
+<section><title>Introduction</title>
+<para>
+Matchbox allows both its visual look and interface to be defined at run time 
+and changed on the fly. This document describes how its done, describing the 
+creation of a matchbox window manager theme.xml file and configuration syntax 
+for the themeing of the panel, desktop and icons.   
+</para>
+<para>
+Matchbox must be compiled *without* the --enable-standalone for themeing.
+</para>
+<para>
+Its assumed the reader is familiar with using xml or xml-like mark up languages 
+such as html. 
+</para>
+</section>
+<section><title>Getting started</title>
+<para>
+The first thing todo is to decide on a name for you new theme and create one 
+of the following directory's;
+</para>
+ <programlisting>
+$HOME/.themes/[theme_name]/matchbox/
+$PREFIX/share/themes/[theme_name]/matchbox/
+</programlisting>
+<para>
+Your theme.xml file will go in this directory together with any
+images your theme uses. To then test your theme, start matchbox like 
+</para>
+<userinput>
+matchbox -theme [theme_name]
+</userinput>
+<para>
+Alternatively you can also use 'matchbox-remote -t [theme_name]' to switch themes 
+on the fly whilst matchbox is executing.  
+</para>
+<para>
+If matchbox fails to parse a theme file, it will switch to its default theme 
+and print basic error information on why it failed to stdout.  
+</para>
+<para>
+Now open up the theme.xml file and create the top level &lt;theme&gt; element. 
+</para>
+<programlisting>
+&lt;?xml version="1.0"?&gt;
+&lt;theme name="An Example theme" 
+     author="Matthew Allum - mallum@handhelds.org"
+       desc="A simple demonstartion theme" 
+    version="1.0" engine_version="1" &gt;
+
+ &lt;!-- this is where the actual theme definition is defined --&gt;
+
+&lt;/theme&gt;
+</programlisting>
+<para>
+The various theme attributes should be self explanatory. The
+'engine_version' attribute should be set to 1 as to work with 0.5+
+versions of matchbox.
+</para>
+<para>
+The theme.xml file is then split into 2 major sections. The first
+listing the actual resources ( such as fonts and images ) required by 
+the theme and then the next listing how these resources are used for 
+the decoration of each type of window frame.
+</para>
+</section>
+<section><title>Theme.xml resources</title>
+<para>
+There are 3 types of resources that are currently supported; colors,
+fonts and pixmaps ( images ). Each resource has an 'id' attribute so
+it can be later referenced.
+</para>
+<variablelist>
+
+<varlistentry>
+<term>Colors</term>
+<listitem>
+<para>
+
+	A color looks like;
+</para>
+<programlisting>
+	&lt;color id="blue" def="#0000ff" /&gt;
+</programlisting>
+<para>
+	The definition is in the format #rrggbb[aa]. The alpha part is optional. 
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>Fonts</term>
+<listitem>
+<para>
+	A font looks like;
+</para>
+<programlisting>
+	&lt;font id="myfont" def="Sans,fixed bold 8" /&gt;
+</programlisting>
+</para>
+or
+<para>
+<programlisting>
+	&lt;font id="myfont" def="Sans Serif-8:bold|fixed" /&gt;
+</programlisting>
+<para>
+	You can use XFT or GTK2 style font naming.
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>Pixmaps</term>
+<listitem>
+<para>
+	A pixmap looks like; 
+</para>
+<programlisting>
+	&lt;pixmap id="close-button" filename="close_button.png" /&gt;
+</programlisting>
+<para>
+	The filename lists an image in the current directory. Make sure the
+	image format used is supported by your matchbox build. XPM is always
+	supported but lacks an alpha channel like PNGS.
+</para>
+</listitem>
+</varlistentry>
+</variablelist>
+<para>
+Our theme file now looks like; 
+</para>
+<programlisting>
+&lt;?xml version="1.0"?&gt;
+&lt;theme name="my new theme" 
+     author="Matthew Allum - mallum@handhelds.org"
+       desc="A simple demonstartion theme" 
+    version="1.0" engine_version="1" &gt;
+
+&lt;color id="blue" def="#0000ff" /&gt;
+&lt;color id="black" def="#ffffff" /&gt;
+&lt;color id="bluegrey" def="#ccccff" /&gt;
+
+&lt;font id="myfont" def="Sans Serif-8|fixed" /&gt;
+
+&lt;pixmap id="close-button" filename="close_button.png" /&gt;
+&lt;pixmap id="next-button"  filename="next_button.png" /&gt;
+
+&lt;!-- frame definitions will go here --&gt;
+
+&lt;/theme&gt;
+</programlisting>
+<para>
+Now we have the resources for are theme set up, the next step is to define 
+the actual frame decorations, but first we must learn about the various
+window types supported by matchbox.  
+</para>
+</section>
+<section><title>Matchbox Window Types</title>
+<para>
+Before we go on to defining the decorations for each window type, its
+important to understand the various types of windows supported by matchbox 
+and how decorations are then made up for each type. 
+</para>
+<para>
+Matchbox supports 4 main window types for which decorations can be defined. 
+For each window type, one or more &lt;frame&gt; tags are defined. 
+The window types are;
+</para>
+<variablelist>
+<varlistentry>
+<term>Main window frames</term>
+<listitem>
+   <para>A 'main' application window.</para>
+</listitem>
+<listitem>
+   <para> Can have all 4 sides defined</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>Dialog window frames</term>
+<listitem>
+   <para>
+   Popup or dialogs windows
+   </para>
+</listitem>
+<listitem>
+   <para>
+     Can also have all 4 sides defined
+   </para>
+</listitem>
+<listitem>
+   <para>
+     Can also optionally have a dialog-north frame. This is used for border-only dialogs.  
+   </para>
+</listitem>
+
+</varlistentry>
+
+<varlistentry>
+<term>Toolbar window frames</term>
+<listitem>
+   <para>
+     Defines the decorations for toolbar windows - such as xkbd
+   </para>
+</listitem>
+<listitem>
+   <para>
+     Has 2 states maximized and minimized, both are defined separately.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>Menu window</term>
+<listitem>
+   <para>
+         This is the optional drop down task menu used by matchbox titlebar to
+         quickly select between clients.
+   </para>
+</listitem>
+</varlistentry>
+</variablelist>
+<para>
+Each window type &lt;frame&gt; will then have a possible number of 
+&lt;layer&gt; tag children. These tags describe each graphical 
+layer that builds up the eventual window frame decoration. 
+The layers are likely to reference the earlier listed resources.
+Positioning and sizing of each layer is covered in the next section. 
+</para>
+<para>
+A layer can be of various types and have various attributes, these types include;
+</para>
+
+<variablelist>
+<varlistentry>
+<term>plain</term>        
+  <listitem>
+  <para>A rectangle of solid color. The 'color' attribute references a 
+        previously defined color id.
+  </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>pixmap</term>
+<listitem>
+<para>
+       A pixmap stretched to its defined area. The 'pixmap' attribute references a 
+        previously defined pixmap id. 
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>pixmap-tiled</term>        
+  <listitem>
+  <para>  
+  Like the above but tiles a pixmap rather than stretches it. 
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>label</term>        
+  <listitem>
+  <para> 
+        This specify where the window title text is to be drawn.
+        Both a 'font' and 'color' attribute are used to specify its
+	look. This layer is always painted last on top of all others. 
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>gradient-horiz</term>        
+  <listitem>
+  <para> 
+  Paints a horizonaltal gradient, specified with the attributes 
+  startcol and endendcol.
+  </para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>gradient-vert</term>        
+  <listitem>
+  <para>  
+  Like the above but vertical. 
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>iconn</term>        
+  <listitem>
+  <para> 
+ Paints the current window icon.  
+</para>
+</listitem>
+</varlistentry>
+</variablelist>
+<para>
+Each &lt;frame&gt; may also have &lt;button&gt; tag children.
+These define valid buttons with an 'action' attribute specifying what 
+action should be taken by the window manager when it is activated.   
+Buttons are painted above any layers. Valid button actions include;
+</para>
+<variablelist>
+<varlistentry>
+<term>next</term>
+<listitem>
+  <para>
+  Brings the next main client to the top of the matchbox window stack.  
+  </para>
+</listitem>
+<listitem>
+  <para>
+  Used only by the main window type. Only painted when there are multiple 
+  main clients   
+  </para>
+</listitem>
+
+</varlistentry> 
+
+<varlistentry>
+<term>prev</term>
+<listitem>
+  <para>
+  Brings the previous main client to the top of the matchbox window stack.  
+  </para>
+</listitem>
+<listitem>
+  <para>
+  Used only by then main window type. Only painted when there are multiple 
+  main clients.
+  </para>
+</listitem>
+
+</varlistentry> 
+
+<varlistentry>
+<term>close</term>
+<listitem>
+  <para>
+  Closes the window. 
+  </para>
+</listitem>
+<listitem>
+  <para>
+  Valid for all non border ( eg *-east, *-west, *-south ) frame types. 
+  </para>
+</listitem>
+
+</varlistentry>
+
+<varlistentry>
+<term>hide</term>
+<listitem>
+  <para>
+  Collapses a main application windows title bar. 
+  </para>
+</listitem>
+
+<listitem>
+  <para>
+  Used only by the main window type.
+  </para>
+</listitem>
+
+</varlistentry> 
+
+<varlistentry>
+<term>menu</term>
+<listitem>
+  <para>
+  Produces the drop down task menu. 
+  </para>
+</listitem>
+
+<listitem>
+  <para>
+  Used only by the main window type. Only painted when there are multiple 
+  main clients.   
+  </para>
+</listitem>
+
+</varlistentry> 
+
+<varlistentry>
+<term>help</term>
+<listitem>
+  <para>
+  A help button. 
+  </para>
+</listitem>
+
+<listitem>
+  <para>
+  Used only by the main and dialog window type.
+  </para>
+</listitem>
+
+</varlistentry>
+
+<varlistentry>
+<term>accept</term>
+<listitem>
+  <para>
+  A accept button. 
+  </para>
+</listitem>
+
+<listitem>
+  <para>
+  Used only by the main and dialog window type.
+  </para>
+</listitem>
+
+<varlistentry>
+<term>custom</term>
+<listitem>
+  <para>
+  A misc platform specific button. 
+  </para>
+</listitem>
+
+<listitem>
+  <para>
+  Used only by the main and dialog window type.
+  </para>
+</listitem>
+
+</varlistentry>
+
+</varlistentry>
+
+<varlistentry>
+<term>maximise</term>
+<listitem>
+  <para>
+  Used by a minimized toolbar window frame type.
+  </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>minimise</term>
+<listitem>
+  <para>
+  used by a maximized toolbar window frame type
+  </para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+<para>
+Now we'll move on to seeing how these are used. 
+</para>
+</section>
+<section><title>Creating The Window Decorations</title>
+<para>
+We will now step through creating the frame decoration declarations 
+for each window type, starting with main application windows.
+</para>
+<para>
+First you define a frame element, and set its height. This is the
+application toolbar.
+</para>
+<programlisting>
+&lt;frame id="main" height="20"&gt;
+
+  ....
+
+&lt;/frame&gt;
+</programlisting>
+<para>
+The height is defined, but the width could be anything. The theme
+cannot define the screen size the user is using ! This is an important
+thing to remember than many theme elements are sized dynamically and
+you theme design has to take account of this.
+</para>
+<para>
+The next step is to build up the frame layers
+</para>
+<programlisting>
+  &lt;layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" /&gt;
+</programlisting>
+<para>
+This creates a blue background ( remember the 'blue' color we created
+earlier ) of solid color. The x, y, w and h attributes covers the
+position and size of the layer. They can be;
+</para>
+<itemizedlist>
+
+<listitem>Percentages of the total frame size </listitem>
+
+<listitem>Absolute values from each side of the frame ( by using -/+ive values )</listitem>
+
+<listitem>Reference the labels ( titles ) position ( lablex, labelw )</listitem>
+
+</itemizedlist>
+
+<para>
+...or simple combinations of a maximum of two of the above. See what is 
+defined here for examples, and experiment !  
+</para>
+<para>
+This same system is used for positioning all theme elements. 
+</para>
+<para>
+As an example of this we'll now create another layer, again of solid
+color with in this one.
+</para>
+<programlisting>
+  &lt;layer x="2" y="2" w="100%-4"  h="100%-4" 
+   type="plain" color="bluegrey" /&gt;
+</programlisting>
+<para>
+We then add where we want the title text of the window to appear
+</para>
+<programlisting>
+  &lt;layer x="6" y="1" w="100%-24" h="20" 
+   type="label" color="black" justify="left" font="myfont" /&gt;
+</programlisting>
+<para>
+The justify attribute specifys how the text is aligned in the defined
+layer box, can be left, right or middle.
+</para>
+<para>
+The next thing to do is add some buttons to the frame. All button
+types are optional. In this example we will use just
+a menu button and a close. Here is the close button xml;
+</para>
+<programlisting>
+  &lt;button x="-20" y="2" w="16" h="16" action="close" &gt;
+   &lt;active pixmap="close-button" blend="-150"/&gt;
+   &lt;inactive pixmap="close-button" /&gt;
+  &lt;/button&gt;
+</programlisting>
+<para>
+Like layers, you define the area covered by the button. You then
+define the inactive and optionally inactive states of the button ( eg
+when its pressed / released ) . You can specify a different image for
+each state but here we'll use the same image but with the blend
+attribute - this changes the amount of alpha used to paint the image. 
+</para>
+<para>
+We'll also make the title display the task menu when clicked on. To do
+this we add a button tag like;
+</para>
+<programlisting>
+  &lt;button x="labelx" y="0" w="labelw" h="100%" 
+          action="menu" options="inputonly" /&gt;
+</programlisting>
+<para>
+This button uses the 'inputonly' option to specify the button is
+activated by clicking on a invisible area of the display.
+</para>
+<para>
+we now have a very simple window titlebar. We'll also create simple
+decorations for the other 3 border of the main window frame;
+</para>
+<programlisting>
+&lt;frame id="main-east"  width="2" &gt;
+  &lt;layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" /&gt;
+&lt;/frame&gt;
+
+&lt;frame id="main-west"  width="2" &gt;
+  &lt;layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" /&gt;
+&lt;/frame&gt;
+
+&lt;frame id="main-south" height="2" &gt;
+  &lt;layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" /&gt;
+&lt;/frame&gt;
+</programlisting>
+<para>
+The above creates a simple 2 pixel blue border around the rest of the
+window. <xref linkend="main_window" /> shows the created main window.  
+</para>
+<figure id="main_window">
+<mediaobject>
+       <imageobject>
+             <imagedata fileref= "main.png" />
+       </imageobject>
+       <textobject>
+             <para>The created Main window decorations</para>
+       </textobject>
+</mediaobject>
+</figure>
+<para>
+Dialog window creation is very similar to a main window. See the final
+example for how its done. 
+</para>
+<para>
+<xref linkend="main_window" /> shows the created dialog window.
+</para>
+<figure id="dialog_window">
+<mediaobject>
+       <imageobject>
+             <imagedata fileref= "dialog.png" />
+       </imageobject>
+       <textobject>
+             <para>The created Dialog window decorations</para>
+       </textobject>
+</mediaobject>
+</figure>
+<para>
+Next is the creation of the toolbar window decorations. Toolbar
+windows in matchbox exist in two states - maximized and minimized, and
+separate decorations for both these states need to be defined.
+</para>
+<para>
+This looks like;
+</para>
+<programlisting>
+&lt;frame id="utility-max" width="20"&gt;
+
+  &lt;layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" /&gt;
+
+  &lt;layer x="2" y="2" w="100%-4"  h="100%-4" 
+   type="plain" color="bluegrey" /&gt;
+
+  &lt;button x="2" y="2" w="16" h="16" action="minimize" &gt;
+   &lt;active pixmap="next-button" blend="-150"/&gt;
+   &lt;inactive pixmap="next-button" /&gt;
+  &lt;/button&gt;
+
+&lt;/frame&gt;
+
+&lt;frame id="utility-min" height="20"&gt;
+
+  &lt;layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" /&gt;
+
+  &lt;layer x="2" y="2" w="100%-4"  h="100%-4" 
+   type="plain" color="bluegrey" /&gt;
+
+  &lt;layer x="6" y="2" w="100%-30" h="20" 
+   type="label" color="black" justify="left" font="myfont" /&gt;
+
+  &lt;button x="0" y="0" w="100%-25" h="100%" 
+    action="maximize" options="inputonly"/&gt;
+
+  &lt;button x="-20" y="2" w="20" h="20" action="close" &gt;
+   &lt;active pixmap="close-button" blend="-150"/&gt;
+   &lt;inactive pixmap="close-button" /&gt;
+  &lt;/button&gt;
+
+&lt;/frame&gt;
+</programlisting>
+<para>
+Toolbar windows currently have no borders defined. 
+</para>
+<para>
+<figure id="utility_min_window">
+<mediaobject>
+       <imageobject>
+             <imagedata fileref= "utility-min.png" />
+       </imageobject>
+       <textobject>
+             <para>The created utility-min window decorations</para>
+       </textobject>
+</mediaobject>
+</figure>
+
+<figure id="utility_max_window">
+<mediaobject>
+       <imageobject>
+             <imagedata fileref= "utility-max.png" />
+       </imageobject>
+       <textobject>
+             <para>The created utility-max window decorations</para>
+       </textobject>
+</mediaobject>
+</figure>
+
+</para>
+<para>
+The final frame decoration to be defined is the task menu. The task
+menu decorations are defined slightly differently than other decorations.
+</para>
+<para>
+
+<para>
+
+Firstly as both the task menu's width and height are dynamic. The
+optional border_north, border_south, border_west and border_east frame
+attribute values add padding to this dynamic size.
+
+</para>
+<para>
+
+The font and font color must be defined as attributes in the frame tag. Optionally a 'highlight' attribute can be used to define the color of an active entry. 
+</para>
+<para>
+
+The rest of the definitions within the frame tag describe the
+background - there is NO label tag.
+
+</para>
+
+<programlisting>
+&lt;frame id="menu" font="myfont" color="black" &gt;
+
+  &lt;layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" /&gt;
+
+  &lt;layer x="2" y="2" w="100%-4"  h="100%-4" 
+   type="plain" color="bluegrey" /&gt;
+
+&lt;/frame&gt;
+</programlisting>
+
+<figure id="menu_window">
+<mediaobject>
+       <imageobject>
+             <imagedata fileref= "menu.png" />
+       </imageobject>
+       <textobject>
+             <para>The created menu window decorations</para>
+       </textobject>
+</mediaobject>
+</figure>
+<para>
+You now have a completed theme file. The full file can be found <ulink url="example/">here</ulink>.
+</para>
+
+</section>
+
+
+<section><title>Themeing other Matchbox applications</title>
+<para>Apart from just the window manager, the various included matchbox utilities are also theme-able.</para>
+<section><title>The panel and Menus</title>
+<para>
+'mbdock' and the menu's used by apps lile mbmenu can also be themed. 
+Rather than use the theme.xml file, they use a theme.desktop file which exists in the same directory as the theme.xml file. The files format consists of one key/value pair per line for each visual attribute to be changed. Here is the theme.desktop file for the blondie theme. 
+<programlisting>
+[Desktop Entry]
+Type=MBTheme
+Name=Blondie
+Comment=Blondie theme 
+PanelBgColor=#e2dec6
+PanelFgColor=black
+MenuBgColor=#e2dec6
+MenuFgColor=black
+MenuBdColor=#9d9a8a
+MenuHlColor=black
+</programlisting>
+</para>
+<para>
+The following keys are valid;
+
+<variablelist>
+
+<varlistentry>
+<term>
+PanelBgColor
+</term>
+<listitem>
+   <para>
+   Sets the background color used by matchbox-panel. Can be either a color name or specified in the form #RRGGBB.
+   </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+PanelBgTrans
+</term>
+<listitem>
+   <para>
+   Sets the transparency of matchbox-panel. Ranges from 0-255, 0 being totally transparent.
+   </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+PanelBgPixmap
+</term>
+<listitem>
+   <para>
+   Sets a titled background image for mbdock. Set to the full path of a supported image file. 
+   </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+TitlebarDockBgColor, TitlebarDockBgPixmap
+</term>
+<listitem>
+   <para>
+   Like the above but used by panels reparented in the titlebar. 
+   </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+PanelMsgBgCol, PanelMsgBgUrgentCol, PanelMsgFgCol
+</term>
+<listitem>
+   <para>
+   Sets colors for panel 'message bubbles'.
+   </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+PanelFgColor
+</term>
+<listitem>
+   <para>
+   Sets the foreground color to be used by panel applets such as minitime. 
+   </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+MenuBgColor
+</term>
+<listitem>
+   <para>
+   Sets the background color of any matchbox menu's.
+   </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+MenuFgColor
+</term>
+<listitem>
+   <para>
+   Sets the foreground color ( eg text ) of any matchbox menu's.
+   </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+MenuBdColor
+</term>
+<listitem>
+   <para>
+   Sets the border color of any matchbox menu's.
+   </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+MenuHLColor
+</term>
+<listitem>
+   <para>
+   Sets highlighted text color of any selected menu items. 
+   </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+MenuFont
+</term>
+<listitem>
+   <para>
+   Sets the font used by any menus. Like font definitions in theme.xml files, it can be GTK2 or Xft style font definition. 
+   </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+MenuTransparency
+</term>
+<listitem>
+   <para>
+   This option will make the menu transparent. This option is UNSUPPORTED. Use at your own risk. 
+   </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+DesktopBgSpec
+</term>
+<listitem>
+   <para>
+   Set the desktop background. For infomation on format, run 'mbdesktop --help'. 
+   </para>
+</listitem>
+</varlistentry>
+
+
+</variablelist>
+
+</para>
+</section>
+<section><title>Icons</title>
+<para>
+Icons used by mbmenu, mbdesktop and most of the included matchbox panel/dock apps are also theme-able. They follow a basic implementation of the icon theme spec found at <ulink url="http://www.freedesktop.org/standards/icon-theme-spec.html">freedesktop.org</ulink>.
+</para>
+<para>
+The basic mechanism works by 'overriding' the applications default icon. For example before checking $PREFIX/share/pixmaps for a specified icon file, matchbox applications will check the following;
+</para>
+<para>
+ <programlisting>
+$HOME/.icons/
+$HOME/.icons/[theme_name]/[size]x[size]/[type]/
+$PREFIX/share/icons/[theme_name]/[size]x[size]/[type]/
+</programlisting>
+</para>
+<para>
+Where [size] is usually one of 48, 36, 32, 24 or 16 and [type] can be anything ( usually 'apps', 'emblems' etc ).
+</para>
+<para>
+So as long as you know the image filename an application wants ( hint: look at its .desktop file ), a theme can change its icons appearance.
+</para>
+Here is a list of icon names used by the various parts of matchbox. If matchbox is compiled without png support assume an xpm extension. 
+
+ <programlisting>
+Icons used by menus and matchbox-desktop;
+===
+
+mbdesktop.png
+mbfolder.png
+mbfolderprev.png
+mbnoapp.png
+mbup.png
+mbdown.png
+mbadd.png
+mbremove.png
+mbexit.png
+mblock.png
+
+Icons used by the various panel apps;
+===
+
+miniapm-power.png
+miniapm.png
+
+mbmenu.png
+mbmenu-active.png  # Optional
+
+mbterm.png
+
+minisys.png
+
+minitime.png
+
+minivol-high.png
+minivol-low.png
+minivol-mid.png
+minivol-zero.png
+
+miniwave-icon.png
+broken-0.png
+no-link-0.png
+signal-1-40.png
+signal-41-60.png
+signal-61-80.png
+signal-81-100.png
+</programlisting>
+
+</section>
+</section>
+<section>
+<title>Faq</title>
+<para>
+Please send questions to <ulink url="mailto://mallum@openedhand.com">mallum@openedhand.com</ulink>.
+</para>
+<section><title>How do I create 'shaped' windows ?</title>
+<para>
+Add an options='shaped' attribute to the windows types frame definition. Any parts of the defined frame that has a completely transparent alpha channel will be transparent. See the blondie theme for an example. 
+</para>
+</section>
+
+<section><title>How do I set a custom defualt application icon ?</title>
+<para>
+
+Use the top level 'appicon' tag. eg; 
+
+<programlisting>
+
+&lt;pixmap id="defaulticon" filename="defaulticon.png" /&gt;
+
+&lt;appicon pixmap="defaulticon"&gt;
+
+</programlisting>
+
+</para>
+
+<section><title>How do I set the lowlight color ?</title>
+<para>
+
+Use the top level 'lowlight' tag. eg;
+
+<programlisting>
+&lt;color id="mylowlightcol" def="#819cba33" /&gt;
+
+&lt;lowlight color="mylowlightcol" /&gt;
+</programlisting>
+
+Note, matchbox wm must be run with '-use_lowlight yes' switch for this
+to take effect.
+
+</para>
+
+<section><title>How do I set window shadows ?</title>
+<para>
+
+Firstly matchbox-window-manager <emphasis>must</<emphasis> be built with 
+the <emphasis>--enable-composite</emphasis> compile option and both composite
+librarys and a composite enabled X Server for this options to take effect.
+
+</para>
+
+<para>
+<para>
+
+Shadows are created with the top level &lt;shadow/&gt; tag. eg;
+
+</para>
+<programlisting>
+&lt;shadow style="gaussian" color='shadowcol' /&gt;
+
+</programlisting>
+
+</para>
+<para>
+
+<emphasis>style</emphasis>, can be one of gaussian, simple ( solid color ) or none.
+
+</para>
+<para>
+
+<emphasis>color</emphasis>, specifys the shadow color. 
+
+</para>
+<para>
+
+Other attributes available include integer ( can be negaive ) shadow
+offsets - dx,dy and shadow padding - width, height. Currently these
+options only work for simple shadows.
+
+</para>
+<para>
+
+Also it should be stressed this functionality is highly experimental. 
+
+</para>
+
+</section>
+<section><title>How do I define a area for in the titlebar for a panel ?</title>
+<para>
+
+Use a 'panel' tag in the the main frame definition. eg;
+
+<programlisting>
+&lt;panel x="100%-60" y="0" w="50" h="100%" /&gt;
+
+</programlisting>
+
+Note, mbdock must be run with '--titlebar' for it to reparent in this
+defined area.
+
+</para>
+
+<section><title>Where can I find more infomation ?</title>
+<para>
+See the various themes included with the matchbox distrubution ( in data/themes ) and the matchbox-themes package. 
+
+'Blondie' is a fairly advanced 'heavy' theme that uses many themeing properties. Bluebox is a lighter XPM based theme. Borillo is a relatively simple theme designed more for larger displays, using few (2) external images.
+</para>
+</section>
+
+</section>
+</article>
+

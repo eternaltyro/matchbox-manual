@@ -1,0 +1,55 @@
+
+Introduction
+============
+
+Matchbox 0.8 has support for the new experimental X Composite
+extension [1]. With Composite enabled, matchbox not just manages
+windows but also display rendering adding effects such as drop shadows
+to menus and much improved lowlighting effects.
+
+
+Benchmarking
+============
+
+I've added some code to matchbox to perform a simple benchmark on how
+fast the lowlighting effect can be performed using both Composite and
+the admittadly rather crude XImage way.
+
+One would expect Composite to be much faster as it avoids the amount
+of client <=> server data transfer involved in the XImage version (
+see wm_lowlight.c in wm.c ). Also if this performance increase in not
+observered we know Composite and its dependencies ( eg Render ) are
+not as fast as they could be.
+
+The test [2] is triggered externally by means of 'mbcontrol -x', this will
+trigger matchbox to lowlight the entire display ( method dependant on
+compile time options ) and then output a timing in microseconds to
+stdout.
+
+My Results
+==========
+
+
+
+
+
+
+
+
+
+
+
+
+Conclusions
+===========
+
+
+
+
+
+
+
+
+[1] http://www.freedesktop.org/Software/CompositeExt 
+[2] If testing XImage lowlighting you need to run matchbox 
+    with '-use_lowlight yes'.

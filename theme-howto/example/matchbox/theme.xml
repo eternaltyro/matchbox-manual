@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<theme name="my new theme" 
+     author="Matthew Allum - mallum@handhelds.org"
+       desc="A simple demonstartion theme" 
+    version="1.0" engine_version="1" >
+
+
+<color id="blue" def="#0000ff" />
+<color id="black" def="#000000" />
+<color id="bluegrey" def="#ccccff" />
+
+<font id="myfont" def="Sans Serif-8:bold|fixed" />
+
+<pixmap id="close-button" filename="close_button.png" />
+<pixmap id="next-button"  filename="next_button.png" />
+
+
+<frame id="main" height="20">
+
+  <layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" />
+
+  <layer x="2" y="2" w="100%-4"  h="100%-4" 
+   type="plain" color="bluegrey" />
+
+  <layer x="6" y="1" w="100%-24" h="20" 
+   type="label" color="black" justify="left" font="myfont" />
+
+  <button x="-20" y="2" w="16" h="16" action="close" >
+   <active pixmap="close-button" blend="-150"/>
+   <inactive pixmap="close-button" />
+  </button>
+
+  <button x="labelx" y="0" w="labelw" h="100%" 
+          action="menu" options="inputonly" />
+
+</frame>
+
+<frame id="main-east"  width="2" >
+  <layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" />
+</frame>
+
+<frame id="main-west"  width="2" >
+  <layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" />
+</frame>
+
+<frame id="main-south" height="2" >
+  <layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" />
+</frame>
+
+<frame id="dialog" height="20">
+
+  <layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" />
+
+  <layer x="2" y="2" w="100%-4"  h="100%-4" 
+   type="plain" color="bluegrey" />
+
+  <layer x="6" y="1" w="100%-24" h="20" 
+   type="label" color="black" justify="left" font="myfont" />
+
+  <button x="-20" y="2" w="16" h="16" action="close" >
+   <active pixmap="close-button" blend="-150"/>
+   <inactive pixmap="close-button" />
+  </button>
+
+</frame>
+
+<frame id="dialog-east"  width="2" >
+  <layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" />
+</frame>
+
+<frame id="dialog-west"  width="2" >
+  <layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" />
+</frame>
+
+<frame id="dialog-south" height="2" >
+  <layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" />
+</frame>
+
+<frame id="utility-max" width="20">
+
+  <layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" />
+
+  <layer x="2" y="2" w="100%-4"  h="100%-4" 
+   type="plain" color="bluegrey" />
+
+  <button x="2" y="2" w="16" h="16" action="minimize" >
+   <active pixmap="next-button" blend="-150"/>
+   <inactive pixmap="next-button" />
+  </button>
+
+</frame>
+
+<frame id="utility-min" height="20">
+
+  <layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" />
+
+  <layer x="2" y="2" w="100%-4"  h="100%-4" 
+   type="plain" color="bluegrey" />
+
+  <layer x="6" y="2" w="100%-30" h="20" 
+   type="label" color="black" justify="left" font="myfont" />
+
+  <button x="0" y="0" w="100%-25" h="100%" 
+    action="maximize" options="inputonly"/>
+
+  <button x="-20" y="2" w="20" h="20" action="close" >
+   <active pixmap="close-button" blend="-150"/>
+   <inactive pixmap="close-button" />
+  </button>
+
+</frame>
+
+<frame id="menu" height="1" font="myfont" color="black" >
+
+  <layer x="0" y="0" w="100%"  h="100%" 
+   type="plain" color="blue" />
+
+  <layer x="2" y="2" w="100%-4"  h="100%-4" 
+   type="plain" color="bluegrey" />
+
+</frame>
+
+</theme>

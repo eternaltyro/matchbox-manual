@@ -1,0 +1,350 @@
+Matchbox Communication Details v0.6            - Matthew Allum 2003 
+=====
+
+This document acts as a key and provides details to the mechanisms
+described in the associated diagram.
+
+Much of the communication between X Server clients takes place via X
+Properties and X Client Messages. This document describes such
+mechanisms which are important to matchbox's functionality.
+
+An X property is a collection of named, typed data. They are used
+define arbitrary information and associate it with windows. Each
+property has a name ( ISO Latin-1 string ), which in turn has a unique
+identifier associated with it by the server. This unique identifier is
+known as an Atom. Xlib provides functions to convert Atoms to and from
+there associated string names. Clients can read, set and delete
+properties on any window and they in turn can get notified when such
+an event happens.
+
+An X Client Message is a client generated event that can be sent to
+a window. A message can be of a particular Atom type and have a
+small amount of associated data. Clients can request to get notified
+when a window receives a message.
+
+All the windows in an X server are arranged in a hierarchy, with the
+very top being the root window. A root window will cover the 'back' of
+an entire display, with all other windows being its decendants. As the
+root window is always present, it provides a useful location to
+'broadcast' set properties and sent messages to any interested client.
+
+
+Recommended Background Reading
+=======
+
+Matchbox Documentation
+http://handhelds.org/~mallum/matchbox/manual/
+
+X11 Introduction
+http://www.tigr.net/afterstep/X/xlib/introduction/overview.html
+
+X11 Properties introduction
+http://tronche.com/gui/x/xlib/window-information/properties-and-atoms.html
+
+
+
+[1] File Configuration.
+======
+
+Matchbox WM on startup reads;
+
+ o $prefix/share/matchbox/kdbconfig or ~/.matchbox/kbdconfig if it exists.
+
+ Defines keyboard shortcuts used by Matchbox. 
+
+ o $prefix/share/themes/<selected theme>/matchbox/theme.xml
+   or ~/.themes/<selected theme>/matchbox
+
+ The visual look for reparented window frames are defined here.
+
+Matchbox Panel ( mbdock) reads / writes;
+
+ o ~/.matchbox/mbdock.session.[.dock id] 
+
+   File includes a list ( one tab separated entry per line ) of
+   parented panels apps command line and offset positions.  These
+   entry's are added / removed when a panel app is added / destroyed.
+   It is basically a simple sessioning mechanism.
+
+ o $prefix/share/matchbox/themes/<selected theme>/theme.desktop
+
+   Relevant key/value properties are read to provide the docks visual
+   look.
+
+ o $prefix/share/applications/*.desktop
+
+   Desktop entries with the 'Type' key set to 'PanelApp' are read and
+   added to the panel menu.
+
+   The panel also also uses the Linux kernel 'Dnotify' mechanism,
+   which instructs the panel by means of Unix signals when selected
+   files have changed. The panel can then reload the entry's.
+
+Application Launcher ( mbmenu and mbdesktop ) 
+
+   Also uses dnotify to monitor .desktop files. Entrys of which describe 
+   it menu items to launch. 
+
+
+[2] 'Redirected' Client Events.
+======
+
+As with all window managers, certain client events are redirected as
+requests to the window manager to be decided how, and if, they are
+honored. For example; a client may request a resize to a certain
+size, Matchbox would no doubt enforce limitations on this.
+
+
+[3] Root Window X Property Communication.
+======
+
+Numerous properties are set on the root window to provide information
+to clients. Many of the properties are EWMH based of which Matchbox
+supports the following;
+
+_NET_WORKAREA              - Defines workarea dimentions, 
+_NET_ACTIVE_WINDOW         - Specifys current active window XID, 
+_NET_CLIENT_LIST_STACKING  - Lists the stacking order of managed clients, 
+_NET_CLIENT_LIST           - Lists all managed clients, 
+_NET_SUPPORTING_WM_CHECK   - Specifys window manager has EWMH support,
+_NET_SUPPORTED             - Lists window manager EWMH supported features, 
+_NET_NUMBER_OF_DESKTOPS    - Number of desktops ( 1 in matchbox's case ),
+_NET_CURRENT_DESKTOP       - Always 1 for matchbox,
+_NET_DESKTOP_GEOMETRY      - Defines 'desktop' available dimensions,
+
+See http://www.freedesktop.org/standards/wm-spec/1.3/html/x110.html
+for more detailed information.
+
+Matchbox also uses a few 'proprietary' hints set on the root window. 
+These are;
+
+  o _MB_THEME           
+  
+  Specifys the location of the current Matchbox theme directory.  
+
+  The Matchbox Panel, Desktop and App launcher use this to get notified
+  of the location of the currently selected themes index.theme file.
+
+  o _MB_THEME_NAME
+
+  Specifys the name of the current theme. 
+
+  o _MB_CLIENT_EXEC_MAP 
+
+  Specifys a mapping of client binary name to window id. Enabled by
+  means of startup-notification to provide 'single instance
+  functionality'. 
+  
+  Application launchers can read the property to discover if an app is
+  already running and find out its associated window id. They can then
+  decide if too fork a new application or raise an existing one ( via a
+  _NET_ACTIVE_WINDOW message ).
+
+  o _NET_CLIENT_LIST 
+
+  This property is also set on mbdock windows to list, in left to right 
+  order, the window ID's of reparented applets. 
+
+Matchbox also indirectly supports the RESOURCE_MANAGER property on the
+root window via the X Resource Management infrastructure. The
+properties set here mirror the matchbox command line options.
+
+
+[4] Client Window X Property Communication.
+======
+
+Matchbox supports the various ICCCM propertys for windows, for
+defining there title, window grouping etc. These are mostly supported
+by standard xlib functions.
+
+Matchbox also supports the following EWMH properties on clients;
+
+_NET_WM_WINDOW_TYPE          - Set to one of the below to indicate
+_NET_WM_WINDOW_TYPE_TOOLBAR    how matchbox should manage the window.
+_NET_WM_WINDOW_TYPE_DOCK
+_NET_WM_WINDOW_TYPE_DIALOG
+_NET_WM_WINDOW_TYPE_SPLASH
+_NET_WM_WINDOW_TYPE_DESKTOP
+
+_NET_WM_STATE                - Used to toggle full-screen state. 
+_NET_WM_STATE_FULLSCREEN       ( Note: matchbox currently has little
+			               support for EWMH states )
+
+_NET_WM_NAME                 - Specify window title as UTF8 data.
+_NET_WM_ICON                 - Specify the window icon with rgba data.
+
+See http://www.freedesktop.org/standards/wm-spec/1.3/html/x231.html
+for more detailed information.
+
+_NET_WM_PID                  - Used for hung application detection
+_NET_WM_PING                 -/
+
+See http://www.freedesktop.org/standards/wm-spec/1.3/html/x351.html
+For infomation.
+
+Startup notification properties;
+
+_NET_STARTUP_ID              - Uniquely defines window startup id. 
+
+Motif properties
+
+_MOTIF_WM_HINTS              - Old style Motif window manager decoration
+			       hints.  
+
+Matchbox Only;
+
+_NET_WM_CONTEXT_HELP    ( also supported by KDE )
+_NET_WM_CONTEXT_ACCEPT
+_NET_WM_CONTEXT_CUSTOM  
+
+The above are used to request help / accept buttons in the window
+titlebar. The custom button is intended for misc platform specific
+usage.
+
+If the client wants to have a help / accept button, it sets either or
+both relevant atoms in its WM_PROTOCOLS property. The Window Manager
+will read this property and add the buttons accordingly.
+
+When an 'extended' button is pressed, the Window Manager will send a client
+message with its data set as the appropriate atom to the interested
+client.
+
+_MB_WM_WINDOW_TYPE_MESSAGE
+_MB_WM_WINDOW_TYPE_MESSAGE_TIMEOUT
+
+If matchbox is built with the --enable-message-wins option, matchbox
+will offer support for the _NET_WM_WINDOW_TYPE, '_MB_WM_WINDOW_TYPE_MESSAGE'.
+
+Message windows are always on top dialog like windows intended to be
+used for user notification ( like the bubble messages on the panel. )
+This window has its own 4 border themeing ( frame id = message ).
+
+Message windows are queued by matchbox with just the queue head window
+displayed at any time. The optional _MB_WM_WINDOW_TYPE_MESSAGE_TIMEOUT
+( CARD32 ) property can be set on the window to specify how many
+seconds it should stay visable. If this property is not set or set to
+0, the window will stay active indefinitely until it closes itself.
+
+_MB_WM_STATE_DOCK_TITLEBAR
+
+A matchbox only specific _NET_WM_STATE. Intended to be used by panels
+that would like to be reparented in the titlebar ( if supported by
+current theme definition )
+
+
+[5] Client / Window Manger X message Communication.
+======
+
+Messages are sent to the root window from both the clients and the WM
+to provide both notification and requests for certain actions.
+
+EWMH message types ( sent to the root window );
+
+_NET_SHOW_DESKTOP            - requests the desktop be shown if one exists.
+_NET_CLOSE_WINDOW            - requests a specified window should close.
+_NET_WINDOW_STATE_FULLSCREEN - requests a client should be full-screen.
+_NET_ACTIVE_WINDOW           - requests a window becomes active.
+
+The desktop is any window that sets it's type to
+_NET_WM_WINDOW_TYPE_DESKTOP.
+
+See http://www.freedesktop.org/standards/wm-spec/1.3/html/x207.html
+for more information.
+
+Matchbox only message types;
+
+_MB_COMMAND                  
+
+Sent to the root window to request matchbox perform a specific
+action. The first byte of the X messages data is set to one of the
+following values to perform an associated action;
+
+     1 - Requests theme change.
+     2 - Requests matchbox exits.
+     3 - Requests the desktop is shown.
+     4 - Requests the next 'main' window is shown.
+     5 - Requests the previous 'main' window is shown.
+     6 - Requests a external application launcher menu be shown. 
+         ( mbmenu, not matchbox currently listens for this. )
+
+
+_NET_WM_CONTEXT_HELP
+_NET_WM_CONTEXT_ACCEPT
+
+Sent to a window when a help / accept button has been pressed. 
+
+Startup Notification also uses X Messages sent to the root window to
+inform interested parties of an starting apps cycle state. This
+communication is abstracted by the startup notification library. 
+
+
+[6] Panel App X message Communication. 
+======
+
+The Panel and panel apps participate in the XEMBED and System Tray
+Protocol ( see below ). The panel does not currently support the focus
+mechanisms involved in the XSettings protocol.
+
+MB Extensions to spec;
+
+ - The panel sets a matchbox only property '_MB_PANEL_BG' on its
+   self to enable communication of the panels background to the panel
+   app, thus allowing it to 'alpha blend' to the dock if needed.
+
+   This property should be set by the panel to type string containing
+   either of the following; pxm:<pixmap id> or a parsable color definition
+   in the format #RRGGBB.
+
+
+ - Panel apps also check for the existance of the enviromental var
+   'SYSTEM_TRAY_ID' ( set to an integer ) and if set will look for 
+   a system tray manager with this id. 
+
+Misc - XSettings
+======
+
+The XSettings mechanism is all used by matchbox to get simple
+settings. The mechansim uses a combination X Properties and X
+Messages.
+
+The various keys matchbox uses mirror the command line options.  
+They are;
+
+/Net/ThemeName		- String set to theme name. 
+/MATCHBOX/THEME
+
+/MATCHBOX/CURSOR	- Attempt to hide X Cursor.
+
+It is planned to hopefully soon drop XSettings support in favour 
+of gconf/D-BUS.
+
+
+References / Standards.
+=======
+
+Various X Documentation in PDF form.
+http://www.x-docs.org/
+
+Inter-Client Communication Conventions Manual ( ICCCM )
+ftp://ftp.x.org:21/pub/R6.6/xc/doc/hardcopy/ICCCM/icccm.PS.gz
+
+Extended Window Manager Hints Spec ( EWMH )
+http://www.freedesktop.org/standards/wm-spec.html
+
+Desktop Entries.
+http://www.freedesktop.org/standards/desktop-entry-spec.html
+
+XEMBED.
+http://www.freedesktop.org/standards/xembed.html
+
+System Tray Protocol.
+http://www.freedesktop.org/standards/systemtray.html
+
+Startup Notification.
+http://www.freedesktop.org/software/startup-notification/
+
+XSETTINGS
+http://www.freedesktop.org/standards/xsettings/xsettings.htm
+
+Dnotify
+http://nst.dsi.a-star.edu.sg/mcsa/lxr/linux/source/Documentation/dnotify.txt
