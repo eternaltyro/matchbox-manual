@@ -1143,7 +1143,6 @@ Name=Figment
 Comment=An Outliner
 Exec=figment
 Icon=figment.png
-Terminal=0
 Type=Application
 Categories=Application;Core;
 </programlisting>

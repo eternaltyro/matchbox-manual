@@ -824,6 +824,17 @@ PanelMsgBgCol, PanelMsgBgUrgentCol, PanelMsgFgCol
 
 <varlistentry>
 <term>
+PanelMsgFont
+</term>
+<listitem>
+   <para>
+   Sets the font for panel 'message bubbles'.
+   </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
 PanelFgColor
 </term>
 <listitem>
