@@ -1,3 +1,10 @@
+2005-01-04  mallum,,,  <mallum@openedhand.com>
+
+	* manual/matchbox-manual.sgml:
+	Fix for sgml conformance at leasr
+	* testing/testing.docbook:
+	Add reference to 0.9 release.
+
 2004-12-15  mallum,,,  <mallum@openedhand.com>
 
 	* manual/matchbox-manual.sgml:

@@ -41,6 +41,9 @@
       testing environment, how to use the test scripts included in the
       distribution and what to do if tests fail.
     </para>
+    <para>
+      The documentation here is relevant for the 0.9 matchbox release.
+    </para>
   </section>
 
 

@@ -236,7 +236,7 @@
 	          
 
             Enables an effect to make modal dialog windows 'super' modal. All
-            other windows are lowlighted out. This option is <emphasis>EXPERIMENTAL</<emphasis>
+            other windows are lowlighted out. This option is <emphasis>EXPERIMENTAL</emphasis>
 
            </para>
 
@@ -348,7 +348,7 @@
           <term><userinput>-force-dialogs &lt;comma seperated name list&gt;</userinput></term>
 	  <listitem>
             <para>
-	    Specify a comma seperated list of window titles, whose windows when matched are <emphasis>forced</<emphasis> to be treated as dialogs rather than application windows. 
+	    Specify a comma seperated list of window titles, whose windows when matched are <emphasis>forced</emphasis> to be treated as dialogs rather than application windows. 
             </para>
 	    <para>
 	    The corresponding X Resource key is
@@ -470,7 +470,7 @@
 	<para>
           !   Launch application with just a standard fork-exec.
 	</para>
-	</listitem>
+	</ListItem>
 	<ListItem><para>!!  Launch application with 'startup-notification' - provides feedback of application startup cycle.</para>
 	<para>Application must support startup notification ( eg use gtk 2.2 toolkit )</para></listitem>
           
@@ -688,13 +688,13 @@ A command line tool to externally control Matchbox.
 
     <row valign='top'>
       <entry>--margins</entry>        
-      <entry><left/right>[, <top/bottom>] panel appley offsets in pixels</entry>
+      <entry>&lt;left/right&gt;[, &lt;top/bottom&gt;] panel appley offsets in pixels</entry>
       <entry>Specify panel margin around applets. Defaults to 2,2</entry>
     </row>
 
     <row valign='top'>
       <entry>--padding</entry>        
-      <entry><int>  </entry>
+      <entry>&lt;int&gt;  </entry>
       <entry>Specify spacing between panel applets in pixels</entry>
     </row>
     
