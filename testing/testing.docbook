@@ -1,384 +1,324 @@
 <?xml version="1.0"?>
 <article>
-<artheader>
-<title>Matchbox Testing HOWTO. (V 0.3)</title>
-<author><firstname>Matthew</firstname>
-<surname>Allum</surname>
-<email>matthew@openedhand.com</email>
-</author>
-<copyright>
+  <artheader>
+    <title>Matchbox Testing HOWTO. (V 0.3)</title>
+    <author><firstname>Matthew</firstname>
+      <surname>Allum</surname>
+      <email>matthew@openedhand.com</email>
+    </author>
+    <copyright>
       <year>2003</year>
       <holder>Openedhand Ltd</holder>
     </copyright>
-</artheader>
-
-<section><title>Introduction</title>
-
-<para>
-
-Testing is important. Matchbox is likely to be a key part of the
-system - even a minor bug can cause serious user problems. The async
-nature of X11, interdependencies of code mechanisms and the
-complexities of window management all can lead to the introduction of
-bugs when even minor code is added or modified. Therefore thorough
-testing is important to avoid such problems.
-
-</para>
-<para>
-
-The best way to test Matchbox is 'in the wild' from real user usage
-and feedback, however this is not always practical - it's extremely
-useful to perform a stardard set of tests after changes to to the
-source code and before making a release. This document discusses; how
-to run Matchbox in a testing enviroment, how to use the test scripts
-included in the distribution and what to do if tests fail.
-
-</para>
-</section>
-
-<section><title>Building the matchbox test package</title>
-
-<para>
-The matchbox-test package uses autotools and is built and installed with the usual;
-
-</para>
-<para>
-<programlisting>                                                           
-% ./configure
-% make
-% sudo make install
-</programlisting>
-</para>
-
-<para>
-
-This will build the various binary test utilitys and install a special
-'mbtest' theme.
-
-</para>
-
-</section>
-
-<section><title>Running Matchbox for testing.</title>
-<para>
-
-Xnest basically provides a X server in an X window - it being both an
-X Server and an X Client at the same time. This makes it useful for
-both testing Matchbox on a desktop machine and 'emulating' PDA sized
-displays. The procedure for running Matchbox in an Xnest follows;
-
-</para>
-<programlisting>
-
-% Xnest :1 -ac -geometry 240x320
-% export DISPLAY=:1
-% matchbox 
-
-</programlisting>
-<para>
-
-
-A similar technique can be used to run Matchbox locally on a
-development machine but have it manage windows on another display (
-such as a handheld ). On the remote machine, make sure there is no
-window manager already running and then give access for the X Server
-from the development machine ( e.g. with xhost +&lt;dev machine ip&gt; or by
-using Xnest with -ac argument ). On the development machine set the
-DISPLAY env variable to the remote machines IP and then launch Matchbox.
-
-</para>
-<para>
-
-Matchbox can be run under Valgrind on x86 platforms to
-debug memory allocations and management.
-
-</para>
-<para>
-
-Its recommended, though not essential, that the Matchbox build is
-configured with the '--enable-debug' switch. The resulting binaries
-will spew verbose messages to stdout which contain information that's
-useful for fixing any failed tests.
-
-</para>
-
-</section>
-<section><title>The Tests</title>
-
-All tests are in the Matchbox distro's tests/ directory. You should
-run tests from within that directory.
-
-<section><title>test-windows.sh</title>
-
-Tests Matchbox's handling of various window types by means of the winspew application. 
-
-</section>
-<section><title>test-interaction.sh</title>
-<para>
-
-Creates some various window types and then replays some Xnee data (
-test-interaction.xnee ) automating common window operations on these
-created windows. A Screenshot is then taken at completion and compared
-with a reference one ( test-interaction.xwd ) to indicate success or
-failure. If installed, <ulink url="http://www.imagemagick.org/">Image
-Magick's</ulink> 'display' program will be used to visually present
-failed screenshots.
-
-</para>
-<para>
-To work correctly this test also requires matchbox-desktop to be installed.
-
-<para>
-
-This test will only function correctly with a 240x320 or 640x480 
-sized display.
-
-</para>
-
-</para> 
-<para> 
-
-Its highly recommended you avoid any system interaction
-while this test is running as this can lead to false results.
-
-</para>
-
-</section>
-
-<section><title>test-dock.sh</title>
-<para>
-
-Tests mbdock by running it under Valgrind in different orientations,
-adding and removing panel applets.
-
-</para>
-</section>
-
-<section><title>test-gconf.sh</title>
-
-<para>
-
-test-gconf.sh currently just edits the 'cycle_window' shortcut and
-then 'tests' it via sendkey.
-
-</para>
-</section>
-<section><title>libmb-test</title>
-
-<para>
-
-This is a binary based test for libmb. Currently it only basically tests font rendering and clipping functionality.
-
-</para>
-</section>
-
-
-</section>
-<section><title>Running All Tests</title>
-
-<para>
-
-The 'testrun.sh' script aims to run all tests automated in a
-standardised enviroment before producing a report summary.
-It performs the following;
-</para>
-<para>
-
-
-   <para>Starts Xnest and sets $DISPLAY to this server.</para>
-   <para>Starts Matchbox optionally running under Valgrind.</para>
-   <para>Sets the Matchbox theme via mbcontrol</para>
-   <para>Runs each test, non-interactively</para>
-   <para>Finally produces a simple report, commenting on how each test went.</para>
-
-
-</para> 
-<para> 
-
-The script reads parameters set in test.conf and runs all listed
-tests. You can specify particular tests to run and and specify an
-alternate config file to use. Run testrun.sh with '-h' to see how to
-set this.
-
-</para>
-<para>
-
-To add a new test to be run, just name the new script test-XXXX.sh (
-where XXXX is anything you like ) and add to tests directory.
-
-</para>
-
-</section>
-<section><title>Reporting a failed Test</title>
-<para>
-
-Please report failed tests to <ulink
-url="http://bugs.openedhand.com/index.cgi/Matchbox/index">bugs.openedhand.com</ulink>, giving as much infomation as possible.
-
-</para>
-</section>
-
-<section><title>Code Coverage</title>
-
-<para>
-
-Both the matchbox-window-manager and libmatchbox packages have support
-for the GNU Code coverage tool <ulink
-url="http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html">Gcov</ulink>. To
-enable, at build time configure the packages with the
-<userinput>--enable-gcov</userinput> option. The built binaries will then produce gcov statistics, which can further be processed by running gcov on source files.
-
-</para>
-
-<para>
-
-Within the test package exists 'gcov-wrapper.sh'. This script will run all or any of the tests and report the percentage of code per sourcefile the test run covered. 
-
-</para>
-
-<para>
-Usage is;
-
-<programlisting> 
-
-usage: ./gcov-wrapper.sh &lt;matchbox wm src path&gt; &lt;libmatchbox src path&gt; [test]
- 
-      'test' defaults to testrun.sh
-       Set GCOV_FLAGS to any required gcov swicthes
-
- </programlisting>
-
-</para>
-
-<para>
-
-It is advised you make clean and then remake matchbox-window-manager
-and libmatchbox before each gcov-wrapper.sh run to avoid statistics
-accumerlating.
-
-</para>
-
-<para>
-More information on using Gcov is available at <ulink url="http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html">http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html</ulink>
-</para>
-
-</section>
-
-<section><title>Appendix A - Tools</title>
-<section><title>Valgrind</title>
-<para>
-
-An open-source memory debugger for x86-GNU/Linux.
-<ulink url="http://developer.kde.org/~sewardj/">http://developer.kde.org/~sewardj/</ulink>
-
-</para>
-
-<para>
-
-By default the tests run Valgrind with the following arguments.
-
-<programlisting>
-
-valgrind --error-limit=no --num-callers=32 --leak-check=yes
-
-</programlisting>
-
-</para>
-
-</section>
-<section><title>Xnee</title>
-<para>
-
-Xnee allows the recording and replaying of X protocol data. 
-<ulink url="http://www.gnu.org/software/xnee/">http://www.gnu.org/software/xnee/</ulink>
-
-</para>
-<para>
-
-To record data for Xnee, Im currently using something like;
-
-<programlisting>
-
-xnee -ae -o test-interaction.xnee -l -1
-
-</programlisting>
-
-Which basically translates to capture all events ( -ae ) , output ( -o
-) to test-interaction.xnee and keep capturing for ever ( -l -1 ). I
-stop capture with ctrl-c.
-
-To then replay the data ( as in test-interaction.sh ), use;
-
-<programlisting>
-
-xnee -rep -f test-interaction.xnee
-
-</programlisting>
-
-I'm using xnee 1.07.
-</para>
-</section>
-<section><title>Xnest</title>
-<para>
-
-Xnest is an X server that is itself an X client.  This allows you to run
-a server within a server - useful for testing new window managers and
-other X clients.
-</para>
-
-<para>
-Included in XFree86 distribution from <ulink url="http://www.xfree86.org">http://www.xfree86.org</ulink>. 
-</para>
-
-</section>
-<section><title>winspew</title>
-<para>
-
-Creates dummy windows of arbitrary types and properties. 
-Included with Matchbox in tests/, pass '-help' to get usage info.
-
-</para>
-
-</section>
-<section><title>sendkey</title>
-<para>
-
-Uses XTest extension to send arbitrary keycodes and modifiers to the X
-Server from the command line.  
-Included with Matchbox in tests/, pass '-help' to get usage info.
-
-</para>
-
-</section>
-<section><title>matchbox-remote</title>
-<para>
-
-Simple remote control of Matchbox, such as changing the theme. 
-Included with Matchbox in utils/.
-
-</para>
-</section>
-
-</section>
-<section><title>Appendix B - Useful X debugging tools</title>
-<para>
-
-Please refer the the man pages for useful tools such 
-xprop, xclientlist, xwd 
-
-</para>
-<para>
-
-Also see <ulink
-url="http://www.xfree86.org/~mvojkovi/restest.c">http://www.xfree86.org/~mvojkovi/restest.c</ulink> and <ulink url="http://www.freedesktop.org/Software/xrestop">http://www.freedesktop.org/Software/xrestop</ulink>
-for examples of X-Resource extension usage.  'XRes' is a new XFree86
-server extension ( > 4.2 ) which can used to monitor client resource
-usage and detect server side pixmap leaks.
-
-</para>
-</section>
+  </artheader>
+  
+  <section>
+    <title>Introduction</title>
+    <para>
+      Testing is important. Matchbox is likely to be a key part of the system -
+      even a minor bug can cause serious user problems. The async nature of X11,
+      interdependencies of code mechanisms and the complexities of window
+      management all can lead to the introduction of bugs when even minor code
+      is added or modified. Therefore thorough testing is important to avoid
+      such problems.
+    </para>
+    <para>
+      The best way to test Matchbox is 'in the wild' from real user usage and
+      feedback, however this is not always practical - it's extremely useful to
+      perform a stardard set of tests after changes to the source code and
+      before making a release. This document discusses; how to run Matchbox in a
+      testing enviroment, how to use the test scripts included in the
+      distribution and what to do if tests fail.
+    </para>
+  </section>
+
+  <section>
+    <title>Building the matchbox test package</title>
+    
+    <para>
+      The matchbox-test package uses autotools and is built and installed with
+      the usual;
+    </para>
+    <para>
+      <programlisting>                                                           
+        % ./configure
+        % make
+        % sudo make install
+      </programlisting>
+    </para>
+    <para>
+      This will build the various binary test utilitys and install a special
+      'mbtest' theme.
+    </para>
+  </section>
+
+  <section>
+    <title>Running Matchbox for testing.</title>
+    <para>
+      Xnest basically provides a X server in an X window - it being both an X
+      Server and an X Client at the same time. This makes it useful for both
+      testing Matchbox on a desktop machine and 'emulating' PDA sized
+      displays. The procedure for running Matchbox in an Xnest follows;
+    </para>
+    <programlisting>
+      % Xnest :1 -ac -geometry 240x320
+      % export DISPLAY=:1
+      % matchbox 
+    </programlisting>
+    <para>
+      A similar technique can be used to run Matchbox locally on a development
+      machine but have it manage windows on another display ( such as a handheld
+      ). On the remote machine, make sure there is no window manager already
+      running and then give access for the X Server from the development machine
+      ( e.g. with xhost +&lt;dev machine ip&gt; or by using Xnest with -ac
+      argument ). On the development machine set the DISPLAY env variable to the
+      remote machines IP and then launch Matchbox.
+    </para>
+    <para>
+      Matchbox can be run under Valgrind on x86 platforms to debug memory
+      allocations and management.
+    </para>
+    <para>
+      Its recommended, though not essential, that the Matchbox build is
+      configured with the '--enable-debug' switch. The resulting binaries will
+      spew verbose messages to stdout which contain information that's useful
+      for fixing any failed tests.
+    </para>
+  </section>
+
+  <section>
+    <title>The Tests</title>
+    <para>
+      All tests are in the Matchbox distro's tests/ directory. You should
+      run tests from within that directory.
+    </para>
+    
+    <section>
+      <title>test-windows.sh</title>
+      <para>
+        Tests Matchbox's handling of various window types by means of the
+        winspew application.
+      </para>
+    </section>
+    
+    <section>
+      <title>test-interaction.sh</title>
+      <para>
+        Creates some various window types and then replays some Xnee data (
+        test-interaction.xnee ) automating common window operations on these
+        created windows. A Screenshot is then taken at completion and compared
+        with a reference one ( test-interaction.xwd ) to indicate success or
+        failure. If installed, <ulink url="http://www.imagemagick.org/">Image
+          Magick's</ulink> 'display' program will be used to visually present
+        failed screenshots.
+      </para>
+      <para>
+        To work correctly this test also requires matchbox-desktop to be
+        installed.
+      </para>        
+      <para>
+        This test will only function correctly with a 240x320 or 640x480 sized
+        display.
+      </para>
+      <para> 
+        Its highly recommended you avoid any system interaction while this test
+        is running as this can lead to false results.
+      </para>
+    </section>
+
+    <section>
+      <title>test-dock.sh</title>
+      <para>
+        Tests mbdock by running it under Valgrind in different orientations,
+        adding and removing panel applets.
+      </para>
+    </section>
+    
+    <section>
+      <title>test-gconf.sh</title>
+      <para>
+        test-gconf.sh currently just edits the 'cycle_window' shortcut and then
+        'tests' it via sendkey.
+      </para>
+    </section>
+
+    <section>
+      <title>libmb-test</title>
+      <para>
+        This is a binary based test for libmb. Currently it only basically tests
+        font rendering and clipping functionality.
+      </para>
+    </section>
+  </section>
+
+  <section>
+    <title>Running All Tests</title>
+    <para>
+      The 'testrun.sh' script aims to run all tests automated in a standardised
+      enviroment before producing a report summary.  It performs the following;
+    </para>
+    <orderedlist>
+      <listitem>
+        <para>Starts Xnest and sets $DISPLAY to this server.</para>
+      </listitem>
+      <listitem>
+        <para>Starts Matchbox optionally running under Valgrind.</para>
+      </listitem>
+      <listitem>
+        <para>Sets the Matchbox theme via mbcontrol</para>
+      </listitem>
+      <listitem>
+        <para>Runs each test, non-interactively</para>
+      </listitem>
+      <listitem>
+        <para>Finally produces a simple report, commenting on how each test went.</para>
+      </listitem>
+    </orderedlist>
+    <para> 
+      The script reads parameters set in test.conf and runs all listed
+      tests. You can specify particular tests to run and and specify an
+      alternate config file to use. Run testrun.sh with '-h' to see how to set
+      this.
+    </para>
+    <para>
+      To add a new test to be run, just name the new script test-XXXX.sh ( where
+      XXXX is anything you like ) and add to tests directory.
+    </para>
+  </section>
+
+  <section>
+    <title>Reporting a failed Test</title>
+    <para>
+      Please report failed tests to <ulink
+        url="http://bugs.openedhand.com/index.cgi/Matchbox/index">bugs.openedhand.com</ulink>,
+      giving as much infomation as possible.
+    </para>
+  </section>
+
+  <section>
+    <title>Code Coverage</title>
+    <para>
+      Both the matchbox-window-manager and libmatchbox packages have support
+      for the GNU Code coverage tool <ulink
+        url="http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html">Gcov</ulink>. To
+      enable, at build time configure the packages with the
+      <userinput>--enable-gcov</userinput> option. The built binaries will then
+      produce gcov statistics, which can further be processed by running gcov on
+      source files.
+    </para>
+    <para>
+      Within the test package exists 'gcov-wrapper.sh'. This script will run all
+      or any of the tests and report the percentage of code per sourcefile the
+      test run covered.
+    </para>
+    <para>
+      Usage is;
+    </para>
+    <programlisting> 
+        usage: ./gcov-wrapper.sh &lt;matchbox wm src path&gt; &lt;libmatchbox src path&gt; [test]
+        
+        'test' defaults to testrun.sh
+        Set GCOV_FLAGS to any required gcov swicthes
+    </programlisting>
+    <para>
+      It is advised you make clean and then remake matchbox-window-manager and
+      libmatchbox before each gcov-wrapper.sh run to avoid statistics
+      accumulating.
+    </para>
+    <para>
+      More information on using Gcov is available at <ulink
+        url="http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html">http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html</ulink>
+    </para>
+  </section>
+  
+  <section>
+    <title>Appendix A - Tools</title>
+    <section><title>Valgrind</title>
+      <para>
+        An open-source memory debugger for x86-GNU/Linux.  <ulink
+        url="http://developer.kde.org/~sewardj/">http://developer.kde.org/~sewardj/</ulink>
+      </para>
+      <para>
+        By default the tests run Valgrind with the following arguments.
+        <programlisting>
+          valgrind --error-limit=no --num-callers=32 --leak-check=yes
+        </programlisting>
+      </para>
+    </section>
+
+    <section>
+      <title>Xnee</title>
+      <para>
+        Xnee allows the recording and replaying of X protocol data. 
+        <ulink url="http://www.gnu.org/software/xnee/">http://www.gnu.org/software/xnee/</ulink>
+      </para>
+      <para>
+        To record data for Xnee, Im currently using something like;
+        <programlisting>
+          xnee -ae -o test-interaction.xnee -l -1
+        </programlisting>
+        Which basically translates to capture all events ( -ae ) , output ( -o
+        ) to test-interaction.xnee and keep capturing for ever ( -l -1 ). I
+        stop capture with ctrl-c.
+      </para>
+      <para>
+        To then replay the data ( as in test-interaction.sh ), use;
+        <programlisting>
+          xnee -rep -f test-interaction.xnee
+        </programlisting>
+        I'm using xnee 1.07.
+      </para>
+    </section>
+
+    <section>
+      <title>Xnest</title>
+      <para>
+        Xnest is an X server that is itself an X client.  This allows you to run
+        a server within a server - useful for testing new window managers and
+        other X clients.
+      </para>
+      <para>
+        Included in XFree86 distribution from <ulink url="http://www.xfree86.org">http://www.xfree86.org</ulink>. 
+      </para>
+    </section>
+
+    <section>
+      <title>winspew</title>
+      <para>
+        Creates dummy windows of arbitrary types and properties. 
+        Included with Matchbox in tests/, pass '-help' to get usage info.
+      </para>
+    </section>
+
+    <section><title>sendkey</title>
+      <para>
+        Uses XTest extension to send arbitrary keycodes and modifiers to the X
+        Server from the command line.  Included with Matchbox in tests/, pass
+        '-help' to get usage info.
+      </para>
+    </section>
+
+    <section>
+      <title>matchbox-remote</title>
+      <para>
+        Simple remote control of Matchbox, such as changing the theme.  Included
+        with Matchbox in utils/.
+      </para>
+    </section>
+  </section>
+
+  <section>
+    <title>Appendix B - Useful X debugging tools</title>
+    <para>
+      Please refer the the man pages for useful tools such 
+      xprop, xclientlist, xwd 
+    </para>
+    <para>
+      Also see <ulink
+        url="http://www.xfree86.org/~mvojkovi/restest.c">http://www.xfree86.org/~mvojkovi/restest.c</ulink> and <ulink url="http://www.freedesktop.org/Software/xrestop">http://www.freedesktop.org/Software/xrestop</ulink>
+      for examples of X-Resource extension usage.  'XRes' is a new XFree86
+      server extension ( > 4.2 ) which can used to monitor client resource
+      usage and detect server side pixmap leaks.
+    </para>
+  </section>
 </article>
-
-
-
-
