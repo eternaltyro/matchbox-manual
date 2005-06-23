@@ -1,0 +1,1554 @@
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<article id="mbmanual" lang="en">
+  <articleinfo>
+    <title>Matchbox Manual</title>
+    <author>
+      <firstname>Matthew</firstname> <surname>Allum</surname>
+      <affiliation>
+        <orgname>OpenedHand Ltd</orgname>
+      </affiliation>
+      <email>mallum@openedhand.com</email>
+    </author>
+    
+    <copyright>
+      <year>2005</year> <holder>OpenedHand Ltd</holder>
+    </copyright>
+
+    <legalnotice>
+      <para>
+        Permission is granted to copy, distribute and/or modify this
+        document under the terms of the <citetitle>GNU Free
+	  Documentation License</citetitle>, Version 1.1 or any later
+        version published by the Free Software Foundation with no
+        Invariant Sections, no Front-Cover Texts, and no Back-Cover
+        Texts. You may obtain a copy of the <citetitle>GNU Free
+	  Documentation License</citetitle> from the Free Software
+        Foundation by visiting <ulink type="http"
+	  url="http://www.fsf.org">their Web site</ulink> or by writing
+        to: Free Software Foundation, Inc., 59 Temple Place - Suite
+        330, Boston, MA 02111-1307, USA.
+      </para>
+    </legalnotice>
+
+    <releaseinfo>
+      This is version 1.0 of The Matchbox manual.
+    </releaseinfo>
+
+  </articleinfo>
+  
+  <section>
+    <title>Introduction</title>
+    <para>
+      The Matchbox project aims to increase X Windows practicality and
+      usability on embedded type hardware by providing a number of
+      interchangeable tools that make up a flexible lightweight base
+      user interface.
+      
+    </para>
+    <para>
+      
+      This includes; at its a core a stack based PDA style window
+      manager, a panel or dock, PDA style launcher, software input
+      methods and more.
+      
+    </para>
+    <para>
+      
+      This manual outlines the usage of the projects core
+      applications.  For newer applications not covered here refer to
+      the individual package's README file or doc directory.
+      
+    </para>
+    
+  </section>
+  
+  <section>
+    <title>Rational</title>
+    <para>
+      With the creation of <ulink
+      url="http://handhelds.org">Handhelds.org</ulink> and its work with other to
+      make Linux and X Windows run efficiently on iPaq devices it soon
+      became apparent to me, as an avid handhelds.org hacker, that pre
+      exisitng X11 window managers were a poor fit on a device with
+      such low resources, a small 240x320 display and very limited
+      input mechanisms ( no keyboard, touchscreen ). To improve on
+      this situation, Matchbox was started, initially with the
+      window manager.
+    </para>
+    <para>
+      The plan was to leverage the huge amount of exisiting X11
+      applications and toolkits and attempt to make them usuable on
+      such a device with little or no modification. This would also
+      make embedded application development more familiar and easier
+      for existing desktop orientated developers.
+    </para>
+    <para>
+
+      As the project grew, more features were added to the window manager, and where
+      practical, more support for other desktop standards and
+      protocols ( see <ulink
+      url="http://freedesktop.org">freedesktop.org</ulink> ) were added as
+      well as new supporting applications. 
+      </para>
+    <para>
+      Nowadays matchbox is used on a wide range of non desktop type embedded devices. Matchbox's build and run time flexibility allow it to well fit a target platforms resources, feature requirements and physical form.
+
+    </para>
+
+  </section>
+  <section id="wm">
+    <title>Matchbox Window Manager</title>
+    <para>
+      
+      The Matchbox window manager is responsible for managing X11
+      client window gemoetry and stacking order, as well as providing
+      decorations and controls to the window borders. Matchbox's style
+      of management is restrictive in nature, setting application
+      windows with a maximised static geometry in a browsable stack
+      with only one application being visible at any time. Different,
+      though fitting, rules and support apply to other window types
+      such as dialogs, panels and input method windows. The design is
+      such as to make platforms with small displays and limited input
+      mechanisms more use-able.
+      
+    </para>
+    <para>
+      
+      Through standardized client window property hints, themeing and
+      both runtime and build time options, matchbox-window-manager
+      provides much flexibility for tailoring to a particular embedded
+      UI style both in look and feel.
+      
+    </para>
+    <para>
+      
+      Matchbox window manager is included in the
+      <filename>matchbox-window-manager</filename> package, which is
+      part of the Matchbox project. This document describes version
+      1.0 of Matchbox window manager.
+      
+    </para>
+    <para>
+      The window manager is the matchbox project's most developed and
+      core application.
+    </para>
+    
+    <section id="wmusage">
+      <title>Runtime Usage And Configuration</title>
+      
+      <para>
+	With an X Server running and the <envar>DISPLAY</envar>
+	enviroment varible set correctly, run matchbox window manager
+	via;
+      </para>
+      <para>
+	
+	<screen>
+	  matchbox-window-manager [options]
+	</screen>
+	
+      </para>
+      
+      <para>
+	
+	Matchbox window manager supports optional configuration via
+	command line options and/or X Resource settings
+	<footnote>
+	  <para>
+	    If X Resource support is disabled at build time this will
+	    not work.
+          </para>
+	</footnote>. For general usage one should not need to set any
+	command line options.
+	
+      </para>
+      <para>
+	
+	X Resources are usually set options per user in ~/.Xdefaults
+	and globally in (install prefix)/share/matchbox/defaults.
+	
+	
+      </para>
+      <para>
+	
+	Command line options take precedence over both of these.
+	
+      </para>
+      <para>
+	Options, are;
+	
+	<variablelist>
+	  
+	  <varlistentry>
+	    <term><userinput>-display &lt;string&gt;</userinput></term>
+	    <listitem>
+	      <para>
+		
+		Specify the X Server for matchbox to connect
+		to. Defaults to <envar>DISPLAY</envar> environment
+		variable.
+		
+	      </para>
+	      
+	    </listitem>
+	  </varlistentry>
+	  
+	  
+	  <varlistentry>
+	    <term><userinput>-theme &lt;string&gt;</userinput></term>
+	    <listitem>
+	      <para>
+		
+		Specify the theme name to use, describing the window
+		managers' look and feel'. The directory's;
+		
+	      </para>
+	      <para>
+		
+		<screen>
+		  
+		  ~/.theme/[theme name]/matchbox
+		  $PREFIX/share/themes/[theme name]/matchbox
+		  
+		</screen>
+		
+		<footnote>
+		  <para>
+		    <envar>$PREFIX</envar> is the optional path passed
+		    to the --prefix option of the build configure. By
+		    default it is likely to be
+		    <filename>/usr</filename> or
+		    <filename>/usr/local</filename>.
+		  </para>
+		</footnote>
+		
+	      </para>
+	      <para>
+		
+		will be checked for a valid theme.xml file. If the
+		file is not found or invalid, matchbox will revert to
+		its default theme (
+		<filename>$PREFIX/share/themes/Default/matchbox</filename>
+		)
+		
+	      </para>
+	      
+	      <tip>
+		<title>Note</title>
+		<para>
+		  Themeing will not be available if matchbox is
+		  compiled with the
+		  <emphasis>--enable-standalone</emphasis> option.
+		</para>
+	      </tip>
+	      
+	      <para>
+		
+		The corresponding X Resource key is
+		<emphasis>matchbox.theme</emphasis> .
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  
+	  <varlistentry>
+	    <term><userinput>-use_titlebar
+		&lt;yes|no&gt;</userinput></term>
+	    <listitem>
+	      <para>
+		
+		Specify whether if application windows have title bar
+		decorations. Defaults to yes.
+		
+	      </para>
+	      <tip>
+		<title>Tip</title>
+		<para>
+		  
+		  This option is useful if you are running Matchbox on
+		  platforms where you intend to run just one
+		  application, or you want all applications to run
+		  'full screen' - a set-top box style enviroment for
+		  example. Dialog windows will however be decorated.
+		  
+		</para>
+	      </tip>
+	      <para>
+		
+		The corresponding X Resource key is
+		<emphasis>matchbox.titlebar</emphasis> .
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  
+	  <varlistentry>
+	    <term><userinput>-use_lowlight
+		&lt;yes|no&gt;</userinput></term>
+	    <listitem>
+	      <para>
+		Enables an effect to make modal dialog windows 'super'
+		modal. All other windows are lowlighted out. This
+		option is <emphasis>EXPERIMENTAL</emphasis> and alway
+		active in a composite enabled build.
+	      </para>
+	      
+	      <para>
+		
+		Dialog windows must specify they are modal for this
+		option to work.
+		
+	      </para>
+	      <para>
+		
+		The lowlighted color is specified by the current
+		theme.xml file.
+		
+	      </para>
+	      
+	      <para>
+		
+		The corresponding X Resource key is
+		<emphasis>matchbox.lowlight</emphasis> .
+		
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  
+	  <varlistentry>
+	    <term><userinput>-use_dialog_mode
+		&lt;free|const|const-horiz&gt;</userinput></term>
+	    <listitem>
+	      <para>
+		
+		Decides the strategy the window manager uses to position
+		and resize dialogs. By default, dialogs will be restrained
+		to fit on the display not covering any panels or
+		input/toolbar windows.
+	      </para>
+
+	      <para>
+		
+		<emphasis>free</emphasis>, will remove any window manager
+		intervention.
+	      </para>
+
+	      <para>
+
+		<emphasis>static</emphasis>, the user cannot change dialog
+		position or stacking order.
+
+	      </para>
+	      <para>
+
+		<emphasis>const-horiz</emphasis> is like the 'const'
+		option but will make all dialogs the full screen width and
+		allow movement only in the vertical.
+
+	      </para>
+	      <para>
+
+		The corresponding X Resource key is
+		<emphasis>matchbox.dialog</emphasis> .
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>-use_desktop_mode
+		&lt;decorated|plain&gt;</userinput></term>
+	    <listitem>
+	      <para>
+
+		Decides if desktop' windows ( such as Nautilus or
+		matchbox-desktop ) are decorated or 'fullscreen'. Defaults
+		to plain.
+
+	      </para>
+	      <para>
+
+		The corresponding X Resource key is
+		<emphasis>matchbox.desktop</emphasis> .
+
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>-use_cursor
+		&lt;yes|now&gt;</userinput></term>
+	    <listitem>
+	      <para>
+
+		If enabled, an attempt is made to hide the mouse cursor
+		completely. This can be overridden by applications such as
+		xterms.
+
+	      </para>
+
+	      <para>
+
+		<tip>
+		  <title>Warning</title>
+		  <para>
+		    This option will likely be depreciated in future
+		    releases, as it does not provide a 100% solution.
+		  </para>
+		  <para>
+		    An improved way of providing this effect is to use
+		    libXcursor with a 'blank' ( eg all cursors are fully
+		    alpha ) theme. See <ulink
+		      url="http://projects.o-hand.com/matchbox/sources/utils/"
+		      />.  </para>
+		</tip>
+		
+	      </para>
+	      <para>
+
+		The corresponding X Resource key is
+		<emphasis>matchbox.cursor</emphasis> .
+
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>-force-dialogs &lt;comma seperated name
+		list&gt;</userinput></term>
+	    <listitem>
+	      <para>
+		Specify a comma seperated list of window titles, whose
+		windows when matched are <emphasis>forced</emphasis> to be
+		treated as dialogs rather than application windows. It is
+		advised not to use this option, but adapt the required
+		application to set the correct windows hints.
+	      </para>
+	      <para>
+		The corresponding X Resource key is
+		<emphasis>matchbox.forcedialogs</emphasis> .
+		
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  
+	  <varlistentry>
+	    <term><userinput>--sm-client-id &lt;session manager client
+		ID&gt;</userinput></term>
+	    <listitem>
+	      <para>
+		Specify the session manager client ID. Only used if
+		build with session manager support.
+	      </para>
+	      <para>
+		The corresponding X Resource key is
+		<emphasis>matchbox.session</emphasis> .
+		
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  
+	  
+	  <varlistentry>
+	    <term><userinput>-help</userinput></term>
+	    <listitem>
+	      <para>
+		Display a brief help message and build configuration
+		details.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	</variablelist>
+
+      </para>
+      <para>
+	Matchbox window manager also uses enviroment varibles for advanced
+	usage. These are </para>
+      <para>
+
+	<variablelist>
+
+	  <varlistentry>
+	    <term><envar>MB_SYNC</envar></term>
+	    <listitem>
+	      <para>
+		If set all X11 communication will be syncrinius, only used
+		for debugging.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><envar>MB_HUNG_APP_HANDLER</envar></term>
+	    <listitem>
+	      <para>
+		Specifys the full path to a binary to be optionally called
+		to handle a 'hung' application. It will be the passed both
+		theprocess ID and window ID of the hung application.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	</variablelist>
+
+
+      </para>
+
+    </section>
+    <section id="wmthemes"><title>Themes</title>
+      <para>
+
+	The window manager is fully themeable. Themeing is configured by
+	simple XML files found in;
+
+      </para>
+      <para>
+
+	<screen>
+	  $PREFIX/share/themes/[selected theme name]/matchbox
+	</screen>
+
+      </para>
+      <para>
+
+	See the 'blondie' theme.xml file for details on the format or read
+	the <ulink url="themes/index.html">Matchbox
+	  Themeing-Howto</ulink>.
+      </para>
+
+      <para>
+
+	As well as being selected on startup, themes can be changed 'on
+	the fly;. There are various ways to do this.
+
+      </para>
+      <para>
+
+	If you compiled Matchbox without libxsettings support, use
+	matchbox-remote to change the current theme.
+
+      </para>
+
+      <para>
+	<userinput>matchbox-remote -t &lt;theme name&gt; </userinput>
+      </para>
+
+      <para>
+
+	Alternatively if you compiled with XSettings support, you will be
+	able to use the Gnome2 / GPE / KDE3 desktop configuration tools to
+	change the theme. The XSettings key used is
+	<filename>Net/ThemeName</filename>
+
+      </para>
+
+      <para>
+
+	The Window Manager distribution tarball contains three themes:
+	blondie - a bells and whistles PNG based theme for PDA's, bluebox -
+	a lighter XPM image based theme and borillo - a theme for larger
+	displays.
+
+      </para>
+
+    </section>
+
+    <section id="wmkeys"><title>Shortcut keys</title>
+      <para>
+
+	The window manager has redefinable shortcut keys which can be used
+	to perform window operations or launch applications. The location of
+	the config file is PREFIX/share/matchbox/kbdconfig , this can be
+	overridden by the user having a ~/.matchbox/kdbconfig file.
+
+      </para>
+      <para>
+
+	The config file is made up of one definition per line each in the
+	format
+
+      </para>
+      <para>
+
+	<screen>
+	  &lt;keys definition&gt;=&lt;action&gt;
+	</screen>
+
+      </para>
+
+      <para>
+	
+	'Keys Definition' consists of an optional series of modifier keys
+	in angle brackets followed by the actual key symbol. Action can be
+	one of next, prev, close, taskmenu, hidetitle, fullscreen and
+	desktop for various window operations.
+
+      </para>
+      <para>
+
+	The action can be prefixed with special characters to launch
+	applications.  Prefixes are;
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      !  Launch application with just a standard fork-exec.
+	    </para>
+	  </listitem>
+	  <listitem><para>!!  Launch application with
+	      'startup-notification' - provides feedback of application
+	      startup cycle.</para> <para>Application must support startup
+	      notification ( eg uses GTK 2.2 or above )</para></listitem>
+          
+	  <listitem><para>!$ Launch or raise preexisting application,
+	      keeping just a single instance running. [1]
+	    </para></listitem>
+	</itemizedlist>
+
+      </para>
+      <para>
+
+	For example
+
+      </para>
+      <para>
+
+	<screen>
+	  &lt;ctrl&gt;&lt;alt&gt;p=prev
+	</screen>
+
+      </para>
+      <para>
+
+
+	Binds the combination of alt, ctrl and p to show the previous
+	window.
+
+      </para>
+      <para>
+
+	<screen>
+	  &lt;ctrl&gt;x=!xterm
+	</screen>
+
+      </para>
+      <para>
+
+	Binds the combination of ctrl x to launch an xterm.
+      </para>
+
+      <para>
+	See the installed kbdconfig file for more examples.
+      </para>
+
+      <para>
+
+	The matchbox window manager can be configured to use gconf to store
+	keyboard shortcuts - the kbdconfig file will then be ignored. The
+	advantage of using gconf is the shortcuts can be changed on the fly
+	without requiring a restart of the window manager.
+
+      </para>
+
+      <para>
+
+	The 'action' syntax is the same as above. You should use gconftool
+	or gconf-editor to set documented keys under /apps/matchbox.
+
+      </para>
+
+    </section>
+    <section id="wmapps">
+      <title>Included Utilities</title>
+      
+      <section><title>matchbox-session</title>
+	<para>
+	  A very simple shell script to start Matchbox window manager, desktop
+	  and panel ( if available ).
+	</para>
+	<para>
+	  The file will check for in order and exec the following files if they
+	  exist.
+	</para>
+	<para>
+
+	  <programlisting>
+	    $HOME/.matchbox/session /etc/matchbox/session
+	  </programlisting>
+	</para>
+	<para>
+
+	  If they don't exist sensible defaults will be run. The reasoning
+	  behind this file is that distributions containing Matchbox can easily
+	  tailor startup options ( by supplying a /etc/matchbox/session ) for
+	  their platform.
+
+	</para>
+
+	<para>
+	  Matchbox window manager can be built with basic 'real' X11 session
+	  manager support. If so, this should be used instead of the
+	  matchbox-session mechanism.
+	</para>
+
+      </section>
+      <section><title>matchbox-remote</title>
+	<para>
+	  A command line tool to externally control Matchbox.
+	</para>
+	<para>
+	  <table>
+	    <title>matchbox-remote command line options</title>
+	    <tgroup cols="3" align="left" colsep="10" rowsep="10">
+	      <thead>
+		<row valign='top'>
+		  <entry>Option</entry> <entry>Value Type</entry>
+		  <entry>Description</entry>
+		</row>
+	      </thead>
+	      <tbody>
+		<row valign='top'>
+		  <entry>-theme</entry> <entry>Theme name</entry> <entry>switch Matchbox
+		    theme</entry>
+		</row>
+		<row valign='top'>
+		  <entry>-r</entry> <entry>na.</entry> <entry>Print current Matchbox
+		    theme to stdout </entry>
+		</row>
+		<row valign='top'>
+		  <entry>-exit</entry> <entry>na.</entry> <entry>Request Matchbox window
+		    manager to exit</entry>
+		</row>
+		<row valign='top'>
+		  <entry>-next</entry> <entry>na.</entry> <entry>Request Matchbox window
+		    manager to 'page' to next window</entry>
+		</row>
+		<row valign='top'>
+		  <entry>-prev</entry> <entry>na.</entry> <entry>Request Matchbox window
+		    manager to 'page' to previous window</entry>
+		</row>
+		<row valign='top'>
+		  <entry>-desktop</entry> <entry>na.</entry> <entry>Request Matchbox
+		    window manager to toggle desktop visibility</entry>
+		</row>
+		<row valign='top'>
+		  <entry>-mbmenu</entry> <entry>na.</entry> <entry>activate
+		    mb-applet-menu-launcher ( if running )</entry>
+		</row>
+
+		<row valign='top'>
+		  <entry>-input-toggle</entry> <entry>1|0</entry> <entry>Toggles
+		    selected input method active via mb-input-manager ( if running
+		    )</entry>
+		</row>
+
+		<row valign='top'>
+		  <entry>-composite-toggle</entry> <entry>na.</entry> <entry>Toggles
+		    compositing on/off. ( if matchbox-window-manager is built with
+		    composite support )</entry>
+		</row>
+
+	      </tbody>
+	    </tgroup>
+	  </table>
+	</para>
+      </section>
+    </section>
+    <section>
+      <title>Management dynamics</title>
+      <para>
+	This section is intended for application authors who want to
+	better integrate there applications with matchbox window manager
+	rather than being for general users
+      </para>
+    </section>
+
+  </section>
+
+  <section id="panel">
+    <title>Matchbox Panel</title>
+    <para>
+
+      The Matchbox panel is a lightweight, always visible application that
+      occupys a rectangular area of the display.  It is intended to hold
+      applets such as application launchers, and simple user information
+      type tools, such as a battery power level monitor or clock.
+
+    </para>
+
+    <para>
+      
+      The panel can supports different orientations and sizes. It conforms
+      to the <ulink
+	url="http://www.freedesktop.org/Standards/systemtray-spec">System
+	Tray Protocol specification</ulink> for 'docking' applets.
+
+    </para>
+
+    <para>
+
+      The panel optionally features simple session management to remember
+      what apps are 'parented', and a popup menu to add / remove apps. The
+      popup menu is enabled by clicking and holding on a free area of the
+      panel.
+
+    </para>
+
+    <para>
+
+      The Matchbox panel is included in the
+      <filename>matchbox-panel</filename> package, which is part of the
+      Matchbox project. A number of simple panel 'applets' are also
+      included. This document describes version 0.9 of the matchbox
+      panel.
+
+    </para>
+
+    <para>
+      Other panels conforming to <ulink
+	url="http://www.freedesktop.org/Standards/">EWMH
+	specifications</ulink> such as the GNOME and KDE panels or your own
+      creation can be used with matchbox window manager.
+
+    </para>
+
+
+    <section><title>Usage And Configuration</title>
+      <para>
+
+	<screen>
+	  <userinput>matchbox-panel [options]</userinput>
+	</screen>
+	<table>
+	  <title>Matchbox Panel command line options</title>
+	  <tgroup cols="3" align="left" colsep="10" rowsep="10">
+	    <thead>
+	      <row>
+		<entry>Option</entry> <entry>Value Type</entry>
+		<entry>Description</entry>
+	      </row>
+	    </thead>
+	    <tbody>
+	      <row valign='top'>
+		<entry>-display, -d</entry> <entry>string - X11 Display
+		  name</entry> <entry> Specify the X Server for the panel to
+		  connect to. Defaults to <envar>DISPLAY</envar> environmental
+		  variable.
+		</entry>
+	      </row>
+	      <row valign='top'>
+		<entry>--id</entry> <entry>integer</entry> <entry>Specify a
+		  unique id for the panel. This is needed if you wish to run
+		  multiple panels.</entry>
+	      </row>
+	      <row valign='top'>
+		<entry>--orientation</entry>
+		<entry>north|east|south|west</entry> <entry>Specify what edge on
+		  the display the panel should be located</entry>
+	      </row>
+
+	      <row valign='top'>
+		<entry>--margins</entry> <entry>&lt;left/right&gt;[,
+		  &lt;top/bottom&gt;] panel appley offsets in pixels</entry>
+		<entry>Specify panel margin around applets. Defaults to
+		  2,2</entry>
+	      </row>
+
+	      <row valign='top'>
+		<entry>--padding</entry> <entry>&lt;int&gt; </entry>
+		<entry>Specify spacing between panel applets in pixels</entry>
+	      </row>
+	      
+	      <row valign='top'>
+		<entry>--titlebar</entry> <entry></entry> <entry>Requests the
+		  panel is reparented in the window titlebar. See below for
+		  limitations.</entry>
+	      </row>
+	      
+	      <row valign='top'>
+		<entry>--size</entry> <entry>size in pixels</entry> <entry>Specify
+		  the height/width of panel</entry>
+	      </row>
+	      
+	      <row valign='top'>
+		<entry>--no-session, -ns</entry> <entry>na</entry>
+		<entry>Disable the panels sessioning mechanism</entry>
+	      </row>
+
+	      <row valign='top'>
+		<entry>--default-apps, -da</entry> <entry>Comma separated
+		  list of panel apps or 'none'</entry> <entry>Specify a list of
+		  apps to be started in order when a session file does not
+		  exist. If set to 'none' no default panel apps are started.
+		</entry>
+	      </row>
+
+	      <row valign='top'>
+		<entry>--no-menu, -nm</entry> <entry>na</entry> <entry>Diable
+		  the panels popup menu</entry>
+	      </row>
+	      <row valign='top'>
+		<entry>--overide-bubbles, -o</entry> <entry>na</entry>
+		<entry>If panel message bubbles are decorated by your chosen
+		  window manager, use this option as a workaround</entry>
+	      </row>
+	      <row valign='top'>
+		<entry>--bgcolor, -c</entry> <entry>#rrggbb</entry>
+		<entry>Specify a background color for the dock</entry>
+	      </row>
+	      
+	      <row valign='top'>
+		<entry>--bgpixmap, -b</entry> <entry>image filename</entry>
+		<entry>Specify a tiled background for the panel</entry>
+	      </row>
+	      <row valign='top'>
+		<entry>--bgtrans, -bt</entry> <entry>'yes'|transparency
+		  percentage</entry>
+		<entry>
+
+		  Specify the panel 'psuedo' transparency. For this to work you
+		  need either matchbox-desktop running, or a program that sets the root
+		  window pixmap and exports it Pixmap ID ( matchbox-desktop will
+		  set this ).
+
+		</entry>
+	      </row>
+	    </tbody>
+	  </tgroup>
+	</table>
+
+      </para>
+      <para>
+
+	Its possible for matchbox-panel to be reparented in main
+	application window titlebars with the '--titlebar' switch. For
+	this to work, the Matchbox WM theme.xml file must define an area
+	in the main window frame for the panel via a &lt;panel&gt; tag.
+
+      </para>
+      <para>
+
+	Also in this mode, the switches --size, --orientation, --bgtrans
+	and --use-flip will have no effect.
+
+      </para>
+      <para>
+
+	Some examples of panel usage ;
+
+      </para>
+      <para>
+	A transparent 60 pixel wide side panel
+
+      </para>
+      <para>
+
+	<programlisting>
+	  matchbox-panel --size 60 --orientaion east --bgtrans yes &amp;
+	</programlisting>
+
+      </para>
+      <para>
+
+	Running 2 panels at the top and bottom of the display
+
+      </para>
+      <para>
+
+	<programlisting>
+	  matchbox-panel --orientaion north &amp; matchbox-panel --id
+	  2--orientaion south &amp;
+	</programlisting>
+
+      </para>
+      <para>
+
+	An 'embedded titlebar' clock panel with no sessioning and no menu.
+
+      </para>
+      <para>
+
+	<programlisting>
+	  matchbox-panel --titlebar --no-menu --no-session --default-apps
+	  minitime &amp;
+	</programlisting>
+
+      </para>
+      <para>
+
+	The panel is fully themeable and will follow the current window
+	manager theme.  Refer to the <ulink
+	  url="themes/index.html">Matchbox Themeing-Howto</ulink> for more
+	infomation.
+
+      </para>
+      <para>
+
+	Setting a background option on the command line will override any
+	external theme settings having an effect of the panel background.
+
+      </para>
+    </section>
+
+    <section id="panelapps"><title>Panel Applications</title>
+
+      <para>
+
+	The matchbox-panel package includes a number of simple panel
+	apps. All of which understand the following options;
+	
+      </para>
+
+      <table>
+	<title>General Panel App command line options</title>
+	<tgroup cols="3" align="left" colsep="1" rowsep="10">
+	  <thead>
+	    <row valign='top'>
+	      <entry>Command Line Switch</entry> <entry>Value
+		Type</entry> <entry>Description</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row valign='top'>
+	      <entry>--display, -d</entry> <entry>string</entry>
+	      <entry>X11 Display to connect to</entry>
+	    </row>
+	    <row valign='top'>
+	      <entry>--offset, -o</entry> <entry>integer</entry>
+	      <entry>
+		
+		Specify the number of pixels to position the app from
+		the trays origin. Note its unlikely many trays will
+		allow free positioning. The matchbox panel uses
+		positive/negative offset values to determine what side
+		of the tray the app is stacked. Negative values will
+		stack the app at the beginning of the panel, anything
+		else will stack from the end.
+		
+	      </entry>
+	      
+	    </row>
+	    
+	    <row valign='top'>
+	      <entry>--no-session, -ns</entry> <entry>na</entry>
+	      <entry>
+		
+		Stops the panel from storing the application in its session file.
+
+	      </entry>
+	    </row>
+
+
+	  </tbody>
+	</tgroup>
+      </table>
+
+      <para>
+
+	Panel applets also honor the <envar>SYSTEM_TRAY_ID</envar> envirometal
+	var used to specify the panel ID to dock with.
+
+	<tip>
+	  <title>Tip</title>
+	  <para>
+	    <ulink
+	      url="http://projects.o-hand.com/matchbox/sources/matchbox-panel-manager/">matchbox-panel-manager</ulink>
+	    is a GTK based applications for managing the order of
+	    panel applets.  </para>
+	</tip>
+
+      </para>
+
+
+      <section><title>mb-applet-menu-launcher</title>
+
+	<para>
+
+	  A menu based application launcher. Reads .desktop files found in
+	  $PREFIX/share/applications/ ( and ~/.applications ).
+
+	</para>
+
+	<para>
+
+	  The menu structure is defined by .directory files found in
+	  $PREFIX/share/matchbox/vfolders ( See the section on matchbox-desktop for
+	  more info ).
+
+	</para>
+	<para>
+
+	  mb-applet-menu-launcher reads theme settings from the theme.desktop
+	  file as the panel.
+
+	</para>
+	<para>
+
+	  mb-applet-menu-launcher will also participate in single instance /
+	  startup notification protocols. Just like the window manager keyboard
+	  shortcuts.
+
+	</para>
+	<para>
+
+          <tip>
+	    <title>Tip</title>
+	    <para>
+	      Menu entrys from debian style /usr/lib/menu entry's will also be used
+	      if the <envar>MB_USE_DEB_MENUS</envar> enviromental var is set.
+
+	    </para>
+	  </tip>
+	</para>
+
+      </section>
+      <section><title>mb-applet-launcher </title>
+	<para>
+	  mb-applet-launcher can be used to create simple panel launchers.
+
+	</para>
+	<para>
+
+	  <screen>
+	    <userinput>mb-applet-launcher [options..] [ [ &lt;xpm|png filename&gt;
+	      &lt;command&gt; ] [ --desktop &lt;.desktop file&gt; ]</userinput>
+	  </screen>
+
+	</para>
+	<para>
+
+	  <table>
+	    <title>monolaunch command line options</title>
+	    <tgroup cols="3" align="left" colsep="1" rowsep="10">
+	      <thead>
+		<row valign='top'>
+		  <entry>Command Line Switch</entry> <entry>Value Type</entry>
+		  <entry>Description</entry>
+		</row>
+	      </thead>
+	      <tbody>
+		<row valign='top'>
+		  <entry>--title</entry> <entry>str</entry>
+		  <entry>
+		    Set the panel apps title, defaults to command line string.
+		  </entry>
+		</row>
+		<row valign='top'>
+		  <entry>--kill, -k</entry> <entry>na.</entry> <entry>Toggle app by
+		    destroying, rather than iconizing</entry>
+		</row>
+		<row valign='top'>
+		  <entry>--respawn, -l</entry> <entry>na.</entry> <entry>Launch multiple
+		    copies of the command line</entry>
+		</row>
+		<row valign='top'>
+		  <entry>--no-animation,-na</entry> <entry>na.</entry> <entry>Disables
+		    launch animation.</entry>
+		</row>
+		<row valign='top'>
+		  <entry>--message, -m</entry> <entry>na</entry> <entry>Capture the
+		    output of the command and send it as a message bubble to the dock when
+		    the applet is clicked.</entry>
+		</row>
+		<row valign='top'>
+		  <entry>--desktop</entry> <entry>.desktop filename</entry> <entry>Use
+		    just this option to create a launcher from an existing .desktop
+		    file.</entry>
+		</row>
+	      </tbody>
+	    </tgroup>
+	  </table>
+
+	</para>
+	<para>
+          <tip>
+	    <title>Tip</title>
+	    <para>
+
+	      mb-applet-launcher can be togeather with
+	      matchbox-remote to create window-manager controling
+	      buttons.
+
+	    </para>
+	  </tip>
+	</para>
+
+      </section>
+      <section><title>mb-applet-clock</title>
+
+	<para>
+	  A simple clock.
+	</para>
+
+      </section>
+
+      <section><title>mb-applet-wireless</title>
+
+	<para>
+	  Monitors the strength of wireless connections.
+	</para>
+
+      </section>
+      <section><title>mb-applet-system-monitor</title>
+
+	<para>
+	  A memory / cpu usage monitor.
+	</para>
+
+      </section>
+      <section><title>mb-applet-battery</title>
+	
+	<para>
+	  A battery power level monitor - it requires libapm to build.
+	</para>
+
+      </section>
+    </section>
+  </section>
+
+  <section><title>Matchbox Desktop</title>
+    <para>
+      The desktop is kept at the very bottom of the window stack. It is
+      provided primarily as an application launcher but can be extended for numerous other uses.
+
+    </para>
+    <section><title>Usage And Configuration</title>
+      <para>
+	<screen>
+	  matchbox-desktop [options]
+	</screen>
+      </para>
+      <para>
+      <table>
+	<title>Matchbox Desktop command line options</title>
+	<tgroup cols="3" align="left" colsep="10" rowsep="10">
+	  <thead>
+	    <row valign='top'>
+	      <entry>Command Line Switch</entry>
+	      <entry>Value Type</entry>
+	      <entry>Description</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row valign='top'>
+	      <entry>-display</entry>
+	      <entry></entry>       
+	      <entry>Display to connect to</entry>
+	    </row>
+	    <row valign='top'>
+	      <entry>--bg</entry>            
+	      <entry>str</entry>
+	      <entry>
+		See below for details
+	      </entry>
+	    </row>
+	    <row valign='top'>
+	      <entry>--icon-size</entry>
+	      <entry>   integer</entry>
+	      <entry>Icon size</entry>
+	    </row>
+	    <row valign='top'>
+	      <entry>--icon-padding</entry>      
+	      <entry>integer</entry>         
+	      <entry>Spacing in  pixels between icons</entry>
+	    </row>
+	    <row valign='top'>
+	      <entry>--font</entry>         
+	      <entry>font definition,</entry>        
+	      <entry>Icon font, eg <emphasis>Sans Bold 10</emphasis> or 
+		<emphasis>Sans-10:bold</emphasis>
+	      </entry>
+	    </row>
+	    <row valign='top'>
+	      <entry>--titlefont</entry>    
+	      <entry>font definition, </entry>        
+	      <entry>Title font</entry>
+	    </row>
+	    <row valign='top'>
+	      <entry>--fontcol</entry>      
+	      <entry>color definition (#rrggbb)</entry>         
+	      <entry>Font color</entry>
+	    </row>
+	    <row valign='top'>
+	      <entry>--no-outline</entry>      
+	      <entry></entry>         
+	      <entry>Text is drawn without outline</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+      </para>
+      <para>
+
+	The value used to define various background types should follow the following formats.
+
+	<itemizedlist>
+	  <listitem><para>img-stretched:[filename]</para></listitem>
+	  <listitem><para>img-tiled:[filename]</para></listitem>
+	  <listitem><para>img-centered:[filename]</para></listitem>
+	  <listitem><para>col-solid:[color definition]</para></listitem>
+	  <listitem><para>col-gradient-vertical:[start color],[end color]</para></listitem>
+	  <listitem><para>col-gradient-horizontal:[start color],[end color]</para></listitem>
+	</itemizedlist>
+	a color is specified as a color name or an rgb def in the form 'rgb:r/g/b' or '#RGB
+
+      </para>
+
+      <para>
+
+	The desktop is also fully themeable and will follow the current window
+	manager theme.  Refer to the <ulink url="themes/index.html">Matchbox
+	  Themeing-Howto</ulink> for more infomation.
+
+      </para>
+
+    </section>
+    <section><title>Plugin Modules</title>
+      <para>
+	matchbox-desktop uses dynamically loadable modules to populate itself with entrys. 
+      </para>
+      <para>
+	Matchbox comes with 3 modules. A main application launcher which uses
+	.desktop files, a simple tasks manager and a simple
+	file browser.
+      </para>
+      <para>
+	What modules are used are set in  $PREFIX/lib/matchbox/mbdesktop_modules or set per user in ~/.matchbox/mbdesktop_modules.
+      </para>
+      <para>
+
+	Its quite easy to write your own modules. Please refer to the desktop/modules directory for examples.
+
+      </para>
+    </section>
+    <section><title>Adding Icons And Folders</title>
+      <para>
+
+	<tip>
+	  <title>Note</title>
+	  <para>
+	    The following is also true for mb-applet-menu-launcher.
+	  </para> 
+	</tip>
+
+      </para>
+      <para>
+
+	The directory's PREFIX/share/applications and HOME/applications are checked for the existence of 'INI style' .desktop files. A .desktop contains information about a program entry including its name, icon, executable string etc. 
+      </para>
+      <para>
+
+	A simple example is;
+	<programlisting>
+	  [Desktop Entry]
+	  Name=Figment
+	  Comment=An Outliner
+	  Exec=figment
+	  Icon=figment.png
+	  Type=Application
+	  Categories=Application;Core;
+	</programlisting>
+      </para>
+      <para>
+
+	The Icon entry should not specify a path, just the filename of the required image located in PREFIX/share/pixmaps. Locale based entrys can be added by appending a [contry_code] to the required key.
+
+      </para>
+      <para>
+
+	Information for what and how matchbox-desktop should create folders for the above entries is stored in $PREFIX/share/matchbox/vfolder and overridden by $HOME/.matchbox/vfolders/ .
+
+      </para>
+      <para>
+
+	The directory should contain a root.order file, a root.directory file,
+	and optionally a number of other .directory files describing each folder.
+
+      </para>
+      <para>
+
+	The .directory files are just like .desktop files but describe a
+	folder rather than a application. The root.order files specifys which
+	and what order the directory files should be displayed in. 
+
+      </para>
+      <para>
+
+	A
+	.directory file should have a 'match' key of which its value is used
+	to compare against .desktop files Categories key value. This decides
+	which folder a .desktop file ends up in. If the match key is set to 'fallback', any Categories that are not matched will end up here. 
+
+      </para>
+
+      <para>
+
+	The fill desktop entry spec can be found at <ulink url="http://www.freedesktop.org/standards/desktop-entry-spec/">freedesktop.org</ulink>, also a nice introduction to .desktop files can be found at <ulink url="http://developers.sun.com/solaris/articles/integrating_gnome.html">Suns developer site</ulink>. Note Matchbox currently supports only the 'core' of the specification. 
+
+      </para>
+
+
+    </section>
+  </section>
+  <section>
+    <title>Obtaining Further Help</title>
+    <para>
+      For further help please visit the <ulink
+      url="http://projects.o-hand.com/matchbox" type="http">Matchbox
+      Project Web page</ulink>, subscribe to the <ulink
+      url="http://www.handhelds.org/mailman/listinfo/matchbox">mailing list</ulink> or pop into the #matchbox IRC channel on <ulink url="irc://irc.freenode.org/#matchbox">freenode</ulink>.
+    </para> 
+    <para>
+      Please send feature requests and bug
+      reports to the <ulink url="http://bugs.openedhand.com" type="http">Matchbox
+	bug tracking database</ulink>.
+    </para>
+    <para>
+      For paid proffesional support, consulting and custom development please visit <ulink url="http://o-hand.com" type="http">OpenedHand</ulink>.
+
+</para>
+
+  </section>
+  <section id="authors">
+    <title>Authors</title>
+    <para>
+      Matchbox was primarily written by Matthew Allum. See individual package AUTHORS files for other contributors.
+      (<email>mallum@openedhand.com</email>). To find more information about
+      Matchbox, please visit the <ulink
+	url="http://projects.o-hand.com/matchbox" type="http">Matchbox Project Web
+	page</ulink>.  
+    </para>
+
+    <para>
+      This manual was written by Matthew Allum
+      (<email>mallum@openedhand.com</email>). Please send all comments and
+      suggestions regarding this manual to Matthew or report them in the bug tracker.
+    </para>
+
+
+  </section>
+
+  <section id="license">
+    <title>License</title>
+    <para>
+      This program is free software; you can redistribute it and/or
+      modify it under the terms of the <citetitle>GNU General Public
+	License</citetitle> as published by the Free Software Foundation;
+      either version 2 of the License, or (at your option) any later
+      version.
+    </para>
+    <para>
+      This program is distributed in the hope that it will be useful, but
+      WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      <citetitle>GNU General Public License</citetitle> for more details.
+    </para>
+    <para>
+      A copy of the <citetitle>GNU General Public License</citetitle> is
+      included as an appendix to the <citetitle>GNOME Users
+	Guide</citetitle>.  You may also obtain a copy of the
+      <citetitle>GNU General Public License</citetitle> from the Free
+      Software Foundation by visiting <ulink type="http"
+	url="http://www.fsf.org">their Web site</ulink> or by writing to
+      <address>
+	Free Software Foundation, Inc.
+	<street>59 Temple Place</street> - Suite 330
+	<city>Boston</city>, <state>MA</state> <postcode>02111-1307</postcode>
+	<country>USA</country>
+      </address>
+    </para>
+  </section>
+
+  <section id="building">
+    <title>Appendix I: Building Matchbox from source.</title>
+    <para>
+      Firstly its recommended if your not used to building software from
+      source, you should check your distrobution for pre built binary
+      matchbox packages.
+    </para>
+    <para>
+      All Matchbox packages use GNU autotools and are configured and build
+      by the usual;
+    </para>
+    <para>
+      <programlisting>                                                           
+	% ./configure
+	% make
+	% sudo make install
+      </programlisting>
+    </para>
+    <para>                                                                     
+      You can see the various compile time options for enabling extra
+      features and dependencies by running. 
+    </para>
+    <para>
+      <programlisting>
+	% ./configure --help
+      </programlisting>                                                            </para>
+    <para>                     
+      <ulink type="http"
+        url="http://projects.o-hand.com/matchbox/whatis.shtml">What is matchbox</ulink> gives more infomation on each optional dependency.
+    </para>
+
+    <section><title>Inter Dependencies</title>
+      <para>
+	Virtually all packages are dependant on libmatchbox. You should build
+	and install libmatchbox first. All font and image  operations
+	are provided to other matchbx packages via libmatchbox. Therefore the
+	configure options you choose here ( such as Pango, JPEG support ) will
+	affect dependant packages.
+      </para>
+      <para>                                                                                
+	Matchbox-window-manager can be built <emphasis>without</emphasis> libmatchbox using the
+	--enable-standalone options. It is highly recommeded you only do this
+	is you intend to run <emphasis>only</emphasis> the window manager with no bells and
+	whistles such as themeing. This build option is intended mainly for
+	platforms where resources are very low or you want a quick and
+	depencie free window manager for testing on a new platform
+      </para>
+      <para>
+	If you decide to install the matchbox-panel or matchbox-desktop
+	packages you should install the matchbox-common package first. It
+	contains icons and launcher configuration data shared by both the
+	desktop and the panel menu launcher.
+      </para>
+      <para>                                                                                
+	If you encounter problems building, please report to the <ulink type="http" url="http://projects.o-hand.com/matchbox/mailinglist.shtml">mailing list</ulink>
+	for help.
+      </para>
+
+    </section> <section><title>Automated building</title> 
+      <para> 
+
+	An
+	automated build script is available to ease the build process.  This
+	will build a fully featured matchbox enviroment including the window
+	manager, desktop, panel and panel applications.
+      </para>
+      <para>                                                                                
+	Downlaod <ulink type="http" url="http://projects.o-hand.com/matchbox/sources/utils/matchbox-autobuild.sh">matchbox-autobuild.sh</ulink> script. Open in your favourite text editor, edit the
+	varibles at the top of the top and then run.
+      </para>                                                                                
+    </section>
+    <section><title>Building from CVS</title>
+      <para>                                                                                
+	If you plan on building from CVS, then before you build;
+      </para>
+      <para>
+	<itemizedlist>
+	  <listitem><para>autoconf --version must report 2.5 or later</para></listitem>
+	  <listitem><para>  automake --version must report 1.7.x</para></listitem>
+	  <listitem><para>  libtool --version must report 1.5 (available from <ulink type="http" url="http://ftp.club.cc.cmu.edu/\pub/gnu/libtool/libtool-1.5.tar.gz">http://ftp.club.cc.cmu.edu/\pub/gnu/libtool/libtool-1.5.tar.gz</ulink> if your distribution doesn't have it)
+	    </para></listitem>
+	  <listitem><para>pkg-config --version must report 0.9.0 or later</para></listitem>                                                                         </itemizedlist>         
+      </para>
+      <para>
+	If you plan on submitting patches please diff them against CVS.
+      </para>
+
+    </section>
+  </section>
+
+
+
+</article>
