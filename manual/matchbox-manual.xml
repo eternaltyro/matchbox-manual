@@ -71,15 +71,15 @@
       url="http://handhelds.org">Handhelds.org</ulink> and its work with other to
       make Linux and X Windows run efficiently on iPaq devices it soon
       became apparent to me, as an avid handhelds.org hacker, that pre
-      exisitng X11 window managers were a poor fit on a device with
+      existing X11 window managers were a poor fit on a device with
       such low resources, a small 240x320 display and very limited
       input mechanisms ( no keyboard, touchscreen ). To improve on
       this situation, Matchbox was started, initially with the
       window manager.
     </para>
     <para>
-      The plan was to leverage the huge amount of exisiting X11
-      applications and toolkits and attempt to make them usuable on
+      The plan was to leverage the huge amount of existing X11
+      applications and toolkits and attempt to make them usable on
       such a device with little or no modification. This would also
       make embedded application development more familiar and easier
       for existing desktop orientated developers.
@@ -103,10 +103,10 @@
     <para>
       
       The Matchbox window manager is responsible for managing X11
-      client window gemoetry and stacking order, as well as providing
+      client window geometry and stacking order, as well as providing
       decorations and controls to the window borders. Matchbox's style
       of management is restrictive in nature, setting application
-      windows with a maximised static geometry in a browsable stack
+      windows with a maximized static geometry in a brows-able stack
       with only one application being visible at any time. Different,
       though fitting, rules and support apply to other window types
       such as dialogs, panels and input method windows. The design is
@@ -140,7 +140,7 @@
       
       <para>
 	With an X Server running and the <envar>DISPLAY</envar>
-	enviroment varible set correctly, run matchbox window manager
+	environment variable set correctly, run matchbox window manager
 	via;
       </para>
       <para>
@@ -269,7 +269,7 @@
 		  This option is useful if you are running Matchbox on
 		  platforms where you intend to run just one
 		  application, or you want all applications to run
-		  'full screen' - a set-top box style enviroment for
+		  'full screen' - a set-top box style environment for
 		  example. Dialog windows will however be decorated.
 		  
 		</para>
@@ -288,7 +288,7 @@
 	    <listitem>
 	      <para>
 		Enables an effect to make modal dialog windows 'super'
-		modal. All other windows are lowlighted out. This
+		modal. All other windows are low-lighted out. This
 		option is <emphasis>EXPERIMENTAL</emphasis> and alway
 		active in a composite enabled build.
 	      </para>
@@ -301,7 +301,7 @@
 	      </para>
 	      <para>
 		
-		The lowlighted color is specified by the current
+		The low-lighted color is specified by the current
 		theme.xml file.
 		
 	      </para>
@@ -413,11 +413,11 @@
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term><userinput>-force-dialogs &lt;comma seperated name
+	    <term><userinput>-force-dialogs &lt;comma separated name
 		list&gt;</userinput></term>
 	    <listitem>
 	      <para>
-		Specify a comma seperated list of window titles, whose
+		Specify a comma separated list of window titles, whose
 		windows when matched are <emphasis>forced</emphasis> to be
 		treated as dialogs rather than application windows. It is
 		advised not to use this option, but adapt the required
@@ -462,7 +462,7 @@
 
       </para>
       <para>
-	Matchbox window manager also uses enviroment varibles for advanced
+	Matchbox window manager also uses environment variables for advanced
 	usage. These are </para>
       <para>
 
@@ -472,7 +472,7 @@
 	    <term><envar>MB_SYNC</envar></term>
 	    <listitem>
 	      <para>
-		If set all X11 communication will be syncrinius, only used
+		If set all X11 communication will be synchronous, only used
 		for debugging.
 	      </para>
 	    </listitem>
@@ -482,9 +482,9 @@
 	    <term><envar>MB_HUNG_APP_HANDLER</envar></term>
 	    <listitem>
 	      <para>
-		Specifys the full path to a binary to be optionally called
+		Specify the full path to a binary to be optionally called
 		to handle a 'hung' application. It will be the passed both
-		theprocess ID and window ID of the hung application.
+		the process ID and window ID of the hung application.
 	      </para>
 	    </listitem>
 	  </varlistentry>
@@ -498,7 +498,7 @@
     <section id="wmthemes"><title>Themes</title>
       <para>
 
-	The window manager is fully themeable. Themeing is configured by
+	The window manager is fully theme-able. Themeing is configured by
 	simple XML files found in;
 
       </para>
@@ -545,8 +545,7 @@
       <para>
 
 	The Window Manager distribution tarball contains three themes:
-	blondie - a bells and whistles PNG based theme for PDA's, bluebox -
-	a lighter XPM image based theme and borillo - a theme for larger
+	Default - a rather plain and simple default theme, blondie - a bells and whistles PNG based theme for PDA's, MBOpus - a theme for larger
 	displays.
 
       </para>
@@ -761,6 +760,14 @@
 	better integrate there applications with matchbox window manager
 	rather than being for general users
       </para>
+      <para>
+        Matchbox window manager uses the EWMH hints and tranciency to identify how a window should be managed and stacked.  
+      </para>
+      <para>
+      
+
+      </para>
+
     </section>
 
   </section>
@@ -770,7 +777,7 @@
     <para>
 
       The Matchbox panel is a lightweight, always visible application that
-      occupys a rectangular area of the display.  It is intended to hold
+      occupy s a rectangular area of the display.  It is intended to hold
       applets such as application launchers, and simple user information
       type tools, such as a battery power level monitor or clock.
 
@@ -849,7 +856,7 @@
 
 	      <row valign='top'>
 		<entry>--margins</entry> <entry>&lt;left/right&gt;[,
-		  &lt;top/bottom&gt;] panel appley offsets in pixels</entry>
+		  &lt;top/bottom&gt;] panel applet offsets in pixels</entry>
 		<entry>Specify panel margin around applets. Defaults to
 		  2,2</entry>
 	      </row>
@@ -861,7 +868,7 @@
 	      
 	      <row valign='top'>
 		<entry>--titlebar</entry> <entry></entry> <entry>Requests the
-		  panel is reparented in the window titlebar. See below for
+		  panel is re-parented in the window titlebar. See below for
 		  limitations.</entry>
 	      </row>
 	      
@@ -944,7 +951,7 @@
       <para>
 
 	<programlisting>
-	  matchbox-panel --size 60 --orientaion east --bgtrans yes &amp;
+	  matchbox-panel --size 60 --orientation east --bgtrans yes &amp;
 	</programlisting>
 
       </para>
@@ -956,8 +963,8 @@
       <para>
 
 	<programlisting>
-	  matchbox-panel --orientaion north &amp; matchbox-panel --id
-	  2--orientaion south &amp;
+	  matchbox-panel --orientation north &amp; matchbox-panel --id
+	  2--orientation south &amp;
 	</programlisting>
 
       </para>
@@ -1045,7 +1052,7 @@
 
       <para>
 
-	Panel applets also honor the <envar>SYSTEM_TRAY_ID</envar> envirometal
+	Panel applets also honor the <envar>SYSTEM_TRAY_ID</envar> environmental
 	var used to specify the panel ID to dock with.
 
 	<tip>
@@ -1094,8 +1101,8 @@
           <tip>
 	    <title>Tip</title>
 	    <para>
-	      Menu entrys from debian style /usr/lib/menu entry's will also be used
-	      if the <envar>MB_USE_DEB_MENUS</envar> enviromental var is set.
+	      Menu entrys from Debian style /usr/lib/menu entry's will also be used
+	      if the <envar>MB_USE_DEB_MENUS</envar> environmental variable is set.
 
 	    </para>
 	  </tip>
@@ -1166,7 +1173,7 @@
 	    <para>
 
 	      mb-applet-launcher can be togeather with
-	      matchbox-remote to create window-manager controling
+	      matchbox-remote to create window-manager controlling
 	      buttons.
 
 	    </para>
@@ -1298,14 +1305,14 @@
 
 	The desktop is also fully themeable and will follow the current window
 	manager theme.  Refer to the <ulink url="themes/index.html">Matchbox
-	  Themeing-Howto</ulink> for more infomation.
+	  Themeing-Howto</ulink> for more information.
 
       </para>
 
     </section>
     <section><title>Plugin Modules</title>
       <para>
-	matchbox-desktop uses dynamically loadable modules to populate itself with entrys. 
+	matchbox-desktop uses dynamically loadable modules to populate itself with entry's. 
       </para>
       <para>
 	Matchbox comes with 3 modules. A main application launcher which uses
@@ -1404,7 +1411,7 @@
 	bug tracking database</ulink>.
     </para>
     <para>
-      For paid proffesional support, consulting and custom development please visit <ulink url="http://o-hand.com" type="http">OpenedHand</ulink>.
+      For paid  support, consulting and custom development please visit <ulink url="http://o-hand.com" type="http">OpenedHand</ulink>.
 
 </para>
 
@@ -1463,7 +1470,7 @@
     <title>Appendix I: Building Matchbox from source.</title>
     <para>
       Firstly its recommended if your not used to building software from
-      source, you should check your distrobution for pre built binary
+      source, you should check your distribution for pre built binary
       matchbox packages.
     </para>
     <para>
@@ -1487,7 +1494,7 @@
       </programlisting>                                                            </para>
     <para>                     
       <ulink type="http"
-        url="http://projects.o-hand.com/matchbox/whatis.shtml">What is matchbox</ulink> gives more infomation on each optional dependency.
+        url="http://projects.o-hand.com/matchbox/whatis.shtml">What is matchbox</ulink> gives more information on each optional dependency.
     </para>
 
     <section><title>Inter Dependencies</title>
@@ -1504,7 +1511,7 @@
 	is you intend to run <emphasis>only</emphasis> the window manager with no bells and
 	whistles such as themeing. This build option is intended mainly for
 	platforms where resources are very low or you want a quick and
-	depencie free window manager for testing on a new platform
+	dependency free window manager for testing on a new platform
       </para>
       <para>
 	If you decide to install the matchbox-panel or matchbox-desktop
@@ -1522,12 +1529,12 @@
 
 	An
 	automated build script is available to ease the build process.  This
-	will build a fully featured matchbox enviroment including the window
+	will build a fully featured matchbox environment including the window
 	manager, desktop, panel and panel applications.
       </para>
       <para>                                                                                
-	Downlaod <ulink type="http" url="http://projects.o-hand.com/matchbox/sources/utils/matchbox-autobuild.sh">matchbox-autobuild.sh</ulink> script. Open in your favourite text editor, edit the
-	varibles at the top of the top and then run.
+	Download <ulink type="http" url="http://projects.o-hand.com/matchbox/sources/utils/matchbox-autobuild.sh">matchbox-autobuild.sh</ulink> script. Open in your favorite text editor, edit the
+	variables at the top of the top and then run.
       </para>                                                                                
     </section>
     <section><title>Building from CVS</title>
