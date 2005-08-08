@@ -38,20 +38,20 @@
 
   </articleinfo>
   
-  <section>
+  <section id="intro">
     <title>Introduction</title>
     <para>
       The Matchbox project aims to increase X Windows practicality and
       usability on embedded type hardware by providing a number of
       interchangeable tools that make up a flexible lightweight base
       user interface.
-      
+
     </para>
     <para>
       
-      This includes; at its a core a stack based PDA style window
-      manager, a panel or dock, PDA style launcher, software input
-      methods and more.
+      This includes at its a core a stack based PDA style window
+      manager. Also included is a panel or dock, a PDA style launcher,
+      software input methods and more.
       
     </para>
     <para>
@@ -64,18 +64,17 @@
     
   </section>
   
-  <section>
+  <section id="rational">
     <title>Rational</title>
     <para>
       With the creation of <ulink
-      url="http://handhelds.org">Handhelds.org</ulink> and its work with other to
+      url="http://handhelds.org">Handhelds.org</ulink> and its communitys work with to
       make Linux and X Windows run efficiently on iPaq devices it soon
       became apparent to me, as an avid handhelds.org hacker, that pre
       existing X11 window managers were a poor fit on a device with
       such low resources, a small 240x320 display and very limited
       input mechanisms ( no keyboard, touchscreen ). To improve on
-      this situation, Matchbox was started, initially with the
-      window manager.
+      this situation, Matchbox window manager was born.
     </para>
     <para>
       The plan was to leverage the huge amount of existing X11
@@ -90,10 +89,11 @@
       practical, more support for other desktop standards and
       protocols ( see <ulink
       url="http://freedesktop.org">freedesktop.org</ulink> ) were added as
-      well as new supporting applications. 
+      well as new supporting applications such as the matchbox panel and desktop. 
       </para>
     <para>
-      Nowadays matchbox is used on a wide range of non desktop type embedded devices. Matchbox's build and run time flexibility allow it to well fit a target platforms resources, feature requirements and physical form.
+
+      Nowadays matchbox is used on a wide range of non desktop type embedded devices. Matchbox's build and run time flexibility allow it to be tailored to a target platforms resources, feature requirements and physical form.
 
     </para>
 
@@ -106,12 +106,13 @@
       client window geometry and stacking order, as well as providing
       decorations and controls to the window borders. Matchbox's style
       of management is restrictive in nature, setting application
-      windows with a maximized static geometry in a brows-able stack
-      with only one application being visible at any time. Different,
-      though fitting, rules and support apply to other window types
-      such as dialogs, panels and input method windows. The design is
-      such as to make platforms with small displays and limited input
-      mechanisms more use-able.
+      windows with a maximized static geometry in a browsable stack or
+      deck with only one application being visible at any
+      time. Different, though applicable, rules apply to
+      other window types such as dialogs, panels and input method
+      windows. The design is such as to make application
+      management on platforms with small displays and limited input
+      mechanisms more useable.
       
     </para>
     <para>
@@ -145,29 +146,25 @@
       </para>
       <para>
 	
-	<screen>
+	<userinput>
 	  matchbox-window-manager [options]
-	</screen>
+	</userinput>
 	
       </para>
       
       <para>
 	
 	Matchbox window manager supports optional configuration via
-	command line options and/or X Resource settings
-	<footnote>
-	  <para>
-	    If X Resource support is disabled at build time this will
-	    not work.
-          </para>
-	</footnote>. For general usage one should not need to set any
+	command line options and/or X Resource settings (
+	    if X Resource support is disabled at build time this will
+	    not work. ). For general usage one should not need to set any
 	command line options.
 	
       </para>
       <para>
 	
-	X Resources are usually set options per user in ~/.Xdefaults
-	and globally in (install prefix)/share/matchbox/defaults.
+	X Resources are usually set options per user in <filename>~/.Xdefaults</filename>
+	and globally in <filename>(install prefix)/share/matchbox/defaults</filename>.
 	
 	
       </para>
@@ -202,36 +199,13 @@
 	      <para>
 		
 		Specify the theme name to use, describing the window
-		managers' look and feel'. The directory's;
-		
-	      </para>
-	      <para>
-		
-		<screen>
-		  
-		  ~/.theme/[theme name]/matchbox
-		  $PREFIX/share/themes/[theme name]/matchbox
-		  
-		</screen>
-		
-		<footnote>
-		  <para>
-		    <envar>$PREFIX</envar> is the optional path passed
-		    to the --prefix option of the build configure. By
-		    default it is likely to be
-		    <filename>/usr</filename> or
-		    <filename>/usr/local</filename>.
-		  </para>
-		</footnote>
-		
-	      </para>
-	      <para>
-		
-		will be checked for a valid theme.xml file. If the
-		file is not found or invalid, matchbox will revert to
-		its default theme (
-		<filename>$PREFIX/share/themes/Default/matchbox</filename>
-		)
+		managers' look and feel'. The directory's; <filename>
+		~/.theme/[theme name]/matchbox</filename> and
+		<filename>(install prefix)/share/themes/[themename]/matchbox</filename> will be checked for a valid
+		theme.xml file. If the file is not found or invalid,
+		matchbox will revert to its default theme (
+		<filename>(install
+		prefix)/share/themes/Default/matchbox</filename> )
 		
 	      </para>
 	      
@@ -437,7 +411,7 @@
 	    <listitem>
 	      <para>
 		Specify the session manager client ID. Only used if
-		build with session manager support.
+		built with session manager support. 
 	      </para>
 	      <para>
 		The corresponding X Resource key is
@@ -491,7 +465,6 @@
 
 	</variablelist>
 
-
       </para>
 
     </section>
@@ -499,14 +472,8 @@
       <para>
 
 	The window manager is fully theme-able. Themeing is configured by
-	simple XML files found in;
-
-      </para>
-      <para>
-
-	<screen>
-	  $PREFIX/share/themes/[selected theme name]/matchbox
-	</screen>
+	simple XML files found in
+	  <filename>(install prefix)/share/themes/[selected theme name]/matchbox</filename> .
 
       </para>
       <para>
@@ -524,8 +491,8 @@
       </para>
       <para>
 
-	If you compiled Matchbox without libxsettings support, use
-	matchbox-remote to change the current theme.
+	The easiest way is to use
+	matchbox-remote to change the current theme;
 
       </para>
 
@@ -538,7 +505,8 @@
 	Alternatively if you compiled with XSettings support, you will be
 	able to use the Gnome2 / GPE / KDE3 desktop configuration tools to
 	change the theme. The XSettings key used is
-	<filename>Net/ThemeName</filename>
+	<filename>Net/ThemeName</filename>. Using XSettings allows the
+        window manager theme to change with the toolkit theme.
 
       </para>
 
@@ -557,8 +525,8 @@
 
 	The window manager has redefinable shortcut keys which can be used
 	to perform window operations or launch applications. The location of
-	the config file is PREFIX/share/matchbox/kbdconfig , this can be
-	overridden by the user having a ~/.matchbox/kdbconfig file.
+	the config file is <filename>(install prefix)/share/matchbox/kbdconfig</filename> , this can be
+	overridden by the user having a <filename>~/.matchbox/kdbconfig</filename> file.
 
       </para>
       <para>
@@ -591,15 +559,15 @@
 	<itemizedlist>
 	  <listitem>
 	    <para>
-	      !  Launch application with just a standard fork-exec.
+	      <userinput>!</userinput>  Launch application with just a standard fork-exec.
 	    </para>
 	  </listitem>
-	  <listitem><para>!!  Launch application with
+	  <listitem><para><userinput>!!</userinput>  Launch application with
 	      'startup-notification' - provides feedback of application
 	      startup cycle.</para> <para>Application must support startup
 	      notification ( eg uses GTK 2.2 or above )</para></listitem>
           
-	  <listitem><para>!$ Launch or raise preexisting application,
+	  <listitem><para><userinput>!$</userinput> Launch or raise preexisting application,
 	      keeping just a single instance running. [1]
 	    </para></listitem>
 	</itemizedlist>
@@ -663,23 +631,20 @@
       <section><title>matchbox-session</title>
 	<para>
 	  A very simple shell script to start Matchbox window manager, desktop
-	  and panel ( if available ).
+	  and panel ( if available ). Run as part of your X startup scripts ( eg. <filename>~/.xinitrc</filename> or from the command line via;    
 	</para>
 	<para>
-	  The file will check for in order and exec the following files if they
+	<userinput>matchbox-session</userinput>
+        </para>
+	<para>
+	  The file will check for in order and exec <filename>~/.matchbox/session</filename> and <filename>/etc/matchbox/session</filename> if they
 	  exist.
-	</para>
-	<para>
-
-	  <programlisting>
-	    $HOME/.matchbox/session /etc/matchbox/session
-	  </programlisting>
 	</para>
 	<para>
 
 	  If they don't exist sensible defaults will be run. The reasoning
 	  behind this file is that distributions containing Matchbox can easily
-	  tailor startup options ( by supplying a /etc/matchbox/session ) for
+	  tailor startup options ( by supplying a <filename>/etc/matchbox/session</filename> ) for
 	  their platform.
 
 	</para>
@@ -693,8 +658,14 @@
       </section>
       <section><title>matchbox-remote</title>
 	<para>
-	  A command line tool to externally control Matchbox.
+	  A command line tool to externally control Matchbox. Launch via;
 	</para>
+	<para>
+	<userinput>matchbox-remote [options]</userinput>
+        </para>
+        <para>
+	options are;
+        </para>
 	<para>
 	  <table>
 	    <title>matchbox-remote command line options</title>
@@ -764,8 +735,7 @@
         Matchbox window manager uses the EWMH hints and tranciency to identify how a window should be managed and stacked.  
       </para>
       <para>
-      
-
+      <emphasis>TO COMPLETE</emphasis>	
       </para>
 
     </section>
@@ -823,9 +793,18 @@
     <section><title>Usage And Configuration</title>
       <para>
 
-	<screen>
+ With an X Server running and the DISPLAY  environment variable set correctly, run matchbox panel via;
+
+      </para>
+      <para>
+      
 	  <userinput>matchbox-panel [options]</userinput>
-	</screen>
+      </para>
+      <para>
+      Options are;
+      </para>
+      <para>
+
 	<table>
 	  <title>Matchbox Panel command line options</title>
 	  <tgroup cols="3" align="left" colsep="10" rowsep="10">
@@ -950,9 +929,9 @@
       </para>
       <para>
 
-	<programlisting>
+	<userinput>
 	  matchbox-panel --size 60 --orientation east --bgtrans yes &amp;
-	</programlisting>
+	</userinput>
 
       </para>
       <para>
@@ -962,10 +941,9 @@
       </para>
       <para>
 
-	<programlisting>
-	  matchbox-panel --orientation north &amp; matchbox-panel --id
-	  2--orientation south &amp;
-	</programlisting>
+	<userinput>
+	  matchbox-panel --orientation north &amp; matchbox-panel --id 2 --orientation south &amp;
+	</userinput>
 
       </para>
       <para>
@@ -975,10 +953,9 @@
       </para>
       <para>
 
-	<programlisting>
-	  matchbox-panel --titlebar --no-menu --no-session --default-apps
-	  minitime &amp;
-	</programlisting>
+	<userinput>
+	  matchbox-panel --titlebar --no-menu --no-session --default-apps minitime &amp;
+	</userinput>
 
       </para>
       <para>
@@ -1072,14 +1049,14 @@
 	<para>
 
 	  A menu based application launcher. Reads .desktop files found in
-	  $PREFIX/share/applications/ ( and ~/.applications ).
+	  <filename>(install prefix)/share/applications/</filename> ( and <filename>~/.applications</filename> ).
 
 	</para>
 
 	<para>
 
 	  The menu structure is defined by .directory files found in
-	  $PREFIX/share/matchbox/vfolders ( See the section on matchbox-desktop for
+	  <filename>(install prefix)/share/matchbox/vfolders</filename> ( See the section on matchbox-desktop for
 	  more info ).
 
 	</para>
@@ -1111,17 +1088,22 @@
       </section>
       <section><title>mb-applet-launcher </title>
 	<para>
-	  mb-applet-launcher can be used to create simple panel launchers.
+	  mb-applet-launcher can be used to create simple panel launchers. Launch via;
 
 	</para>
 	<para>
 
-	  <screen>
-	    <userinput>mb-applet-launcher [options..] [ [ &lt;xpm|png filename&gt;
-	      &lt;command&gt; ] [ --desktop &lt;.desktop file&gt; ]</userinput>
-	  </screen>
+	    <userinput>mb-applet-launcher [options..]  &lt;xpm|png filename&gt;  &lt;command&gt; ]</userinput>
 
 	</para>
+	<para>
+	or alternatively;
+       </para>
+	<para>
+
+             <userinput>mb-applet-launcher --desktop &lt;.desktop file&gt;</userinput> 
+
+</para>
 	<para>
 
 	  <table>
@@ -1213,7 +1195,7 @@
     </section>
   </section>
 
-  <section><title>Matchbox Desktop</title>
+  <section id="mbdesktop"><title>Matchbox Desktop</title>
     <para>
       The desktop is kept at the very bottom of the window stack. It is
       provided primarily as an application launcher but can be extended for numerous other uses.
@@ -1221,9 +1203,16 @@
     </para>
     <section><title>Usage And Configuration</title>
       <para>
-	<screen>
-	  matchbox-desktop [options]
-	</screen>
+
+ With an X Server running and the DISPLAY  environment variable set correctly, run matchbox desktop via;
+
+      </para>
+
+      <para>
+	  <userinput>matchbox-desktop [options]</userinput>
+      </para>
+      <para>
+	Options are;
       </para>
       <para>
       <table>
@@ -1320,7 +1309,7 @@
 	file browser.
       </para>
       <para>
-	What modules are used are set in  $PREFIX/lib/matchbox/mbdesktop_modules or set per user in ~/.matchbox/mbdesktop_modules.
+	What modules are used are set in  <filename>(install prefix)/lib/matchbox/mbdesktop_modules</filename> or set per user in <filename>~/.matchbox/mbdesktop_modules</filename>.
       </para>
       <para>
 
@@ -1341,7 +1330,7 @@
       </para>
       <para>
 
-	The directory's PREFIX/share/applications and HOME/applications are checked for the existence of 'INI style' .desktop files. A .desktop contains information about a program entry including its name, icon, executable string etc. 
+	The directory's <filename>(install prefix)/share/applications</filename> and <filename>~/applications</filename> are checked for the existence of 'INI style' .desktop files. A .desktop contains information about a program entry including its name, icon, executable string etc. 
       </para>
       <para>
 
@@ -1358,12 +1347,12 @@
       </para>
       <para>
 
-	The Icon entry should not specify a path, just the filename of the required image located in PREFIX/share/pixmaps. Locale based entrys can be added by appending a [contry_code] to the required key.
+	The Icon entry should not specify a path, just the filename of the required image located in <filename>(install prefix)/share/pixmaps</filename>. Locale based entrys can be added by appending a [contry_code] to the required key.
 
       </para>
       <para>
 
-	Information for what and how matchbox-desktop should create folders for the above entries is stored in $PREFIX/share/matchbox/vfolder and overridden by $HOME/.matchbox/vfolders/ .
+	Information for what and how matchbox-desktop should create folders for the above entries is stored in <filename>(install prefix)/share/matchbox/vfolder</filename> and overridden by <filename>~/.matchbox/vfolders/</filename> .
 
       </para>
       <para>
