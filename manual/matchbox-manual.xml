@@ -387,6 +387,34 @@
 	  </varlistentry>
 
 	  <varlistentry>
+	    <term><userinput>-use_super_modal
+		&lt;yes|now&gt;</userinput></term>
+	    <listitem>
+	      <para>
+
+		If enabled, dialog windows setting there modal hint
+                are made 'super' modal, in that when active all other
+                user window interaction is blocked.
+
+	      </para>
+
+	      <para>
+
+		This option should be considered experimental and
+		likely to change.
+
+	      </para>
+
+	      <para>
+
+		The corresponding X Resource key is
+		<emphasis>matchbox.supermodal</emphasis> .
+
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
 	    <term><userinput>-force-dialogs &lt;comma separated name
 		list&gt;</userinput></term>
 	    <listitem>
