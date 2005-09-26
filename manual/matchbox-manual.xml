@@ -648,7 +648,7 @@
       <para>
 
 	The 'action' syntax is the same as above. You should use gconftool
-	or gconf-editor to set documented keys under /apps/matchbox.
+	or gconf-editor to set documented keys under <filename>/apps/matchbox</filename>.
 
       </para>
 
@@ -1084,7 +1084,9 @@
 	<para>
 
 	  The menu structure is defined by .directory files found in
-	  <filename>(install prefix)/share/matchbox/vfolders</filename> ( See the section on matchbox-desktop for
+	  <filename>(install prefix)/share/matchbox/vfolders</filename> ( See the section on <ulink
+	      url="mbdesktop.html">matchbox-desktop</ulink>
+ for
 	  more info ).
 
 	</para>
@@ -1106,7 +1108,7 @@
           <tip>
 	    <title>Tip</title>
 	    <para>
-	      Menu entrys from Debian style /usr/lib/menu entry's will also be used
+	      Menu entrys from Debian style <filename>/usr/lib/menu</filename> entry's will also be used
 	      if the <envar>MB_USE_DEB_MENUS</envar> environmental variable is set.
 
 	    </para>
@@ -1363,7 +1365,7 @@
       <para>
 
 	A simple example is;
-	<programlisting>
+	<screen>
 	  [Desktop Entry]
 	  Name=Figment
 	  Comment=An Outliner
@@ -1371,7 +1373,7 @@
 	  Icon=figment.png
 	  Type=Application
 	  Categories=Application;Core;
-	</programlisting>
+	</screen>
       </para>
       <para>
 
@@ -1414,7 +1416,7 @@
 
     </section>
   </section>
-  <section>
+  <section id="help">
     <title>Obtaining Further Help</title>
     <para>
       For further help please visit the <ulink
@@ -1424,7 +1426,7 @@
     </para> 
     <para>
       Please send feature requests and bug
-      reports to the <ulink url="http://bugs.openedhand.com" type="http">Matchbox
+      reports to the <ulink url="http://bugzilla.openedhand.com" type="http">Matchbox
 	bug tracking database</ulink>.
     </para>
     <para>
@@ -1495,25 +1497,21 @@
       by the usual;
     </para>
     <para>
-      <programlisting>                                                           
+      <screen>                                                           
 	% ./configure
 	% make
 	% sudo make install
-      </programlisting>
+      </screen>
     </para>
     <para>                                                                     
       You can see the various compile time options for enabling extra
       features and dependencies by running. 
     </para>
     <para>
-      <programlisting>
+      <screen>
 	% ./configure --help
-      </programlisting>                                                            </para>
-    <para>                     
-      <ulink type="http"
-        url="http://projects.o-hand.com/matchbox/whatis.shtml">What is matchbox</ulink> gives more information on each optional dependency.
+      </screen>
     </para>
-
     <section><title>Inter Dependencies</title>
       <para>
 	Virtually all packages are dependant on libmatchbox. You should build
@@ -1528,7 +1526,7 @@
 	is you intend to run <emphasis>only</emphasis> the window manager with no bells and
 	whistles such as themeing. This build option is intended mainly for
 	platforms where resources are very low or you want a quick and
-	dependency free window manager for testing on a new platform
+	dependency free window manager for testing on a new platform.
       </para>
       <para>
 	If you decide to install the matchbox-panel or matchbox-desktop
@@ -1565,9 +1563,6 @@
 	  <listitem><para>  libtool --version must report 1.5 (available from <ulink type="http" url="http://ftp.club.cc.cmu.edu/\pub/gnu/libtool/libtool-1.5.tar.gz">http://ftp.club.cc.cmu.edu/\pub/gnu/libtool/libtool-1.5.tar.gz</ulink> if your distribution doesn't have it)
 	    </para></listitem>
 	  <listitem><para>pkg-config --version must report 0.9.0 or later</para></listitem>                                                                         </itemizedlist>         
-      </para>
-      <para>
-	If you plan on submitting patches please diff them against CVS.
       </para>
 
     </section>
