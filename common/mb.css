@@ -1,0 +1,152 @@
+body {
+
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 100%;
+  color: #333333;
+  margin: 4em;
+  padding-top: 0px;
+  background-color: white;
+}
+
+
+
+.programlisting {
+    border: 1px solid #ccc;
+    background: #ddd;
+    margin: 5px;
+    padding: 5px; 
+}
+
+img {
+    border: 0px;
+}
+
+hr {
+ color: #333;
+ background-color: #333;
+ height: 3px;
+}
+
+ h1 {
+   color: #99cc66;
+}
+
+
+h2 {
+   color: #99cc66;
+   border-bottom: 2px solid #dddddd; 
+}
+
+h3 {
+ color: #33bb66;
+   border-bottom: 1px solid #dddddd; 
+}
+
+
+
+#footer {
+	color: #aaa;
+	text-align: center;
+	font-size: 11px;
+}
+
+#footer a {
+        color: inherit;
+        text-decoration: none;
+}
+
+
+.variablelist {
+
+}
+
+.section {
+	margin-top: 40px;
+}
+
+.section table {
+	border: 0px;
+	background: #ddd;
+}
+
+.section td {
+        border: 0px;
+	background: #eee;
+	padding: 2px;
+}
+
+.section th {
+	background: #ccf;
+	border: 0px;
+}
+
+.tip {
+	background-color: #ce9;
+        border: 1px solid #466432;
+	padding: 5px;
+}
+
+.tip th  {
+     border: 0px;
+     background: #ce9;
+     color: #466432;
+}
+
+.tip td  {
+     border: 0px;
+     background: #ce9;
+}
+
+.tip table  {
+     border: 0px;
+     background: #ce9;
+}
+
+.tip h3 {
+	color: #466432;
+}
+
+.note {
+	background-color: #ce9;
+        border: 1px solid #466432;
+	padding: 5px;
+}
+
+.note th  {
+     border: 0px;
+     background: #ce9;
+     color: #466432;
+}
+
+.note td  {
+     border: 0px;
+     background: #ce9;
+}
+
+.note table  {
+     border: 0px;
+     background: #ce9;
+}
+
+.note h3 {
+	color: #466432;
+}
+
+.revhistory table {
+	border: 1px solid #ddd;
+}
+
+.revhistory th {
+	background: #ccc;
+	border: 0px;
+}
+
+.revhistory td {
+	background: #fff;
+	border: 0px;
+}
+
+a:Link {color: #6699cc; text-decoration: none; } 
+a:Active {color: #6699cc; text-decoration: none; }
+a:Visited {color: #6699cc; text-decoration: none;}
+a:Hover {color: #ec1c26; text-decoration: dotted;}
