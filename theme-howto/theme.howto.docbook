@@ -113,6 +113,7 @@ it can be later referenced.
 <para>
 	A font looks like;
 </para>
+<para>
 <programlisting>
 	&lt;font id="myfont" def="Sans,fixed bold 8" /&gt;
 </programlisting>
@@ -122,6 +123,7 @@ or
 <programlisting>
 	&lt;font id="myfont" def="Sans Serif-8:bold|fixed" /&gt;
 </programlisting>
+</para>
 <para>
 	You can use XFT or GTK2 style font naming.
 </para>
@@ -237,7 +239,7 @@ The window types are;
 </listitem>
 <listitem>
    <para>
-<emphasis>Note</<emphasis>, an matchbox window manager built with 'alternate input manager windows' does not provide any themeing for these windows. The windows are decoration free.	
+<emphasis>Note</emphasis>, an matchbox window manager built with 'alternate input manager windows' does not provide any themeing for these windows. The windows are decoration free.	
    </para>
 </listitem>
 
@@ -715,7 +717,6 @@ Toolbar windows currently have no borders defined.
 The final frame decoration to be defined is the task menu. The task
 menu decorations are defined slightly differently than other decorations.
 </para>
-<para>
 
 <para>
 
@@ -1037,7 +1038,7 @@ features are likely to change between matchbox releases.
 
 </para>
 <para>
-<emphasis>buttons</<emphasis> can have 'pressonly' in there options attribute.
+<emphasis>buttons</emphasis> can have 'pressonly' in there options attribute.
 If this is set the button will get activated on press, rather than release.
 </para>
 
@@ -1089,7 +1090,7 @@ to take effect.
 <section><title>How do I set window shadows ?</title>
 <para>
 
-Firstly matchbox-window-manager <emphasis>must</<emphasis> be built with 
+Firstly matchbox-window-manager <emphasis>must</emphasis> be built with 
 the <emphasis>--enable-composite</emphasis> compile option and both composite
 librarys and a composite enabled X Server for this options to take effect.
 
