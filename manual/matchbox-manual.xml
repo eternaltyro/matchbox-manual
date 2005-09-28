@@ -16,7 +16,7 @@
       <year>2005</year> <holder>OpenedHand Ltd</holder>
     </copyright>
 
-    <legalnotice>
+   <legalnotice>
       <para>
         Permission is granted to copy, distribute and/or modify this
         document under the terms of the <citetitle>GNU Free
@@ -1552,9 +1552,9 @@
 	variables at the top of the top and then run.
       </para>                                                                                
     </section>
-    <section><title>Building from CVS</title>
+    <section><title>Building from SVN</title>
       <para>                                                                                
-	If you plan on building from CVS, then before you build;
+	If you plan on building from SVN, then before you build;
       </para>
       <para>
 	<itemizedlist>
@@ -1563,6 +1563,9 @@
 	  <listitem><para>  libtool --version must report 1.5 (available from <ulink type="http" url="http://ftp.club.cc.cmu.edu/\pub/gnu/libtool/libtool-1.5.tar.gz">http://ftp.club.cc.cmu.edu/\pub/gnu/libtool/libtool-1.5.tar.gz</ulink> if your distribution doesn't have it)
 	    </para></listitem>
 	  <listitem><para>pkg-config --version must report 0.9.0 or later</para></listitem>                                                                         </itemizedlist>         
+      </para>
+      <para>
+      You will also need GConf2 Development packages and <ulink url="http://check.sf.net">Check</a> installed ( These are <emphasis>only</emphasis> needed if building from SVN, optional if building from release tarballs ).
       </para>
 
     </section>
