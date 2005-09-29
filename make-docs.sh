@@ -10,7 +10,7 @@ cp -r common/mb.css /tmp/mb-docs/manual/
 cp -r common/images/*.png /tmp/mb-docs/manual/images/
 
 echo "Generating manual tarball"
-tar cvzf --exclude=.svn /tmp/mb-docs/matchbox-manual.tar.gz /tmp/mb-docs/manual
+tar cvzf /tmp/mb-docs/matchbox-manual.tar.gz /tmp/mb-docs/manual
 
 echo "Generating manual PDF"
 echo "Not working as yet.."
@@ -32,8 +32,12 @@ cp -r common/images/*.png /tmp/mb-docs/themes/images/
 echo "Copying various text files and stuff into place"
 cp developers/internals.txt developers/matchbox-key.txt developers/matchbox.pdf developers/internals.dia /tmp/mb-docs/developers/
 
+pushd .
 echo "Tarballing"
-tar cvzf mb-docs.tar.gz /tmp/mb-docs/*
+cd /tmp/mb-docs/
+tar cvzf mb-docs.tar.gz *
+popd
+mv /tmp/mb-docs/mb-docs.tar.gz .
 echo
 echo "All done. Untar mb-docs.tar.gz in web documentation dir. Remember api docs"
 echo

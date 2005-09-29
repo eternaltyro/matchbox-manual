@@ -12,7 +12,6 @@
   <xsl:param name="chapter.autolabel" select="1" />
   <xsl:param name="navig.showtitles" select="0" />
 
-
   <xsl:template name="user.header.content">
   <p class="mbheader"><a href="http://projects.o-hand.com/matchbox"><img src="images/mb-logo-75.png" border="0"/></a></p>
   </xsl:template>

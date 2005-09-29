@@ -1565,7 +1565,7 @@
 	  <listitem><para>pkg-config --version must report 0.9.0 or later</para></listitem>                                                                         </itemizedlist>         
       </para>
       <para>
-      You will also need GConf2 Development packages and <ulink url="http://check.sf.net">Check</a> installed ( These are <emphasis>only</emphasis> needed if building from SVN, optional if building from release tarballs ).
+      You will also need GConf2 Development packages and <ulink url="http://check.sf.net">Check</ulink> installed ( These are <emphasis>only</emphasis> needed if building from SVN, optional if building from release tarballs ).
       </para>
 
     </section>
