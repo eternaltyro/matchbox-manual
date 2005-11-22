@@ -230,28 +230,14 @@ client.
 _
 
 _MB_WM_WINDOW_TYPE_MESSAGE          ( EXPERIMENTAL )
-_MB_WM_WINDOW_TYPE_MESSAGE_TIMEOUT  ( EXPERIMENTAL )
 
-If matchbox is built with the --enable-message-wins option, matchbox
-will offer support for the _NET_WM_WINDOW_TYPE, '_MB_WM_WINDOW_TYPE_MESSAGE'.
+This is an extra window type specific to matchbox.
 
 Message windows are always on top dialog like windows intended to be
 used for user notification ( like the bubble messages on the panel. )
 This window has its own 4 border themeing ( frame id = message ).
 
-Message windows are queued by matchbox with just the queue head window
-displayed at any time. The optional _MB_WM_WINDOW_TYPE_MESSAGE_TIMEOUT
-( CARD32 ) property can be set on the window to specify how many
-seconds it should stay visable. If this property is not set or set to
-0, the window will stay active indefinitely until it closes itself.
-
-*NOTE* *NOTE* *NOTE*
-
-The above is depreciated in > 0.9 releases. For an dialog to now get
-message window style decorations ( if defined in theme ), the window
-should set the ICCCM 'urgency' in WM_HINTS. The queueing mechanism is
-now depricated, if required its recommended it be handled outside of
-the WM.
+Note, this may change in the future to use the ICCCM 'urgency' in WM_HINTS.
 
 _MB_WM_STATE_DOCK_TITLEBAR
 
