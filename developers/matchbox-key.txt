@@ -149,10 +149,14 @@ These are;
   decide if too fork a new application or raise an existing one ( via a
   _NET_ACTIVE_WINDOW message ).
 
-  o _NET_CLIENT_LIST 
+  o _NET_CLIENT_LIST, _NET_CLIENT_LIST_STACKING
 
   This property is also set on mbdock windows to list, in left to right 
   order, the window ID's of reparented applets. 
+
+  o _MB_APP_WINDOW_LIST_STACKING 
+  
+  Like above but only lists application windows. 
 
 Matchbox also indirectly supports the RESOURCE_MANAGER property on the
 root window via the X Resource Management infrastructure. The
