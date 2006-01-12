@@ -149,6 +149,10 @@ These are;
   decide if too fork a new application or raise an existing one ( via a
   _NET_ACTIVE_WINDOW message ).
 
+  o _MB_CURRENT_APP_WINDOW
+
+  Specifys the window id of the current highest mapped application window
+
   o _NET_CLIENT_LIST, _NET_CLIENT_LIST_STACKING
 
   This property is also set on mbdock windows to list, in left to right 
