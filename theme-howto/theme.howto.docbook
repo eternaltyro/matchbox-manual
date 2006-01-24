@@ -1148,6 +1148,41 @@ defined area.
 </para>
 
 </section>
+<section><title>How can I lower memory usage</title>
+<para>
+
+Matchbox window manager keeps a cached pixel representation of a
+single, text free, application window title bar decoration image. 
+This is needed for the compositing of button images and as a 
+performance optimisation.
+
+</para>
+<para>
+
+This caching can be disabled if; your main window title bar theme
+consists of a single or few images, and any titlebar button images do
+not contain an alpha component. To disable, add a cache attribute set
+to false to your root theme.xml tag;
+
+</para>
+
+<programlisting>
+&lt;theme cache="false" ... /&gt;
+</programlisting>
+
+<para>
+
+By setting the enviromental variable MB_THEME_ALWAYS_CACHE this
+attribute can be overidden and always ignored.
+
+</para>
+<para>
+
+This functionality should be considered experimental. Memory, in bytes,  saved approximates <emphasis>width x height x display bytes per pixel</emphasis> of you application window title bar decoration only. 
+
+</para>
+
+</section>
 <section><title>Where can I find more infomation ?</title>
 <para>
 See the various themes included with the matchbox distrubution ( in data/themes ) and the matchbox-themes-extras package. 
